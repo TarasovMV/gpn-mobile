@@ -1,0 +1,7 @@
+{
+  "name": "gpn-mobile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
