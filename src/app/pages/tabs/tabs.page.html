@@ -1,0 +1,10 @@
+<div class="container">
+  <ion-router-outlet  (activate)="routing($event)" class="page-wrapper"></ion-router-outlet>
+  <div class="footer">
+    <div *ngFor="let tab of tabs"
+      class="tab-icon"
+      [class.tab-icon__active]="tab === (currentTab$ | async)"
+      (click)="selectTab(tab)"
+    ></div>
+  </div>
+</div>
