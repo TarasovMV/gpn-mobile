@@ -26,3 +26,16 @@
 @import "~@ionic/angular/css/flex-utils.css";
 @import "theme/mixins.scss";
 @import "theme/functions.scss";
+
+ion-content {
+  --background: transparent !important;
+}
+
+html, body, .ion-app, .ion-content {
+  background: transparent !important;
+}
+
+// scroll hide
+::-webkit-scrollbar {
+  width: 0;
+}

@@ -15,6 +15,7 @@ input, button {
   padding: sizeHeight(30) sizeWidth(30) sizeHeight(60);
 
   background: #1c1f2b;
+  overflow: scroll;
 
   .title {
     height: sizeHeight(110);
@@ -49,6 +50,7 @@ input, button {
 
   form {
     height: sizeHeight(170);
+    min-height: sizeHeight(170);
     margin-top: sizeHeight(10);
 
     display: flex;
@@ -114,6 +116,7 @@ input, button {
 
   .btn {
     height: sizeHeight(110);
+    min-height: sizeHeight(110);
     width: 100%;
     margin-top: auto;
 
