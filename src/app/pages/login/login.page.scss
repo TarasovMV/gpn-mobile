@@ -8,7 +8,9 @@ input, button {
   border: none;
 }
 .container {
-  height: sizeHeight(1280);
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
   width: 100%;
   padding: sizeHeight(30) sizeWidth(30) sizeHeight(60);
 
@@ -113,17 +115,18 @@ input, button {
   .btn {
     height: sizeHeight(110);
     width: 100%;
+    margin-top: auto;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    font-size: 39px;
+    font-size: sizeHeight(39);
 
     color: #D7E2F2;
 
     background: #0089FF;
-    border-radius: 8px;
+    border-radius: sizeHeight(8);
 
     &:disabled {
       opacity: 0.5;

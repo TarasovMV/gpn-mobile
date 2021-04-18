@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {PopoverController} from "@ionic/angular";
+import {NavController, PopoverController} from "@ionic/angular";
 import {CarPopowerComponent} from "./components/car-popower/car-popower.component";
 
 
@@ -14,13 +14,17 @@ export class LoginPage implements OnInit {
         login: new FormControl('', Validators.required),
         pass: new FormControl('', Validators.required),
     });
-    constructor(public popoverController: PopoverController) {}
 
-    ngOnInit() {
+    private readonly nextUrl: string = 'tabs';
 
+    constructor(
+        public popoverController: PopoverController,
+        private navCtrl: NavController,
+    ) {}
+
+    ngOnInit(): void {}
+
+    public submit(e: Event): void {
+        this.navCtrl.navigateRoot(this.nextUrl).then();
     }
-
-    public submit(e: any): void {
-    }
-
 }
