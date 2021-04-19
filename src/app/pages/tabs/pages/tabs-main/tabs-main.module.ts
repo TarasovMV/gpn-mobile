@@ -6,6 +6,7 @@ import {IonicModule} from '@ionic/angular';
 
 import {TabsMainPage} from './tabs-main.page';
 import {RouterModule} from '@angular/router';
+import {AngularSvgIconModule} from "angular-svg-icon";
 
 @NgModule({
     imports: [
@@ -13,6 +14,7 @@ import {RouterModule} from '@angular/router';
         FormsModule,
         IonicModule,
         RouterModule.forChild([{path: '', component: TabsMainPage}]),
+        AngularSvgIconModule,
     ],
     declarations: [TabsMainPage]
 })

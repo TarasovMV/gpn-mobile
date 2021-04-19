@@ -7,7 +7,7 @@ import {IPageTab, PageTabType} from '../../tabs.page';
     styleUrls: ['./tabs-ready.page.scss'],
 })
 export class TabsReadyPage implements OnInit, IPageTab {
-    public tabName: PageTabType = 'ready';
+    public route: PageTabType = 'ready';
 
     constructor() {
     }

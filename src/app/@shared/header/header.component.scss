@@ -1,0 +1,51 @@
+@import "src/theme/functions";
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  height: sizeHeight(128);
+  width: 100%;
+  padding: sizeWidth(30);
+
+  display: flex;
+  align-items: center;
+
+  background: #272A38;
+
+  .avatar {
+    margin-left: auto;
+    position: relative;
+
+    svg-icon {
+      height: sizeHeight(50);
+      width: sizeHeight(50);
+
+      color: #4B5169;
+    }
+
+    .indicator {
+      height: sizeHeight(30);
+      width: sizeHeight(30);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: rgba(0, 167, 61, 0.2);
+      border-radius: 50%;
+
+      position: absolute;
+      top: - sizeHeight(5);
+      right: - sizeHeight(5);
+
+      &__inner {
+        height: sizeHeight(15);
+        width: sizeHeight(15);
+
+        background: #00A73D;
+        border-radius: 50%;
+      }
+    }
+  }
+}

@@ -1,9 +1,28 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>tabs-main</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
-</ion-content>
+<div class="container">
+  <div class="chart-container">
+    <div class="chart" #chart>
+      <svg-icon
+        src="assets/Icons/tabs/main-tab/mask.svg"
+        [svgStyle]="{
+          'height': '40vh',
+          'width': '40vh'
+        }"
+      ></svg-icon>
+      <div class="chart-info">
+        <span class="chart__title">Количество заданий,</span>
+        <span class="chart__unit">шт</span>
+        <span class="chart__total">{{(diagramData$ | async).total}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="description">
+    <div
+      class="description-item"
+      *ngFor="let item of (diagramData$ | async).sections"
+      [style.borderColor]="item.color"
+    >
+      <span class="title">{{item.name}}</span>
+      <span class="value">{{item.value}}</span>
+    </div>
+  </div>
+</div>

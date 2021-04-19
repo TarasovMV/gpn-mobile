@@ -1,9 +1,10 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {NavController, PopoverController} from '@ionic/angular';
+import {ModalController, NavController, PopoverController} from '@ionic/angular';
 import {KeyboardService} from '../../@core/services/keyboard.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import {CarPopowerComponent} from './components/car-popower/car-popower.component';
 
 
 @Component({
@@ -18,10 +19,9 @@ export class LoginPage implements OnInit, OnDestroy {
         pass: new FormControl('', Validators.required),
     });
     private subscriber$: Subject<null> = new Subject<null>();
-    private readonly nextUrl: string = 'tabs';
 
     constructor(
-        public popoverController: PopoverController,
+        public modalController: ModalController,
         private navCtrl: NavController,
         private keyboardService: KeyboardService,
     ) {}
@@ -37,8 +37,16 @@ export class LoginPage implements OnInit, OnDestroy {
         this.subscriber$.complete();
     }
 
-    public submit(e: Event): void {
-        this.navCtrl.navigateRoot(this.nextUrl).then();
+    public async submit(e: Event): Promise<void> {
+        this.presentModal().then();
+    }
+
+    private async presentModal() {
+        const modal = await this.modalController.create({
+            component: CarPopowerComponent,
+            cssClass: 'car-modal'
+        });
+        return await modal.present();
     }
 
     private scrollToBottom(): void {

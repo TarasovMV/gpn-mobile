@@ -3,7 +3,8 @@ import {BehaviorSubject} from 'rxjs';
 import {NavController} from '@ionic/angular';
 
 export interface IPageTab {
-    readonly tabName: PageTabType;
+    readonly route: PageTabType;
+    readonly name?: string;
 }
 
 export type PageTabType = 'main' | 'tasks' | 'ready';
@@ -16,7 +17,21 @@ export type PageTabType = 'main' | 'tasks' | 'ready';
 export class TabsPage implements OnInit {
     public currentTab$: BehaviorSubject<PageTabType> = new BehaviorSubject<PageTabType>('main');
 
-    public readonly tabs: PageTabType[] = ['main', 'tasks', 'ready'];
+    public readonly tabs: IPageTab[] = [
+        {
+            route: 'main',
+            name: 'Главная',
+        },
+        {
+            route: 'tasks',
+            name: 'Задания'
+        },
+        {
+            route: 'ready',
+            name: 'Выполнено'
+        }
+        ];
+
     private readonly tabsRouting: {[key in PageTabType]: string} = {
         main: 'tabs/tabs-main',
         tasks: 'tabs/tabs-tasks',
@@ -27,12 +42,12 @@ export class TabsPage implements OnInit {
 
     ngOnInit(): void {}
 
-    public selectTab(tab: PageTabType): void {
-        this.navCtrl.navigateRoot(this.tabsRouting[tab] ?? this.tabsRouting[this.currentTab$.value]).then();
+    public selectTab(tab: IPageTab): void {
+        this.navCtrl.navigateRoot(this.tabsRouting[tab.route] ?? this.tabsRouting[this.currentTab$.value]).then();
     }
 
-    public routing(event: IPageTab): void {
-        this.currentTab$.next(event?.tabName);
+    public routing(tab: IPageTab): void {
+        this.currentTab$.next(tab.route);
     }
 
 }

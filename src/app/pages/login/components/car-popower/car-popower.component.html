@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="title">
+    <span class="title__text">Выберите доступный автомобиль</span>
+  </div>
+  <div class="main-icon">
+    <img src="assets/Icons/login/car.png">
+  </div>
+  <div class="car-list">
+    <div
+      class="car-list__item"
+      [class.car-list__item_active]="chosenCarIndex === i"
+      *ngFor="let car of carList$ | async ; let i = index"
+      (click)="chooseCar(i)"
+    >
+      {{car}}
+    </div>
+  </div>
+
+  <div class="btn-container">
+    <button
+      (click)="accept()"
+      class="btn btn-next"
+      [disabled]="chosenCarIndex === -1"
+    >Далее</button>
+
+    <button
+      (click)="dismiss()"
+      class="btn btn-cancel"
+    >Отменить</button>
+  </div>
+</div>
