@@ -39,3 +39,16 @@ html, body, .ion-app, .ion-content {
 ::-webkit-scrollbar {
   width: 0;
 }
+
+.avatar-modal {
+  --height: 44vh;
+
+  .modal-wrapper {
+    margin-top: 56vh;
+    width: 100%;
+    border-radius: 1.5vh 1.5vh 0 0;
+    background: #272A38;
+
+    overflow: hidden;
+  }
+}

@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {ModalController, NavController} from '@ionic/angular';
+import {UserInfoService} from "../../../../services/user-info.service";
 
 @Component({
   selector: 'app-car-popower',
@@ -9,7 +10,6 @@ import {ModalController, NavController} from '@ionic/angular';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CarPopowerComponent implements OnInit {
-    public chosenCarIndex = -1;
     public carList$: BehaviorSubject<string[]>
         = new BehaviorSubject(['А330АА50', 'А332АА50', 'Е331АА50', 'М333BП50', 'К333АА50', 'С334АА50', 'П333АА50', 'А333АА50']);
     private readonly nextUrl: string = 'tabs';
@@ -17,10 +17,11 @@ export class CarPopowerComponent implements OnInit {
     constructor(
         public modalController: ModalController,
         private navCtrl: NavController,
+        private userInfo: UserInfoService
     ) { }
 
     public chooseCar(i: number): void {
-        this.chosenCarIndex = i;
+        this.userInfo.carNumber$.next(this.carList$.value[i]);
     }
 
     public dismiss(): void {

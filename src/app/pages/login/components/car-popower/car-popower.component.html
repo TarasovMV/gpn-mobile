@@ -8,7 +8,7 @@
   <div class="car-list">
     <div
       class="car-list__item"
-      [class.car-list__item_active]="chosenCarIndex === i"
+      [class.car-list__item_active]="(userInfo.carNumber$ | async) === car"
       *ngFor="let car of carList$ | async ; let i = index"
       (click)="chooseCar(i)"
     >
@@ -20,7 +20,7 @@
     <button
       (click)="accept()"
       class="btn btn-next"
-      [disabled]="chosenCarIndex === -1"
+      [disabled]="!(userInfo.carNumber$ | async)"
     >Далее</button>
 
     <button
