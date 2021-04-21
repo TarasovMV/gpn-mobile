@@ -31,7 +31,6 @@ export class TabsMainPage implements OnInit, IPageTab, AfterViewInit {
 
     @HostListener('window:resize', ['$event'])
     public onResize(): void {
-        console.log('Размер изменился');
         this.drawSvg(this.diagramData$.value);
     }
 

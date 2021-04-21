@@ -40,6 +40,13 @@ html, body, .ion-app, .ion-content {
   width: 0;
 }
 
+.car-modal {
+  .modal-wrapper {
+    height: 100%;
+    width: 100%;
+  }
+}
+
 .avatar-modal {
   --height: 44vh;
 

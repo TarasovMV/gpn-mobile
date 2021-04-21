@@ -1,1 +1,56 @@
-<h1>tabs-tasks</h1>
+<div class="container">
+  <app-header>
+    <div
+      class="tab-btn"
+      [class.tab-btn_active]="i === currentTab"
+      *ngFor="let tab of (tabs$ | async); let i = index"
+      (click)="changeTab(i)"
+    >{{tab}}</div>
+  </app-header>
+  <div class="content">
+    <ng-container
+      [ngSwitch]="currentTab"
+    >
+      <div
+        class="tab"
+        *ngSwitchCase="0"
+      >
+        <app-tabs-tasks-card
+          *ngFor="let item of (newItems$ | async)"
+          [data]="item"
+        ></app-tabs-tasks-card>
+
+        <div class="circle-btn">
+          <svg-icon
+            [svgStyle]="{
+              'height': '2.6vh',
+              'width': '4vh'
+            }"
+            src="assets/Icons/tabs/tasks-tab/accept.svg"
+          ></svg-icon>
+        </div>
+      </div>
+
+      <div
+        class="tab"
+        *ngSwitchCase="1"
+      >
+        <app-tabs-tasks-card
+          *ngFor="let item of (inProgressItems$ | async)"
+          [data]="item"
+        ></app-tabs-tasks-card>
+
+        <div class="circle-btn">
+          <svg-icon
+            [svgStyle]="{
+              'height': '4.8vh',
+              'width': '4.8vh'
+            }"
+            src="assets/Icons/tabs/tasks-tab/geo-map.svg"
+          ></svg-icon>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+

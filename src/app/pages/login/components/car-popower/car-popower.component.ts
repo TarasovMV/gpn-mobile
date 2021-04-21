@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {ModalController, NavController} from '@ionic/angular';
-import {UserInfoService} from "../../../../services/user-info.service";
+import {UserInfoService} from '../../../../services/user-info.service';
 
 @Component({
   selector: 'app-car-popower',

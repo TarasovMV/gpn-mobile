@@ -2,6 +2,15 @@
 * {
   box-sizing: border-box;
 }
+
+.title {
+  margin-left: sizeWidth(40);
+  font-weight: 500;
+  font-size: sizeHeight(36);
+
+  color: #D7E2F2;
+}
+
 .container {
   width: 100%;
 
@@ -77,7 +86,7 @@
 
       background: #272A38;
       border-left: sizeWidth(8) solid #FFFFFF;
-      border-radius: sizeWidth(8);
+      border-radius: sizeHeight(8);
 
       .title {
         font-size: sizeHeight(28);

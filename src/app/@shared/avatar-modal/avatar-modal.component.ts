@@ -56,7 +56,6 @@ export class AvatarModalComponent implements OnInit {
 
     public changeCar(): void {
         this.presentModal().then();
-        this.dismiss();
     }
 
     private async presentModal() {

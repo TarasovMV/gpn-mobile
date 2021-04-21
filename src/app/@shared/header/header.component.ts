@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ModalController} from "@ionic/angular";
-import {AvatarModalComponent} from "../avatar-modal/avatar-modal.component";
+import {ModalController} from '@ionic/angular';
+import {AvatarModalComponent} from '../avatar-modal/avatar-modal.component';
 
 @Component({
   selector: 'app-header',

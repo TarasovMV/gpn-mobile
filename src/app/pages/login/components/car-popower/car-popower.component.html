@@ -9,7 +9,7 @@
     <div
       class="car-list__item"
       [class.car-list__item_active]="(userInfo.carNumber$ | async) === car"
-      *ngFor="let car of carList$ | async ; let i = index"
+      *ngFor="let car of (carList$ | async); let i = index"
       (click)="chooseCar(i)"
     >
       {{car}}
