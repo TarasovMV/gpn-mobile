@@ -23,6 +23,7 @@ span {
   .chart {
     height: sizeHeight(160);
     width: sizeHeight(160);
+    min-width: sizeHeight(160);
     margin-right: sizeWidth(15);
 
     display: flex;
@@ -52,7 +53,6 @@ span {
   .description {
     height: sizeHeight(186);
     flex: 1;
-    max-width: 64vw; // Временно
 
     display: flex;
     flex-direction: column;
@@ -98,6 +98,7 @@ span {
         color: #606580;
       }
     }
+    overflow: hidden;
   }
 
   &_active {
