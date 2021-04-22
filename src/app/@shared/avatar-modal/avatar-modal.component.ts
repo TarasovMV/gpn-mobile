@@ -31,7 +31,7 @@ export class AvatarModalComponent implements OnInit {
 
     constructor(
         private navCtrl: NavController,
-        private userInfo: UserInfoService,
+        public userInfo: UserInfoService,
         public modalController: ModalController
     ) { }
 

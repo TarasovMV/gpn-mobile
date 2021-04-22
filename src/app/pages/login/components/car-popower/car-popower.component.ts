@@ -17,7 +17,7 @@ export class CarPopowerComponent implements OnInit {
     constructor(
         public modalController: ModalController,
         private navCtrl: NavController,
-        private userInfo: UserInfoService
+        public userInfo: UserInfoService
     ) { }
 
     public chooseCar(i: number): void {
