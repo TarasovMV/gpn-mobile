@@ -1,19 +1,17 @@
 import {Component, OnInit} from '@angular/core';
 import {IPageTab, PageTabType} from '../../tabs.page';
-import {BehaviorSubject, Subject} from 'rxjs';
-import {NEW_TASKS, TASKS_IN_PROGRESS} from './mock';
-import {TabsInfoService} from '../../../../services/tabs/tabs-info.service';
-import {CarPopowerComponent} from '../../../login/components/car-popower/car-popower.component';
-import {ModalController} from '@ionic/angular';
-import {ChooseTaskOverlayComponent} from "./components/choose-task-overlay/choose-task-overlay.component";
 import {BehaviorSubject} from 'rxjs';
 import {NEW_TASKS, TASKS_IN_PROGRESS} from './mock';
+import {TabsInfoService} from '../../../../services/tabs/tabs-info.service';
+import {ModalController, NavController} from '@ionic/angular';
+import {ChooseTaskOverlayComponent} from './components/choose-task-overlay/choose-task-overlay.component';
 
 export interface ITasksItem {
     num: string;
     manufacture: string;
     tare: number;
     test: number;
+    checked?: boolean;
 }
 
 @Component({
@@ -26,20 +24,27 @@ export class TabsTasksPage implements OnInit, IPageTab {
 
     public tabs$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(['новые', 'выполняются']);
 
-    public inProgressItems$: BehaviorSubject<ITasksItem[]> = new BehaviorSubject<ITasksItem[]>(TASKS_IN_PROGRESS);
-    public newItems$: BehaviorSubject<ITasksItem[]> = new BehaviorSubject<ITasksItem[]>(NEW_TASKS);
+    public inProgressItems$: BehaviorSubject<ITasksItem[]> = new BehaviorSubject<ITasksItem[]>([]);
+    public newItems$: BehaviorSubject<ITasksItem[]> = new BehaviorSubject<ITasksItem[]>([]);
 
     public currentTab$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
     constructor(
         public tabsService: TabsInfoService,
-        public modalController: ModalController
+        public modalController: ModalController,
+        private navCtrl: NavController
     ) {}
 
 
     ngOnInit() {
         this.tabsService.tasksCurrentTab$.subscribe(value => {
             this.currentTab$.next(value);
+        });
+        this.tabsService.inProgressItems$.subscribe(val => {
+            this.inProgressItems$.next(val);
+        });
+        this.tabsService.newItems$.subscribe(val => {
+            this.newItems$.next(val);
         });
     }
 
@@ -48,7 +53,11 @@ export class TabsTasksPage implements OnInit, IPageTab {
     }
 
     public openChooseOverlay(): void {
+        this.presentModal().then();
+    }
 
+    public openMap(): void {
+        this.navCtrl.navigateRoot('/map').then();
     }
 
     private async presentModal() {

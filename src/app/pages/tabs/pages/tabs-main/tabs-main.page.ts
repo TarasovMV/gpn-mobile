@@ -39,6 +39,9 @@ export class TabsMainPage implements OnInit, IPageTab, AfterViewInit {
     }
 
     ngOnInit() {
+        this.tabsService.diagramData$.subscribe(val => {
+            this.diagramData$.next(val);
+        });
     }
 
     ngAfterViewInit() {

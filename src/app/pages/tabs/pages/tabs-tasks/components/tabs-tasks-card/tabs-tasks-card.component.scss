@@ -18,6 +18,7 @@ span {
   align-items: center;
 
   background: #272A38;
+  border: 1px solid transparent;
   border-radius: sizeHeight(8);
 
   .chart {
@@ -47,6 +48,10 @@ span {
         font-size: sizeHeight(34);
         color: #FFFFFF;
       }
+    }
+
+    ::ng-deep {
+      fill: #FFFFFF;
     }
   }
 
@@ -102,9 +107,17 @@ span {
   }
 
   &_active {
+    border-color: #0089FF;
+
     .description {
       .title {
         color: #FFFFFF;
+      }
+    }
+
+    .chart {
+      ::ng-deep {
+        fill: #00A73D;
       }
     }
   }

@@ -7,6 +7,9 @@ import {IonicModule} from '@ionic/angular';
 import {MapPage} from './map.page';
 import {RouterModule} from '@angular/router';
 import {HammerModule} from '@angular/platform-browser';
+import {SharedModule} from "../../@shared/shared.module";
+import {AngularSvgIconModule} from "angular-svg-icon";
+import {MapProgressComponent} from "./components/map-progress/map-progress.component";
 
 @NgModule({
     imports: [
@@ -15,8 +18,10 @@ import {HammerModule} from '@angular/platform-browser';
         IonicModule,
         HammerModule,
         RouterModule.forChild([{path: '', component: MapPage}]),
+        SharedModule,
+        AngularSvgIconModule,
     ],
-    declarations: [MapPage]
+    declarations: [MapPage, MapProgressComponent]
 })
 export class MapPageModule {
 }
