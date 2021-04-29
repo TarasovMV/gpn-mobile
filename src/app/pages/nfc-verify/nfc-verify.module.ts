@@ -6,10 +6,11 @@ import {RouterModule} from "@angular/router";
 import {SharedModule} from "../../@shared/shared.module";
 import {AngularSvgIconModule} from "angular-svg-icon";
 import {SplitNumberSignPipe} from "./pipes/split-number-sign.pipe";
+import {VerifyModalComponent} from "./components/verify-modal/verify-modal.component";
 
 
 @NgModule({
-  declarations: [NfcVerifyPage, SplitNumberSignPipe],
+  declarations: [NfcVerifyPage, SplitNumberSignPipe, VerifyModalComponent],
     imports: [
         CommonModule,
         IonicModule,
