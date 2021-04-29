@@ -6,6 +6,9 @@ import {RouterModule} from '@angular/router';
 
 import {IonicModule} from '@ionic/angular';
 import {TabsTasksPage} from './tabs-tasks.page';
+import {SharedModule} from '../../../../@shared/shared.module';
+import {AngularSvgIconModule} from 'angular-svg-icon';
+import {TabsTasksCardComponent} from './components/tabs-tasks-card/tabs-tasks-card.component';
 
 @NgModule({
     imports: [
@@ -13,8 +16,10 @@ import {TabsTasksPage} from './tabs-tasks.page';
         FormsModule,
         IonicModule,
         RouterModule.forChild([{path: '', component: TabsTasksPage}]),
+        SharedModule,
+        AngularSvgIconModule,
     ],
-    declarations: [TabsTasksPage]
+    declarations: [TabsTasksPage, TabsTasksCardComponent]
 })
 export class TabsTasksPageModule {
 }

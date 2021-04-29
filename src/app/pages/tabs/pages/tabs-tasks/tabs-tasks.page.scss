@@ -1,0 +1,71 @@
+@import "src/theme/functions";
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+
+  .tab-btn {
+    height: 100%;
+    width: sizeWidth(310);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: sizeHeight(24);
+    letter-spacing: sizeWidth(1.5);
+    text-transform: uppercase;
+    color: #8C99B2;
+
+    border-bottom: sizeHeight(6) solid transparent;
+
+    &_active {
+      border-color: #0089FF;
+      color: #0089FF;
+    }
+  }
+
+  .content {
+    height: 83vh;
+    padding-bottom: sizeHeight(10);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    overflow: auto;
+
+    .tab {
+      width: sizeWidth(660);
+      margin-top: sizeHeight(15);
+      gap: sizeHeight(20);
+
+      display: flex;
+      flex-direction: column;
+
+      position: relative;
+
+      .circle-btn {
+        height: sizeHeight(114);
+        width: sizeHeight(114);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #0089FF;
+        border-radius: 50%;
+
+        font-size: sizeHeight(40);
+        color: #FFFFFF;
+
+        position: fixed;
+        right: sizeHeight(30);
+        bottom: sizeHeight(20);
+      }
+    }
+  }
+}

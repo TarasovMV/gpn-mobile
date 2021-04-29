@@ -1,1 +1,64 @@
-<h1>tabs-ready</h1>
+<div class="container">
+  <app-header>
+    <div
+      class="tab-btn"
+      [class.tab-btn_active]="i === currentTab"
+      *ngFor="let tab of (tabs$ | async); let i = index"
+      (click)="changeTab(i)"
+    >{{tab}}</div>
+  </app-header>
+  <div class="content">
+    <ng-container
+      [ngSwitch]="currentTab"
+    >
+      <div
+        class="tab"
+        *ngSwitchCase="0"
+      >
+        <span class="extra-info">Для завершения задания выгрузите пробы в ЕЛК и поднесите телефон к NFC метке</span>
+        <div
+          class="item"
+          *ngFor="let selected of (selectedItems$ | async)"
+        >
+          <svg-icon
+            class="bottle-icon"
+            src="assets/Icons/tabs/ready-tab/bottle.svg"
+            [svgStyle]="{
+              'height': '11.7vh',
+              'width': '11.7vh'
+            }"
+          ></svg-icon>
+          <div class="description">
+            <span class="title">{{selected.num}}</span>
+            <span class="manufacture">Установка: <span class="manufacture__name">{{selected.manufacture}}</span></span>
+          </div>
+        </div>
+
+        <div class="circle-btn">NFC</div>
+      </div>
+
+      <div
+        class="tab "
+        *ngSwitchCase="1"
+      >
+        <div
+          class="item"
+          *ngFor="let delivered of (deliveredItems$ | async)"
+        >
+          <svg-icon
+            class="bottle-icon bottle-icon_delivered"
+            src="assets/Icons/tabs/ready-tab/bottle.svg"
+            [svgStyle]="{
+              'height': '11.7vh',
+              'width': '11.7vh'
+            }"
+          ></svg-icon>
+          <div class="description">
+            <span class="title">{{delivered.num}}</span>
+            <span class="manufacture">Установка: <span class="manufacture__name">{{delivered.manufacture}}</span></span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

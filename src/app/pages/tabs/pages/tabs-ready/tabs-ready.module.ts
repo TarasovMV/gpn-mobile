@@ -6,6 +6,8 @@ import {IonicModule} from '@ionic/angular';
 
 import {TabsReadyPage} from './tabs-ready.page';
 import {RouterModule} from '@angular/router';
+import {SharedModule} from '../../../../@shared/shared.module';
+import {AngularSvgIconModule} from 'angular-svg-icon';
 
 @NgModule({
     imports: [
@@ -13,6 +15,8 @@ import {RouterModule} from '@angular/router';
         FormsModule,
         IonicModule,
         RouterModule.forChild([{path: '', component: TabsReadyPage}]),
+        SharedModule,
+        AngularSvgIconModule,
     ],
     declarations: [TabsReadyPage]
 })

@@ -6,6 +6,8 @@ import {TabsInfoService} from '../../../../services/tabs/tabs-info.service';
 import {CarPopowerComponent} from '../../../login/components/car-popower/car-popower.component';
 import {ModalController} from '@ionic/angular';
 import {ChooseTaskOverlayComponent} from "./components/choose-task-overlay/choose-task-overlay.component";
+import {BehaviorSubject} from 'rxjs';
+import {NEW_TASKS, TASKS_IN_PROGRESS} from './mock';
 
 export interface ITasksItem {
     num: string;
@@ -22,7 +24,6 @@ export interface ITasksItem {
 export class TabsTasksPage implements OnInit, IPageTab {
     public route: PageTabType = 'tasks';
 
-
     public tabs$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(['новые', 'выполняются']);
 
     public inProgressItems$: BehaviorSubject<ITasksItem[]> = new BehaviorSubject<ITasksItem[]>(TASKS_IN_PROGRESS);
@@ -34,6 +35,7 @@ export class TabsTasksPage implements OnInit, IPageTab {
         public tabsService: TabsInfoService,
         public modalController: ModalController
     ) {}
+
 
     ngOnInit() {
         this.tabsService.tasksCurrentTab$.subscribe(value => {

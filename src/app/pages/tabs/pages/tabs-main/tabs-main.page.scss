@@ -3,6 +3,7 @@
   box-sizing: border-box;
 }
 
+
 .header__title {
   margin-left: sizeWidth(40);
   font-weight: 500;
@@ -39,7 +40,7 @@
 
       svg-icon {
         position: absolute;
-        color: rgba(96, 101, 128, 0.25);
+        color: rgba(96, 101, 128, 0.5);
       }
 
       .chart-info {
@@ -86,7 +87,7 @@
 
       background: #272A38;
       border-left: sizeWidth(8) solid #FFFFFF;
-      border-radius: sizeWidth(8);
+      border-radius: sizeHeight(8);
 
       .title {
         font-size: sizeHeight(28);

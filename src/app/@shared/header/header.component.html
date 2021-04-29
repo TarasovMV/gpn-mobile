@@ -1,8 +1,15 @@
 <div class="container">
   <ng-content></ng-content>
-  <div class="avatar">
+  <div
+    class="avatar"
+    (click)="openModal($event)"
+  >
     <svg-icon
       src="assets/Icons/header/avatar.svg"
+      [svgStyle]="{
+        'width': '3.9vh',
+        'height': '3.9vh'
+      }"
     ></svg-icon>
     <div class="indicator">
       <div class="indicator__inner"></div>

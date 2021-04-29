@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {IPageTab, PageTabType} from '../../tabs.page';
 import {BehaviorSubject} from 'rxjs';
 import {MAIN_PAGE_DATA} from './mock';
@@ -33,6 +33,11 @@ export class TabsMainPage implements OnInit, IPageTab, AfterViewInit {
         private tabsService: TabsInfoService
     ) {}
 
+    @HostListener('window:resize', ['$event'])
+    public onResize(): void {
+        this.drawSvg(this.diagramData$.value);
+    }
+
     ngOnInit() {
     }
 
@@ -60,8 +65,8 @@ export class TabsMainPage implements OnInit, IPageTab, AfterViewInit {
 
     private drawSvg(data: IDiagram): void {
         const size: number = Math.min(this.chart.nativeElement.clientWidth, this.chart.nativeElement.clientHeight);
-        const innerR = 0.85 * size / 2 - 12;
-        const outerR = 0.85 * size / 2;
+        const innerR = 0.43 * size;
+        const outerR = 0.43 * 0.92 * size;
 
         if (this.svg) {
             this.svg.remove();
@@ -72,8 +77,8 @@ export class TabsMainPage implements OnInit, IPageTab, AfterViewInit {
         const arcBg = (start: number, end: number) => d3.arc()
                 .innerRadius(innerR)
                 .outerRadius(outerR)
-                .startAngle(start * 2 * Math.PI)
-                .endAngle(end * 2 * Math.PI);
+                .startAngle(-start * 2 * Math.PI)
+                .endAngle(-end * 2 * Math.PI);
 
 
         const g: any = this.svg.append('g').style('transform', `translate(${size/2}px, ${size/2}px)`);
