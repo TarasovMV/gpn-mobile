@@ -11,6 +11,10 @@ const routes: Routes = [
         loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule)
     },
     {
+        path: 'nfc',
+        loadChildren: () => import('./pages/nfc-verify/nfc-verify.module').then(m => m.NfcVerifyModule)
+    },
+    {
         path: '**',
         redirectTo: 'login',
         pathMatch: 'full',
