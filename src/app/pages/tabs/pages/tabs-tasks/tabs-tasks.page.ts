@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {IPageTab, PageTabType} from '../../tabs.page';
 import {BehaviorSubject} from 'rxjs';
 import {NEW_TASKS, TASKS_IN_PROGRESS} from './mock';
+import {NavController} from "@ionic/angular";
+import {TasksService} from "../../../../services/tasks.service";
 
 export interface ITasksItem {
     num: string;
@@ -24,13 +26,22 @@ export class TabsTasksPage implements OnInit, IPageTab {
     public newItems$: BehaviorSubject<ITasksItem[]> = new BehaviorSubject<ITasksItem[]>(NEW_TASKS);
 
     public currentTab = 0;
-    constructor() {
-    }
+    constructor(
+        private navCtrl: NavController,
+        private tasksService: TasksService
+    ) {}
 
     ngOnInit() {
     }
 
     public changeTab(i): void {
         this.currentTab = i;
+    }
+
+    public accept() {
+        this.newItems$.subscribe((data : ITasksItem[]) => {
+            this.tasksService.currentTask = data[0];
+        })
+        this.navCtrl.navigateRoot("nfc").then();
     }
 }

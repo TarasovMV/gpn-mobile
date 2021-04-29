@@ -1,0 +1,71 @@
+@import "src/theme/functions.scss";
+
+* {
+  box-sizing: border-box
+}
+
+.container {
+  padding: sizeHeight(35);
+  padding-top: sizeHeight(45);
+  overflow: scroll;
+}
+
+.header-block {
+  text-align: center;
+  margin-bottom: sizeHeight(40);
+}
+
+.info-block {
+  margin-top: sizeHeight(28);
+}
+
+.info-block-header {
+  color: #8C99B2;
+}
+
+.header {
+  font-size: sizeHeight(32);
+  color: #D7E2F2;
+}
+
+ion-checkbox {
+  --background-checked: #0089FF;
+  padding: 0;
+  margin: 0;
+  margin-right: sizeWidth(20);
+}
+
+.gray-text {
+  color: #8C99B2;
+  font-size: sizeHeight(27);
+}
+
+.light-text {
+  color: #D7E2F2;
+  font-size: sizeHeight(27);
+  display: inline-block;
+  margin-right: sizeWidth(20);
+}
+
+.info-block-item {
+  margin-top: sizeHeight(24);
+  margin-bottom: sizeHeight(24);
+  display: flex;
+  align-items: center;
+}
+
+.accept-button {
+  background: #0089FF;
+  border: 1px solid #303549;
+  border-radius: sizeWidth(10);
+  font-size: sizeHeight(39);
+  height: sizeHeight(110);
+  display: block;
+  margin: 0 auto;
+  float: bottom;
+  color: #D7E2F2;
+  margin-bottom: sizeHeight(35);
+  padding-left: sizeWidth(50);
+  padding-right: sizeWidth(50);
+}
+
