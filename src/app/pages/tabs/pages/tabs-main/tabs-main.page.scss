@@ -2,6 +2,15 @@
 * {
   box-sizing: border-box;
 }
+
+.header__title {
+  margin-left: sizeWidth(40);
+  font-weight: 500;
+  font-size: sizeHeight(36);
+
+  color: #D7E2F2;
+}
+
 .container {
   width: 100%;
 

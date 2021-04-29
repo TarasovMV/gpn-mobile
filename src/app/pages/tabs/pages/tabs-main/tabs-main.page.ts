@@ -3,6 +3,8 @@ import {IPageTab, PageTabType} from '../../tabs.page';
 import {BehaviorSubject} from 'rxjs';
 import {MAIN_PAGE_DATA} from './mock';
 import * as d3 from 'd3';
+import {NavController} from '@ionic/angular';
+import {TabsInfoService} from '../../../../services/tabs/tabs-info.service';
 
 export interface IDiagram {
     total: number;
@@ -25,14 +27,35 @@ export class TabsMainPage implements OnInit, IPageTab, AfterViewInit {
     public route: PageTabType = 'main';
     public svg: any;
     readonly diagramData$: BehaviorSubject<IDiagram> = new BehaviorSubject<IDiagram>(MAIN_PAGE_DATA);
-    constructor() {
-    }
+
+    constructor(
+        private navCtrl: NavController,
+        private tabsService: TabsInfoService
+    ) {}
 
     ngOnInit() {
     }
 
     ngAfterViewInit() {
         this.drawSvg(this.diagramData$.value);
+    }
+
+    public redirectToTab(tabName: string): void {
+        switch (tabName) {
+            case 'В работе':
+                this.navCtrl.navigateRoot('/tabs/tabs-tasks').then();
+                this.tabsService.tasksCurrentTab$.next(1);
+                return;
+            case 'Новые':
+                this.navCtrl.navigateRoot('/tabs/tabs-tasks').then();
+                this.tabsService.tasksCurrentTab$.next(0);
+                return;
+            case 'Выполнены':
+                this.navCtrl.navigateRoot('tabs/tabs-ready').then();
+                return;
+            default:
+                return;
+        }
     }
 
     private drawSvg(data: IDiagram): void {
