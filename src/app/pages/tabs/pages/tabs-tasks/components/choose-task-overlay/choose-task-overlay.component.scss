@@ -1,0 +1,84 @@
+@import "src/theme/functions";
+* {
+  box-sizing: border-box;
+}
+
+button {
+  outline: none;
+  background: transparent;
+  border: none;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  padding: sizeHeight(50) sizeHeight(45);
+
+  position: relative;
+
+  .cancel {
+    height: 2.2vh;
+    width: 2.2vh;
+
+    color: #606580;
+
+    position: absolute;
+    right: sizeHeight(30);
+    top: sizeHeight(30);
+  }
+
+  .title {
+    font-size: sizeHeight(34);
+    color: #D7E2F2;
+  }
+
+  .content {
+    margin-top: sizeHeight(40);
+    width: sizeWidth(460);
+
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: sizeHeight(24);
+
+    .item {
+      height: sizeHeight(40);
+      width: 50%;
+
+      display: flex;
+      align-items: center;
+
+      font-size: sizeHeight(29);
+      color: #D7E2F2;
+
+      &__name {
+        margin-left: sizeWidth(24);
+      }
+
+      ion-checkbox {
+        height: sizeHeight(40);
+        width: sizeHeight(40);
+      }
+    }
+  }
+
+  .btn {
+    height: sizeHeight(96);
+    width: sizeWidth(300);
+    margin-top: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #0089FF;
+    border-radius: sizeHeight(8);
+
+    font-size: sizeHeight(40);
+    color: #D7E2F2;
+  }
+}

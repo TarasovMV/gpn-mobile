@@ -1,5 +1,5 @@
 <app-header>
-  <span class="title">Статистика</span>
+  <span class="header__title">Статистика</span>
 </app-header>
 <div class="container">
   <div class="chart-container">
@@ -23,6 +23,7 @@
       class="description-item"
       *ngFor="let item of (diagramData$ | async).sections"
       [style.borderColor]="item.color"
+      (click)="redirectToTab(item.name)"
     >
       <span class="title">{{item.name}}</span>
       <span class="value">{{item.value}}</span>

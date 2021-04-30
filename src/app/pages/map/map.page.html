@@ -1,0 +1,48 @@
+<div class="container">
+  <app-header class = header>
+    <div class="arrow" (click)="redirectToTab()">
+      <svg-icon
+        src="/assets/Icons/tabs/arrowLeft.svg"
+        [svgStyle]="{
+          'height.vh': 3.9,
+          'width.vh': 3.9
+        }"
+      ></svg-icon>
+    </div>
+    <div class="title">{{(tabsService.inProgressItems$|async)[0].num}}</div>
+  </app-header>
+  <div #map [style]="transformStyle" class="box">
+    <div [style]="rotationStyle" class="entry-box"></div>
+  </div>
+  <div class="progress">
+    <app-map-progress
+      [percent]="60"
+      [name]="(tabsService.inProgressItems$|async)[0].manufacture"
+    ></app-map-progress>
+  </div>
+
+  <div
+    class="circle-btn"
+    (click)="redirectToTab()"
+  >
+    <svg-icon
+      [svgStyle]="{
+        'height': '3.9vh',
+        'width': '3.9vh'
+      }"
+      src="assets/Icons/map/menuBurger.svg"
+    ></svg-icon>
+  </div>
+
+  <div
+    class="circle-btn geo"
+  >
+    <svg-icon
+      [svgStyle]="{
+        'height': '6.3vh',
+        'width': '6.3vh'
+      }"
+      src="assets/Icons/map/geo.svg"
+    ></svg-icon>
+  </div>
+</div>

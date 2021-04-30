@@ -63,6 +63,18 @@ html, body, .ion-app, .ion-content {
   }
 }
 
+.choose-task {
+  --height: 44vh;
+
+  .modal-wrapper {
+    width: sizeWidth(550);
+    border-radius: sizeHeight(8);
+    background: #1c1f2b;
+
+    overflow: hidden;
+  }
+}
+
 .avatar-modal {
   --height: 44vh;
 

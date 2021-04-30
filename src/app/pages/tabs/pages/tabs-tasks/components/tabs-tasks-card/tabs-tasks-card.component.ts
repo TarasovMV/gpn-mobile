@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild} from '@angular/core';
 import {ITasksItem} from '../../tabs-tasks.page';
 import * as d3 from 'd3';
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'app-tabs-tasks-card',
@@ -10,6 +10,7 @@ import {BehaviorSubject} from "rxjs";
 })
 export class TabsTasksCardComponent implements OnInit, AfterViewInit {
     @Input() data: ITasksItem;
+    @Input() isActive: boolean;
     @ViewChild('chart') chart: ElementRef;
 
     public svg: any;
@@ -52,6 +53,6 @@ export class TabsTasksCardComponent implements OnInit, AfterViewInit {
             .style('fill', 'rgba(96, 101, 128, 0.25)');
 
         g.append('path').attr('d', arcBg(0, this.percent$.value / 100))
-            .style('fill', '#ffffff');
+            .attr('class', 'arc');
     }
 }

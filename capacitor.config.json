@@ -1,6 +1,6 @@
 {
   "appId": "io.ionic.starter",
-  "appName": "gpn-mobile",
+  "appName": "test-mobile",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",

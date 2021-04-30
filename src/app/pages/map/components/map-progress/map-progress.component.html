@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="info">
+    <div class="info__title">{{name}}</div>
+    <div class="info__time">осталось ехать 5 мин</div>
+  </div>
+
+  <div class="diagram">
+    <div
+      class="diagram__inner"
+      [style.width.%]="percent"
+    >
+      <svg-icon
+        src="assets/Icons/map/mapMarker.svg"
+        [svgStyle]="{
+          'height.vh': 3.9,
+          'width.vh': 3.9
+        }"
+      ></svg-icon>
+    </div>
+  </div>
+</div>

@@ -2,7 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {IPageTab, PageTabType} from '../../tabs.page';
 import {BehaviorSubject} from 'rxjs';
 import {NEW_TASKS, TASKS_IN_PROGRESS} from './mock';
-import {NavController} from "@ionic/angular";
+import {TabsInfoService} from '../../../../services/tabs/tabs-info.service';
+import {ModalController, NavController} from '@ionic/angular';
+import {ChooseTaskOverlayComponent} from './components/choose-task-overlay/choose-task-overlay.component';
 import {TasksService} from "../../../../services/tasks.service";
 
 export interface ITasksItem {
@@ -10,6 +12,7 @@ export interface ITasksItem {
     manufacture: string;
     tare: number;
     test: number;
+    checked?: boolean;
 }
 
 @Component({
@@ -22,26 +25,58 @@ export class TabsTasksPage implements OnInit, IPageTab {
 
     public tabs$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(['новые', 'выполняются']);
 
-    public inProgressItems$: BehaviorSubject<ITasksItem[]> = new BehaviorSubject<ITasksItem[]>(TASKS_IN_PROGRESS);
-    public newItems$: BehaviorSubject<ITasksItem[]> = new BehaviorSubject<ITasksItem[]>(NEW_TASKS);
+    public inProgressItems$: BehaviorSubject<ITasksItem[]> = new BehaviorSubject<ITasksItem[]>([]);
+    public newItems$: BehaviorSubject<ITasksItem[]> = new BehaviorSubject<ITasksItem[]>([]);
 
-    public currentTab = 0;
+    public currentTab$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+
     constructor(
+        public tabsService: TabsInfoService,
+        public modalController: ModalController,
         private navCtrl: NavController,
         private tasksService: TasksService
     ) {}
 
+
     ngOnInit() {
+        this.tabsService.tasksCurrentTab$.subscribe(value => {
+            this.currentTab$.next(value);
+        });
+        this.tabsService.inProgressItems$.subscribe(val => {
+            this.inProgressItems$.next(val);
+        });
+        this.tabsService.newItems$.subscribe(val => {
+            this.newItems$.next(val);
+        });
     }
 
     public changeTab(i): void {
-        this.currentTab = i;
+        this.currentTab$.next(i);
     }
 
-    public accept() {
-        this.newItems$.subscribe((data : ITasksItem[]) => {
+    public async openChooseOverlay(): Promise<void> {
+        // const present = await this.presentModal();
+        // await present.onDidDismiss();
+        this.accept();
+    }
+
+    public openMap(): void {
+        this.navCtrl.navigateRoot('/map').then();
+    }
+
+    public accept(): void {
+        this.newItems$.subscribe((data: ITasksItem[]) => {
             this.tasksService.currentTask = data[0];
-        })
-        this.navCtrl.navigateRoot("nfc").then();
+        });
+        this.navCtrl.navigateRoot('nfc').then();
+    }
+
+    private async presentModal(): Promise<HTMLIonModalElement> {
+        const modal = await this.modalController.create({
+            component: ChooseTaskOverlayComponent,
+            cssClass: 'choose-task'
+        });
+        await modal.present();
+        return modal;
     }
 }
