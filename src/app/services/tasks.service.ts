@@ -5,5 +5,5 @@ import {ITasksItem} from "../pages/tabs/pages/tabs-tasks/tabs-tasks.page";
     providedIn: 'root'
 })
 export class TasksService {
-    public currentTask: ITasksItem
+    public currentTask: ITasksItem;
 }

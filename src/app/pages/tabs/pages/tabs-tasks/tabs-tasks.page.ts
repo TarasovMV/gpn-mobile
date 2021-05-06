@@ -34,7 +34,7 @@ export class TabsTasksPage implements OnInit, IPageTab {
         public tabsService: TabsInfoService,
         public modalController: ModalController,
         private navCtrl: NavController,
-        private tasksService: TasksService
+        private tasksService: TasksService,
     ) {}
 
 
