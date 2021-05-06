@@ -1,25 +1,21 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 
 @Component({
-  selector: 'app-step-progress-bar',
-  templateUrl: './step-progress-bar.component.html',
-  styleUrls: ['./step-progress-bar.component.scss'],
+    selector: 'app-step-progress-bar',
+    templateUrl: './step-progress-bar.component.html',
+    styleUrls: ['./step-progress-bar.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StepProgressBarComponent implements OnInit {
-
-    @Input()
-    public stepsCount: number;
+export class StepProgressBarComponent {
     @Input()
     public activeStepIndex: number;
-    public numbers: number[]
+    public _numbers: number[];
 
-  constructor() {
-  }
-
-  ngOnInit() {
-      this.numbers = []
-      for (let n = 0; n < this.stepsCount; n++) {
-          this.numbers.push(n)
-      }
-  }
+    @Input()
+    set stepsCount(count: number) {
+        this._numbers = [];
+        for (let n = 0; n < count; n++) {
+            this._numbers.push(n);
+        }
+    };
 }

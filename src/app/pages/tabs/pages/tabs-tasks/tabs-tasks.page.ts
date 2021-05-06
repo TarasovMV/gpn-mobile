@@ -1,11 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {IPageTab, PageTabType} from '../../tabs.page';
 import {BehaviorSubject} from 'rxjs';
-import {NEW_TASKS, TASKS_IN_PROGRESS} from './mock';
 import {TabsInfoService} from '../../../../services/tabs/tabs-info.service';
 import {ModalController, NavController} from '@ionic/angular';
 import {ChooseTaskOverlayComponent} from './components/choose-task-overlay/choose-task-overlay.component';
-import {TasksService} from "../../../../services/tasks.service";
 
 export interface ITasksItem {
     num: string;
@@ -34,8 +32,8 @@ export class TabsTasksPage implements OnInit, IPageTab {
         public tabsService: TabsInfoService,
         public modalController: ModalController,
         private navCtrl: NavController,
-        private tasksService: TasksService,
-    ) {}
+    ) {
+    }
 
 
     ngOnInit() {
@@ -55,20 +53,15 @@ export class TabsTasksPage implements OnInit, IPageTab {
     }
 
     public async openChooseOverlay(): Promise<void> {
-        // const present = await this.presentModal();
-        // await present.onDidDismiss();
-        this.accept();
+        await this.accept();
     }
 
     public openMap(): void {
         this.navCtrl.navigateRoot('/map').then();
     }
 
-    public accept(): void {
-        this.newItems$.subscribe((data: ITasksItem[]) => {
-            this.tasksService.currentTask = data[0];
-        });
-        this.navCtrl.navigateRoot('nfc').then();
+    public async accept(): Promise<void> {
+        await this.navCtrl.navigateRoot('nfc');
     }
 
     private async presentModal(): Promise<HTMLIonModalElement> {

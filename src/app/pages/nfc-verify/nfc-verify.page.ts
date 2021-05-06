@@ -1,27 +1,31 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {ModalController, NavController} from '@ionic/angular';
-import {TasksService} from '../../services/tasks.service';
 import {ITasksItem} from '../tabs/pages/tabs-tasks/tabs-tasks.page';
 import {VerifyModalComponent} from './components/verify-modal/verify-modal.component';
+import {TabsInfoService} from "../../services/tabs/tabs-info.service";
+import {BehaviorSubject} from "rxjs";
 
 @Component({
     selector: 'app-nfc-verify.page',
-    templateUrl: './nfc-verify.page.component.html',
-    styleUrls: ['./nfc-verify.page.component.scss'],
+    templateUrl: './nfc-verify.page.html',
+    styleUrls: ['./nfc-verify.page.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NfcVerifyPage implements OnInit {
 
-    public currentTask: ITasksItem = null;
+    public currentTask$: BehaviorSubject<ITasksItem>;
 
     constructor(
         private navCtrl: NavController,
         private modalCtrl: ModalController,
-        private tasksService: TasksService
+        private tabsInfoService: TabsInfoService
     ) {
     }
 
     ngOnInit(): void {
-        this.currentTask = this.tasksService.currentTask;
+        this.tabsInfoService.newItems$.subscribe((data: ITasksItem[]) => {
+            this.currentTask$ = new BehaviorSubject<ITasksItem>(data[0]);
+        });
     }
 
     public async openModal(): Promise<void> {
@@ -29,8 +33,8 @@ export class NfcVerifyPage implements OnInit {
         await modal.present();
     }
 
-    public enableNfc(): void {
-        this.openModal().then();
+    public async enableNfc(): Promise<void> {
+        await this.openModal();
     }
 
     public back(): void {

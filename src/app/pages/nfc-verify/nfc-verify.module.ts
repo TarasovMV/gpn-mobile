@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';;
-import {NfcVerifyPage} from "./nfc-verify.page.component";
+import {NfcVerifyPage} from "./nfc-verify.page";
 import {IonicModule} from "@ionic/angular";
 import {RouterModule} from "@angular/router";
 import {SharedModule} from "../../@shared/shared.module";

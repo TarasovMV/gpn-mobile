@@ -1,50 +1,57 @@
 @import "src/theme/functions.scss";
+
 * {
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 
 .container {
   display: flex;
   justify-content: space-between;
-}
 
-.step {
-  z-index: 5;
-  background: #12151E;
-  border: sizeHeight(5) solid #4B5169;
-  box-sizing: border-box;
-  border-radius: 100px;
-  height: sizeHeight(50);
-  width: sizeHeight(50);
-  text-align: center;
-  vertical-align: middle;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: sizeHeight(7);
-}
+  .step {
+    z-index: 5;
+    background: #12151E;
+    border: sizeHeight(5) solid #4B5169;
+    box-sizing: border-box;
+    border-radius: 100px;
+    height: sizeHeight(50);
+    width: sizeHeight(50);
+    text-align: center;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: sizeHeight(7);
 
-.step.active {
-  border: sizeHeight(5) solid #0089FF;
-  background: #1C1F2B;
-}
+    &.active {
+      border: sizeHeight(5) solid #0089FF;
+      background: #1C1F2B;
+    }
+  }
 
-.white-circle {
-  width: 100%;
-  height: 100%;
-  border-radius: sizeHeight(20);
-  background: white;
-}
+  .white-circle {
+    width: 100%;
+    height: 100%;
+    border-radius: sizeHeight(20);
+    background: white;
+  }
 
-.checkbox {
-  margin-top: sizeHeight(0);
+  .checkbox {
+    margin-top: sizeHeight(6);
+    color: #0089FF;
+  }
 
-}
+  .line-block {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
 
-hr {
-  margin-top: sizeHeight(24);
-  width: 89%;
-  height: sizeHeight(7);
-  border-top: sizeHeight(4) dashed #606580;
-  position: absolute;
+  hr {
+    margin-top: sizeHeight(24);
+    width: 89%;
+    height: sizeHeight(7);
+    border-top: sizeHeight(4) dashed #606580;
+    position: absolute;
+  }
 }
