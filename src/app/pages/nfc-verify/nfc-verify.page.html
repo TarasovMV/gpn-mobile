@@ -1,29 +1,29 @@
-<app-header>
-  <div style="margin-top: 3px" class="back-button" (click)="back()">
-    <svg-icon
-      src="assets/Icons/shared/back.svg"
-      [svgStyle]="{
-        'width': '3.2vh',
-        'height': '3.2vh'
-      }"
-    ></svg-icon>
-  </div>
-  <span class="task-number-span">{{(currentTask$ | async).num | splitNumberSign}}</span>
-</app-header>
-<div style="width: 100%; height: 100%; background-color: #1C1F2B;" class="content">
-  <app-step-progress-bar [stepsCount]="3" [activeStepIndex]="1">
-  </app-step-progress-bar>
-
-  <div class="task=info-block">
-    <div class="content-text-block">
+<div class="container">
+  <app-header class="header">
+    <div (click)="back()" class="back-button">
+      <svg-icon [svgStyle]="{
+         'width': '1.7vh',
+         'height': '3.4vh'
+       }" class="back-button__icon" src="assets/Icons/shared/back.svg"
+      >
+      </svg-icon>
+    </div>
+    <span class="task-number-span">{{(currentTask$ | async).num | splitNumberSign}}</span>
+  </app-header>
+  <div class="content-wrapper">
+    <app-step-progress-bar [activeStepIndex]="1" [stepsCount]="3">
+    </app-step-progress-bar>
+    <div class="content">
+      <div class="task-info-block">
+        <div class="content-text-block">
      <span class="gray-text">
     Установка:
     <span class="light-text">
       {{(currentTask$ | async).manufacture}}
     </span>
   </span>
-    </div>
-    <div class="content-text-block">
+        </div>
+        <div class="content-text-block">
      <span class="gray-text">
     Отсканируйте NFC метку для подтверждения выгрузки
     <span class="light-text">
@@ -36,30 +36,25 @@
       проб ({{(currentTask$ | async).test}})
     </span>
   </span>
+        </div>
+      </div>
+      <div class="nfc-icon-block">
+        <svg-icon [svgStyle]="{
+        'width': '55.4vw',
+        'height': '55.4vw'
+      }"
+                  src="assets/Icons/nfc/nfc_icon.svg"
+        ></svg-icon>
+      </div>
+      <div class="footer">
+        <button (click)="enableNfc()"
+                class="btn btn__margin-bottom">Включить NFC
+        </button>
+        <button class="btn"
+                disabled>Завершить задание
+        </button>
+      </div>
     </div>
   </div>
-
-
 </div>
-
-<div style="background-color: #1C1F2B" class="nfc-icon-block">
-  <svg-icon style="margin-left: calc(50vw - 17.5vh)"
-            src="assets/Icons/nfc/nfc_icon.svg"
-            [svgStyle]="{
-        'width': '35vh',
-        'height': '35vh'
-      }"
-  ></svg-icon>
-</div>
-<!--Футер будет заменен-->
-<ion-footer style="background-color: #1C1F2B" class="footer">
-  <div class="bottom-buttons-block">
-    <button (click)="enableNfc()"
-      class="btn btn-margin-bottom">Включить NFC
-    </button>
-    <button disabled
-            class="btn">Завершить задание
-    </button>
-  </div>
-</ion-footer>
 
