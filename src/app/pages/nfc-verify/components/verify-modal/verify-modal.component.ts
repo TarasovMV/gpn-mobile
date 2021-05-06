@@ -1,4 +1,5 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ModalController} from "@ionic/angular";
 
 @Component({
     selector: 'app-verify-modal',
@@ -6,12 +7,13 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
     styleUrls: ['./verify-modal.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class VerifyModalComponent implements OnInit {
-
-    constructor() {
+export class VerifyModalComponent {
+    constructor(
+        public modalCtrl: ModalController
+    ) {
     }
 
-    ngOnInit() {
+    async close(): Promise<void> {
+        await this.modalCtrl.dismiss();
     }
-
 }
