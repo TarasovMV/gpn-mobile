@@ -1,7 +1,57 @@
 @import "src/theme/functions.scss";
 
 .container {
-  background: #00A73D;
-  width: 50%;
-  height: 50%;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+
+  .timer-external-circle {
+    position: absolute;
+    bottom: sizeHeight(348);
+  }
+
+  .timer-internal-circle {
+    position: absolute;
+    bottom: sizeHeight(381.7);
+  }
+
+  .timer-container {
+    position: absolute;
+    bottom: sizeHeight(409.72);
+  }
+
+  .timer {
+    position: absolute;
+    height: 50.5vw;
+    width: 50.5vw;
+    bottom: sizeHeight(418);
+    border-radius: 25.25vw;
+  }
+
+  .timer-info-block {
+    position: absolute;
+    bottom: sizeHeight(409.72);
+    height: 50.5vw;
+    width: 50.5vw;
+    text-align: center;
+    padding-top: sizeHeight(81);
+    padding-right: sizeWidth(60);
+    padding-left: sizeWidth(60);
+
+    .help-text {
+      color: #0089FF;
+      font-size: sizeHeight(24);
+      line-height: sizeHeight(29);
+    }
+
+    .timer-value-text {
+      color: white;
+      font-size: sizeHeight(100);
+    }
+  }
 }
+
+

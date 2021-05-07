@@ -1,7 +1,6 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ModalController, NavController} from '@ionic/angular';
 import {ITasksItem} from '../tabs/pages/tabs-tasks/tabs-tasks.page';
-import {VerifyModalComponent} from './components/verify-modal/verify-modal.component';
 import {TabsInfoService} from "../../services/tabs/tabs-info.service";
 import {BehaviorSubject} from "rxjs";
 import {NfcTimerModalComponent} from "./components/nfc-timer-modal/nfc-timer-modal.component";
@@ -9,8 +8,7 @@ import {NfcTimerModalComponent} from "./components/nfc-timer-modal/nfc-timer-mod
 @Component({
     selector: 'app-nfc-verify.page',
     templateUrl: './nfc-verify.page.html',
-    styleUrls: ['./nfc-verify.page.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./nfc-verify.page.scss']
 })
 export class NfcVerifyPage implements OnInit {
 
@@ -30,8 +28,7 @@ export class NfcVerifyPage implements OnInit {
     }
 
     public async openModal(): Promise<void> {
-        const modal = await this.modalCtrl.create({component: VerifyModalComponent, cssClass: 'nfc-verify-modal'});
-        //const modal = await this.modalCtrl.create({component: NfcTimerModalComponent, cssClass: 'nfc-timer-modal'});
+        const modal = await this.modalCtrl.create({component: NfcTimerModalComponent, cssClass: 'nfc-timer-modal'});
         await modal.present();
     }
 
