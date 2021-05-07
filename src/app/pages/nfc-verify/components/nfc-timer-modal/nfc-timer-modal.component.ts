@@ -29,7 +29,7 @@ export class NfcTimerModalComponent implements OnInit {
                         cssClass: 'nfc-verify-modal'
                     });
                     await modal.present();
-                }, 6000);
+                }, 600);
             },
             async err => {
                 console.log(err);
