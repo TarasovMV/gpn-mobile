@@ -1,19 +1,27 @@
-<div class="container">
-  <app-header class = header>
-    <div class="arrow" (click)="redirectToTab()">
-      <svg-icon
-        src="/assets/Icons/tabs/arrowLeft.svg"
-        [svgStyle]="{
-          'height.vh': 3.9,
-          'width.vh': 3.9
-        }"
-      ></svg-icon>
-    </div>
-    <div class="title">{{(tabsService.inProgressItems$|async)[0].num}}</div>
-  </app-header>
+<div #screen class="container">
+<!--  <app-header class = header>-->
+<!--    <div class="arrow" (click)="redirectToTab()">-->
+<!--      <svg-icon-->
+<!--        src="/assets/Icons/tabs/arrowLeft.svg"-->
+<!--        [svgStyle]="{-->
+<!--          'height.vh': 3.9,-->
+<!--          'width.vh': 3.9-->
+<!--        }"-->
+<!--      ></svg-icon>-->
+<!--    </div>-->
+<!--    <div class="title">{{(tabsService.inProgressItems$|async)[0].num}}</div>-->
+<!--  </app-header>-->
   <div #map [style]="transformStyle" class="box">
-    <div [style]="rotationStyle" class="entry-box"></div>
+    <div [style]="rotationStyle" class="entry-box">
+      <div [style]="scaleStyle" class="entry-box">
+        <div #point [style]="pointStyle" class="point"></div>
+        <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.sunhome.ru%2Fi%2Fwallpapers%2F50%2Fkartinki-detskie-skachat-besplatno.orig.jpg&f=1&nofb=1">
+      </div>
+    </div>
   </div>
+<!--  <div #map [style]="transformStyle" class="box">-->
+<!--    <div [style]="rotationStyle" class="entry-box"></div>-->
+<!--  </div>-->
   <div class="progress">
     <app-map-progress
       [percent]="60"

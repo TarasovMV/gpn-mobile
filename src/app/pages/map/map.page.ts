@@ -1,8 +1,9 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { Subject } from 'rxjs';
 import { filter} from 'rxjs/operators';
-import {TabsInfoService} from "../../services/tabs/tabs-info.service";
-import {ModalController, NavController} from "@ionic/angular";
+import {TabsInfoService} from '../../services/tabs/tabs-info.service';
+import {ModalController, NavController} from '@ionic/angular';
+import Hammer from 'hammerjs';
 
 @Component({
     selector: 'app-map',
@@ -11,10 +12,21 @@ import {ModalController, NavController} from "@ionic/angular";
 })
 export class MapPage implements OnInit, AfterViewInit {
     @ViewChild('map') mapRef: ElementRef;
+    @ViewChild('screen') screenRef: ElementRef;
+    @ViewChild('point') pointRef: ElementRef;
+
+    width;
+    height;
+
     listener: Subject<any> = new Subject<any>();
     array = [];
     transformStyle: string;
+    scaleStyle: string;
+    // TODO
     rotationStyle: string;
+    // rotationStyle: string = 'transform: rotate(30deg); transform-origin: 30px 30px';
+    // TODO
+    // rotationOrigin = 0;
     rotationOrigin = 0;
     rotation;
     zoomOrigin = 1;
@@ -26,6 +38,23 @@ export class MapPage implements OnInit, AfterViewInit {
     isPinch = false;
     isPan = false;
 
+    xLast = 0;
+    yLast = 0;
+    xNew = 0;
+    yNew = 0;
+    xImage = 0;
+    yImage = 0;
+
+    xLastR = 0;
+    yLastR = 0;
+    xNewR = 0;
+    yNewR = 0;
+    xImageR = 0;
+    yImageR = 0;
+    lastAngle = 70;
+
+    pointStyle: string;
+
     constructor(
         public tabsService: TabsInfoService,
         private navCtrl: NavController
@@ -33,95 +62,187 @@ export class MapPage implements OnInit, AfterViewInit {
 
     ngOnInit(): void {
         this.listener.pipe(filter((x, i) => i % 1 === 0)).subscribe(x => {
+
+            console.log(x);
+
             this.array.push(x);
             if (this.array.length > 10) {
                 this.array.shift();
             }
-            this.rotationHandler(x.rotation);
-            this.zoomHandler(x.scale);
-            this.transformStyle = `transform: scale(${this.zoomOrigin}) translate(${this.x}px, ${this.y}px)`;
-            this.rotationStyle = `transform: rotate(${this.rotationOrigin}deg)`;
+
+            this.scaleStyle = this.zoomHandler(x.scale);
+            this.rotationStyle = this.rotationHandler(x.rotation, x);
         });
     }
 
     ngAfterViewInit(): void {
+        this.width = this.screenRef.nativeElement.clientWidth;
+        this.height = this.screenRef.nativeElement.offsetHeight;
         this.init();
     }
 
     init(): void {
-        // const element = this.mapRef.nativeElement;
-        // const mc = new Hammer.Manager(element);
-        // const pinch = new Hammer.Pinch();
-        // const rotate = new Hammer.Rotate();
-        // const pan = new Hammer.Pan();
-        //
-        // pinch.recognizeWith(rotate);
-        // mc.add([pinch, rotate, pan]);
-        // // mc.add([pan]);
-        //
-        // mc.on('pan', (x) => {
-        //     if (this.isPinch || !this.isPan) {
-        //         return;
-        //     }
-        //     this.positionHandler(x.deltaX, x.deltaY);
-        //     this.transformStyle = `transform: scale(${this.zoomOrigin}) translate(${this.x}px, ${this.y}px)`;
-        // });
-        //
-        // mc.on('panstart', (x) => {
-        //     if (this.isPinch) {
-        //         return;
-        //     }
-        //     this.isPan = true;
-        // });
-        //
-        // mc.on('panend', (x) => {
-        //     this.isPan = false;
-        //     this.xOrigin = this.x;
-        //     this.yOrigin = this.y;
-        // });
-        //
-        // mc.on('pinch rotate', (x) => {
-        // // mc.on('pan', (ev) => {
-        //     this.listener.next(x);
-        // });
-        //
-        // mc.on('pinchend', ()  => {
-        //     setTimeout(() => this.isPinch = false, 100);
-        //     this.rotation = undefined;
-        //     this.zoom = undefined;
-        // });
-        //
-        // mc.on('pinchstart', ()  => {
-        //     this.isPinch = true;
-        //     this.rotation = undefined;
-        //     this.zoom = undefined;
-        // });
+        const element = this.mapRef.nativeElement;
+        const mc = new Hammer.Manager(element);
+        const tap = new Hammer.Tap();
+        const pinch = new Hammer.Pinch();
+        const rotate = new Hammer.Rotate();
+        const pan = new Hammer.Pan();
+
+        pinch.recognizeWith(rotate);
+        mc.add([pinch, rotate, pan, tap]);
+
+        mc.on('pan', (x) => {
+            if (this.isPinch || !this.isPan) {
+                return;
+            }
+            console.log(x);
+            this.positionHandler(x.deltaX, x.deltaY);
+            this.transformStyle = `transform: translate(${this.x}px, ${this.y}px)`;
+        });
+
+        mc.on('tap', (x) => {
+            return;
+            this.width = this.screenRef.nativeElement.offsetWidth;
+            this.height = this.screenRef.nativeElement.offsetHeight;
+
+            const angle = degToRad(-this.rotationOrigin);
+
+            const cX = this.xImageR;
+            const cY = this.yImageR;
+
+            const prevCenterX = this.width / 2 - cX;
+            const prevCenterY = this.height / 2 - cY;
+
+            const nextCenterX = prevCenterX * Math.cos(angle) - prevCenterY * Math.sin(angle);
+            const nextCenterY = prevCenterX * Math.sin(angle) + prevCenterY * Math.cos(angle);
+
+            const dX = nextCenterX - prevCenterX;
+            const dY = nextCenterY - prevCenterY;
+
+            const xScreen = x.center.x - this.x - this.xNewR;
+            const yScreen = x.center.y - this.y - this.yNewR;
+
+            const xP = this.width / 2 - xScreen;
+            const yP = this.height / 2 - yScreen;
+
+            const testX = this.width / 2 - ((xP) * Math.cos(angle) - (yP) * Math.sin(angle)) + dX;
+            const testY = this.height / 2 - ((xP) * Math.sin(angle) + (yP) * Math.cos(angle)) + dY;
+            console.log(testX, testY);
+
+            this.pointStyle = `left: ${testX}px; top: ${testY}px`;
+        });
+
+        mc.on('panstart', (x) => {
+            if (this.isPinch) {
+                return;
+            }
+            this.isPan = true;
+        });
+
+        mc.on('panend', (x) => {
+            this.isPan = false;
+            this.xOrigin = this.x;
+            this.yOrigin = this.y;
+        });
+
+        mc.on('pinch rotate', (x) => {
+            this.listener.next(x);
+        });
+
+        mc.on('pinchend', ()  => {
+            setTimeout(() => this.isPinch = false, 100);
+            this.rotation = undefined;
+            this.zoom = undefined;
+        });
+
+        mc.on('pinchstart', (x)  => {
+            this.isPinch = true;
+            this.rotation = undefined;
+            this.zoom = undefined;
+
+            this.width = this.screenRef.nativeElement.offsetWidth;
+            this.height = this.screenRef.nativeElement.offsetHeight;
+
+            const angle = degToRad(-this.rotationOrigin);
+
+            const cX = this.xImageR;
+            const cY = this.yImageR;
+
+            const prevCenterX = this.width / 2 - cX;
+            const prevCenterY = this.height / 2 - cY;
+
+            const nextCenterX = prevCenterX * Math.cos(angle) - prevCenterY * Math.sin(angle);
+            const nextCenterY = prevCenterX * Math.sin(angle) + prevCenterY * Math.cos(angle);
+
+            const dX = nextCenterX - prevCenterX;
+            const dY = nextCenterY - prevCenterY;
+
+            const xScreen = x.center.x - this.x - this.xNewR;
+            const yScreen = x.center.y - this.y - this.yNewR;
+
+            const xP = this.width / 2 - xScreen;
+            const yP = this.height / 2 - yScreen;
+
+            this.xImageR = this.width / 2 - ((xP) * Math.cos(angle) - (yP) * Math.sin(angle)) + dX;
+            this.yImageR = this.height / 2 - ((xP) * Math.sin(angle) + (yP) * Math.cos(angle)) + dY;
+
+            this.pointStyle = `left: ${this.xImageR}px; top: ${this.yImageR}px`;
+            this.xNewR += (xScreen - this.xImageR);
+            this.yNewR += (yScreen - this.yImageR);
+
+            this.xImage += (xScreen - this.xLast) / this.zoomOrigin;
+            this.yImage += (yScreen - this.yLast) / this.zoomOrigin;
+            this.xNew = xScreen - this.xImage;
+            this.yNew = yScreen - this.yImage;
+            this.xLast = xScreen;
+            this.yLast = yScreen;
+        });
     }
 
-    rotationHandler(x): void {
+    rotationHandler(x, ev): string {
         if (this.rotation === undefined) {
             this.rotation = x;
+
+            this.width = this.screenRef.nativeElement.offsetWidth;
+            this.height = this.screenRef.nativeElement.offsetHeight;
+
+            return this.rotationStyle;
         } else {
             const delta = x - this.rotation;
             this.rotationOrigin += delta;
             this.rotation = x;
+
+            return `
+                transform:
+                    translate(${this.xNewR}px, ${this.yNewR}px)
+                    rotate(${this.rotationOrigin}deg);
+                transform-origin: ${this.xImageR}px ${this.yImageR}px;
+            `;
         }
     }
 
-    zoomHandler(x): void {
+    zoomHandler(x): string {
         if (this.zoom === undefined) {
             this.zoom = x;
+            return this.scaleStyle;
         } else {
             const delta = x - this.zoom;
-            this.zoomOrigin += delta;
+            this.zoomOrigin += delta * this.zoomOrigin;
             this.zoom = x;
+
+            return `
+                transform:
+                    translate(${this.xNew}px, ${this.yNew}px)
+                    scale(${this.zoomOrigin});
+                transform-origin: ${this.xImage}px ${this.yImage}px;
+            `;
         }
     }
 
     positionHandler(dx, dy): void {
-        // / Math.cos(this.rotationOrigin * Math.PI / 180);
-        this.x = (this.xOrigin + dx / this.zoomOrigin);
-        this.y = (this.yOrigin + dy / this.zoomOrigin);
+        this.x = this.xOrigin + dx;
+        this.y = this.yOrigin + dy;
     }
 
     public redirectToTab(): void {
@@ -129,3 +250,6 @@ export class MapPage implements OnInit, AfterViewInit {
         this.tabsService.tasksCurrentTab$.next(1);
     }
 }
+
+const degToRad = (degrees) => degrees * (Math.PI / 180);
+
