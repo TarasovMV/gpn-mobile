@@ -22,11 +22,7 @@ export class MapPage implements OnInit, AfterViewInit {
     array = [];
     transformStyle: string;
     scaleStyle: string;
-    // TODO
     rotationStyle: string;
-    // rotationStyle: string = 'transform: rotate(30deg); transform-origin: 30px 30px';
-    // TODO
-    // rotationOrigin = 0;
     rotationOrigin = 0;
     rotation;
     zoomOrigin = 1;
