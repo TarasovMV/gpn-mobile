@@ -1,0 +1,10 @@
+<div class="container">
+  <div class="line-block">
+    <hr>
+  </div>
+  <div *ngFor="let n of _numbers; index as i" [class.active]="i<=activeStepIndex" class="step">
+    <svg-icon *ngIf="i < activeStepIndex" class="checkbox" src="assets/Icons/step-progress/checkbox.svg"></svg-icon>
+    <div *ngIf="i == activeStepIndex" class="white-circle">
+    </div>
+  </div>
+</div>

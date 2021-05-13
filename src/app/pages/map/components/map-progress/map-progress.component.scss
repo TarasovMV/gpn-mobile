@@ -1,0 +1,59 @@
+@import "src/theme/functions";
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  height: sizeHeight(130);
+  width: sizeWidth(640);
+  padding: sizeHeight(25) sizeHeight(35);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  background: #272A38;
+  box-shadow: 0px sizeHeight(4) sizeHeight(8) rgba(0, 0, 0, 0.25);
+  border-radius: sizeHeight(8);
+
+  .info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &__title {
+      font-size: sizeHeight(40);
+      color: #D7E2F2;
+    }
+
+    &__time {
+      font-size: sizeHeight(29);
+      color: #8C99B2;
+    }
+  }
+
+  .diagram {
+    height: sizeHeight(16);
+    margin-top: auto;
+
+    background: #4B5169;
+    border-radius: sizeHeight(8);
+
+    &__inner {
+      height: 100%;
+
+      display: flex;
+      align-items: center;
+
+      background: #0089FF;
+      border-radius: sizeHeight(8);
+
+      position: relative;
+
+      svg-icon {
+        position: absolute;
+        right: -2.4vh;
+      }
+    }
+  }
+}

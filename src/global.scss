@@ -40,10 +40,45 @@ html, body, .ion-app, .ion-content {
   width: 0;
 }
 
+.nfc-timer-modal {
+  .modal-wrapper {
+    width: 100%;
+    height: 100%;
+    background: #1C1F2BCC;
+    overflow: hidden;
+  }
+}
+
+.nfc-verify-modal {
+  .modal-wrapper {
+
+    width: 100%;
+    height: 55%;
+    margin-right: sizeHeight(83);
+    margin-left: sizeHeight(83);
+    margin-bottom: sizeHeight(260);
+    margin-top: sizeHeight(146);
+    background: #1C1F2BCC;
+    overflow: hidden;
+  }
+}
+
 .car-modal {
   .modal-wrapper {
     height: 100%;
     width: 100%;
+  }
+}
+
+.choose-task {
+  --height: 44vh;
+
+  .modal-wrapper {
+    width: sizeWidth(550);
+    border-radius: sizeHeight(8);
+    background: #1c1f2b;
+
+    overflow: hidden;
   }
 }
 

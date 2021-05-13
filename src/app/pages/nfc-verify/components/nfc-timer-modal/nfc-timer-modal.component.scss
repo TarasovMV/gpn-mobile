@@ -1,0 +1,124 @@
+@import "src/theme/functions.scss";
+
+.container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+
+  .timer-container {
+    position: absolute;
+    bottom: sizeHeight(409.72);
+    z-index: 1;
+
+    .timer-background-circle {
+      fill: #1C1F2B;
+      stroke: #12151E;
+    }
+
+    .timer-success-circle {
+      fill: #1C1F2B;
+      stroke: #00A73D;
+    }
+  }
+
+  .timer-run-ripple {
+    width: 30vw;
+    height: 30vw;
+    border-radius: 50%;
+    position: absolute;
+    bottom: calc(32.65vh + 10.25vw);
+    $rippleRunColor: #14304F;
+    animation: ripple1 0.85s linear infinite;
+
+    @keyframes ripple1 {
+      0% {
+        box-shadow: 0 0 0 10vw rgba($rippleRunColor, 0.8),
+        0 0 0 20vw rgba($rippleRunColor, 0.6),
+        0 0 0 30vw rgba($rippleRunColor, 0.4),
+        0 0 0 40vw rgba($rippleRunColor, 0.2);
+      }
+      100% {
+        box-shadow: 0 0 0 20vw rgba($rippleRunColor, 0.7),
+        0 0 0 30vw rgba($rippleRunColor, 0.5),
+        0 0 0 40vw rgba($rippleRunColor, 0.3),
+        0 0 0 50vw rgba($rippleRunColor, 0);
+      }
+    }
+  }
+
+  .timer-success-ripple {
+    width: 30vw;
+    height: 30vw;
+    border-radius: 50%;
+    position: absolute;
+    bottom: calc(32.65vh + 10.25vw);
+    $rippleSuccessColor: #00A73D;
+    animation: ripple2 0.85s ease-in-out infinite;
+
+    @keyframes ripple2 {
+      0% {
+        box-shadow: 0 0 0 10vw rgba($rippleSuccessColor, 0.8),
+        0 0 0 20vw rgba($rippleSuccessColor, 0.7),
+        0 0 0 30vw rgba($rippleSuccessColor, 0.5),
+        0 0 0 40vw rgba($rippleSuccessColor, 0.35);
+      }
+      100% {
+        box-shadow: 0 0 0 20vw rgba($rippleSuccessColor, 0.7),
+        0 0 0 30vw rgba($rippleSuccessColor, 0.5),
+        0 0 0 40vw rgba($rippleSuccessColor, 0.3),
+        0 0 0 56vw rgba($rippleSuccessColor, 0);
+      }
+    }
+  }
+
+  .timer {
+    position: absolute;
+    height: 50.5vw;
+    width: 50.5vw;
+    bottom: sizeHeight(418);
+    border-radius: 25.25vw;
+    z-index: 1;
+
+    &__circle {
+      transform-origin: center;
+      transform: rotate(-90deg);
+      stroke-dasharray: 314.15% 314.15%;
+      stroke-dashoffset: 314.15%;
+      animation: finish 37000ms linear;
+
+      @keyframes finish {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+    }
+  }
+
+  .timer-info-block {
+    position: absolute;
+    bottom: sizeHeight(409.72);
+    height: 50.5vw;
+    width: 50.5vw;
+    text-align: center;
+    padding-top: sizeHeight(81);
+    padding-right: sizeWidth(60);
+    padding-left: sizeWidth(60);
+    z-index: 15;
+
+    .help-text {
+      color: #0089FF;
+      font-size: sizeHeight(24);
+      line-height: sizeHeight(29);
+    }
+
+    .timer-value-text {
+      color: white;
+      font-size: sizeHeight(100);
+    }
+  }
+}
+
+

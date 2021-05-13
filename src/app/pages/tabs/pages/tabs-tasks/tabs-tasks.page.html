@@ -2,14 +2,14 @@
   <app-header>
     <div
       class="tab-btn"
-      [class.tab-btn_active]="i === currentTab"
+      [class.tab-btn_active]="i === (currentTab$ | async)"
       *ngFor="let tab of (tabs$ | async); let i = index"
       (click)="changeTab(i)"
     >{{tab}}</div>
   </app-header>
   <div class="content">
     <ng-container
-      [ngSwitch]="currentTab"
+      [ngSwitch]="(currentTab$ | async)"
     >
       <div
         class="tab"
@@ -20,7 +20,10 @@
           [data]="item"
         ></app-tabs-tasks-card>
 
-        <div class="circle-btn">
+        <div
+          class="circle-btn"
+          (click)="openChooseOverlay()"
+        >
           <svg-icon
             [svgStyle]="{
               'height': '2.6vh',
@@ -36,11 +39,15 @@
         *ngSwitchCase="1"
       >
         <app-tabs-tasks-card
-          *ngFor="let item of (inProgressItems$ | async)"
+          *ngFor="let item of (inProgressItems$ | async); let i = index"
           [data]="item"
+          [isActive]="i === 0"
         ></app-tabs-tasks-card>
 
-        <div class="circle-btn">
+        <div
+          class="circle-btn"
+          (click)="openMap()"
+        >
           <svg-icon
             [svgStyle]="{
               'height': '4.8vh',
@@ -53,4 +60,3 @@
     </ng-container>
   </div>
 </div>
-
