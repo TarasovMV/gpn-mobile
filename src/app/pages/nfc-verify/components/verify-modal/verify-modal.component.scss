@@ -5,17 +5,13 @@
 }
 
 .container {
-  margin-right: sizeHeight(83);
-  margin-left: sizeHeight(83);
-  margin-bottom: sizeHeight(260);
-  margin-top: sizeHeight(146);
   padding: sizeHeight(43);
   padding-top: sizeHeight(45);
   background: #1C1F2B;
   display: flex;
   flex-direction: column;
   border-radius: sizeHeight(8);
-  height: 55%;
+  height: 100%;
   justify-content: space-between;
 
   .content {
@@ -79,8 +75,8 @@
 
   .close-button {
     position: absolute;
-    right: sizeWidth(110);
-    top: sizeHeight(167);
+    right: sizeWidth(32);
+    top: sizeWidth(21);
 
     &__icon {
       color: #606580;

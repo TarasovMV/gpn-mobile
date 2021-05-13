@@ -25,10 +25,14 @@ export class AppComponent implements OnInit {
     private initializeApp(): void {
         this.platform.ready().then(() => {
             this.keyboardService.setInitSettings(this.platform, this.appWindow).then();
-            this.backgroundMode.on('activate').subscribe(() => {
-                console.log('Background mode activated!');
-            });
-            this.backgroundMode.enable();
+            this.initBackgroundMode();
         });
+    }
+
+    private initBackgroundMode(): void {
+        this.backgroundMode.on('activate').subscribe(() => {
+            console.log('Background mode activated!');
+        });
+        this.backgroundMode.enable();
     }
 }

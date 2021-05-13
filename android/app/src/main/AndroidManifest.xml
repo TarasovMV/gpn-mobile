@@ -48,6 +48,8 @@
         </provider>
     </application>
 
+    <uses-feature android:name="android.hardware.nfc" android:required="true" />
+
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
