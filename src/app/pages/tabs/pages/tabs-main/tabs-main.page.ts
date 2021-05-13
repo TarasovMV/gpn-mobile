@@ -68,8 +68,8 @@ export class TabsMainPage implements OnInit, IPageTab, AfterViewInit {
 
     private drawSvg(data: IDiagram): void {
         const size: number = Math.min(this.chart.nativeElement.clientWidth, this.chart.nativeElement.clientHeight);
-        const innerR = 0.43 * size;
-        const outerR = 0.43 * 0.92 * size;
+        const innerR = 0.4 * size;
+        const outerR = 0.4 * 0.92 * size;
 
         if (this.svg) {
             this.svg.remove();
@@ -83,8 +83,17 @@ export class TabsMainPage implements OnInit, IPageTab, AfterViewInit {
                 .startAngle(-start * 2 * Math.PI)
                 .endAngle(-end * 2 * Math.PI);
 
+        const arcBgBot = d3.arc()
+            .innerRadius(1.04 * innerR)
+            .outerRadius(0.88 * innerR)
+            .startAngle(0)
+            .endAngle(2 * Math.PI);
+
 
         const g: any = this.svg.append('g').style('transform', `translate(${size/2}px, ${size/2}px)`);
+
+        g.append('path').attr('d', arcBgBot)
+            .style('fill', 'var(--gray-G11-color)');
 
         let startPos = 0;
         let endPos = 0;

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ModalController} from '@ionic/angular';
+import {ModalController, NavController} from '@ionic/angular';
 import {TabsInfoService} from '../../../../../../services/tabs/tabs-info.service';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {ITasksItem} from '../../tabs-tasks.page';
@@ -15,7 +15,8 @@ export class ChooseTaskOverlayComponent implements OnInit {
 
     constructor(
         public modalController: ModalController,
-        public tabsService: TabsInfoService
+        public tabsService: TabsInfoService,
+        private navCtrl: NavController,
     ) { }
 
     ngOnInit() {
@@ -40,5 +41,6 @@ export class ChooseTaskOverlayComponent implements OnInit {
         const inProgressTasks = this.taskList$.getValue().filter(item => item.checked);
         this.tabsService.newItems$.next(newTasks);
         this.tabsService.inProgressItems$.next([...inProgressTasks, ...this.tabsService.inProgressItems$.getValue()]);
+        this.navCtrl.navigateRoot('/nfc').then();
     }
 }

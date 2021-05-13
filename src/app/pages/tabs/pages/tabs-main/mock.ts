@@ -6,17 +6,17 @@ export const MAIN_PAGE_DATA: IDiagram = {
         {
             name: 'Новые',
             value: 5,
-            color: '#FFFFFF'
+            color: 'var(--index-fact-color)'
         },
         {
             name: 'В работе',
             value: 2,
-            color: '#0089FF'
+            color: 'var(--border-blue-color)'
         },
         {
             name: 'Выполнены',
             value: 7,
-            color: '#00A73D'
+            color: 'var(--index-green1-color)'
         }
     ]
 };

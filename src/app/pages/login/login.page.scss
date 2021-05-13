@@ -14,7 +14,7 @@ input, button {
   width: 100%;
   padding: sizeHeight(30) sizeWidth(30) sizeHeight(60);
 
-  background: #1c1f2b;
+  background: var(--bg-body-color);
   overflow: scroll;
 
   .title {
@@ -24,15 +24,16 @@ input, button {
     display: flex;
     align-items: flex-end;
 
-    color: #ffffff;
     font-size: sizeHeight(30);
 
     &__text {
       margin-left: sizeWidth(50);
+      color: var(--text-accent-color);
     }
 
     svg-icon {
       height: sizeHeight(100);
+      color: var(--header-logo-bg);
     }
   }
 
@@ -66,13 +67,13 @@ input, button {
         width: 100%;
         padding-top: sizeHeight(30);
 
-        border-bottom: 2px solid #272A38;
+        border-bottom: sizeHeight(2) solid var(--border-vidget-color);
 
         font-size: sizeHeight(25);
-        color: white;
+        color: var(--text-accent-color);
 
         &:focus{
-          border-color: #0089FF;
+          border-color: var(--border-blue-color);
         }
       }
 
@@ -81,7 +82,7 @@ input, button {
         width: 100%;
 
         font-size: sizeHeight(25);
-        color: #ffffff;
+        color: var(--text-accent-color);
 
         position: absolute;
         left: 0;
@@ -91,7 +92,7 @@ input, button {
         .input-title {
           position: absolute;
           bottom: sizeHeight(15);
-          left: 0px;
+          left: 0;
           transition: all 0.4s ease;
         }
       }
@@ -110,7 +111,7 @@ input, button {
       font-size: sizeHeight(27);
 
       text-decoration: none;
-      color: #ffffff;
+      color: var(--text-accent-color);
     }
   }
 
@@ -126,9 +127,9 @@ input, button {
 
     font-size: sizeHeight(39);
 
-    color: #D7E2F2;
+    color: var(--text-alwaysWhite-color);
 
-    background: #0089FF;
+    background: var(--border-blue-color);
     border-radius: sizeHeight(8);
 
     &:disabled {

@@ -12,8 +12,8 @@
   flex-direction: column;
   justify-content: space-between;
 
-  background: #272A38;
-  box-shadow: 0px sizeHeight(4) sizeHeight(8) rgba(0, 0, 0, 0.25);
+  background: var(--bg-header-color);
+  box-shadow: 0px sizeHeight(4) sizeHeight(8) var(--gradient-main-color-1);
   border-radius: sizeHeight(8);
 
   .info {
@@ -23,12 +23,12 @@
 
     &__title {
       font-size: sizeHeight(40);
-      color: #D7E2F2;
+      color: var(--text-contrast-color);
     }
 
     &__time {
       font-size: sizeHeight(29);
-      color: #8C99B2;
+      color: var(--text-main-color);
     }
   }
 
@@ -36,7 +36,7 @@
     height: sizeHeight(16);
     margin-top: auto;
 
-    background: #4B5169;
+    background: var(--gray-G8-color);
     border-radius: sizeHeight(8);
 
     &__inner {
@@ -45,7 +45,7 @@
       display: flex;
       align-items: center;
 
-      background: #0089FF;
+      background: var(--border-blue-color);
       border-radius: sizeHeight(8);
 
       position: relative;

@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ModalController} from '@ionic/angular';
 import {AvatarModalComponent} from '../avatar-modal/avatar-modal.component';
+import {BehaviorSubject} from 'rxjs';
+import {ThemeServiceService} from '../../services/theme-service.service';
 
 @Component({
   selector: 'app-header',
@@ -8,22 +10,29 @@ import {AvatarModalComponent} from '../avatar-modal/avatar-modal.component';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
+    @Input() withThemeSwitch = false;
 
-  constructor(
-      public modalController: ModalController
-  ) { }
+    constructor(
+      public modalController: ModalController,
+      public theme: ThemeServiceService
+    ) { }
 
-  ngOnInit() {}
+    ngOnInit() {}
 
-  public async openModal(e: Event): Promise<void> {
-      this.presentModal().then();
-  }
+    public async openModal(e: Event): Promise<void> {
+        this.presentModal().then();
+    }
 
-  private async presentModal() {
-      const modal = await this.modalController.create({
-          component: AvatarModalComponent,
-          cssClass: 'avatar-modal'
-      });
-      return await modal.present();
-  }
+    public toggleSwitch(): void {
+        this.theme.changeTheme();
+    }
+
+    private async presentModal() {
+        const modal = await this.modalController.create({
+            component: AvatarModalComponent,
+            cssClass: 'avatar-modal',
+            showBackdrop: false
+        });
+        return await modal.present();
+    }
 }

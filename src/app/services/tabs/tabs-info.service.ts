@@ -11,6 +11,7 @@ import {ITasksItem} from '../../pages/tabs/pages/tabs-tasks/tabs-tasks.page';
 export class TabsInfoService {
     public tasksCurrentTab$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
     public diagramData$: BehaviorSubject<IDiagram> = new BehaviorSubject<IDiagram>(MAIN_PAGE_DATA);
+
     public inProgressItems$: BehaviorSubject<ITasksItem[]> = new BehaviorSubject<ITasksItem[]>(TASKS_IN_PROGRESS);
     public newItems$: BehaviorSubject<ITasksItem[]> = new BehaviorSubject<ITasksItem[]>(NEW_TASKS);
 

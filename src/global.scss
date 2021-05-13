@@ -26,6 +26,7 @@
 @import "~@ionic/angular/css/flex-utils.css";
 @import "theme/mixins.scss";
 @import "theme/functions.scss";
+@import "theme/theme.scss";
 
 ion-content {
   --background: transparent !important;
@@ -69,20 +70,17 @@ html, body, .ion-app, .ion-content {
   .modal-wrapper {
     width: sizeWidth(550);
     border-radius: sizeHeight(8);
-    background: #1c1f2b;
+    background: transparent;
 
     overflow: hidden;
   }
 }
 
 .avatar-modal {
-  --height: 44vh;
+  --height: 100vh;
 
   .modal-wrapper {
-    margin-top: 56vh;
     width: 100%;
-    border-radius: 1.5vh 1.5vh 0 0;
-    background: #272A38;
 
     overflow: hidden;
   }

@@ -3,6 +3,13 @@ import {BehaviorSubject} from 'rxjs';
 import {ModalController, NavController} from '@ionic/angular';
 import {UserInfoService} from '../../services/user-info.service';
 import {CarPopowerComponent} from '../../pages/login/components/car-popower/car-popower.component';
+import {IPageTab, PageTabType} from "../../pages/tabs/tabs.page";
+
+export interface IStatusInfo {
+    name: string;
+    color: string;
+    bgColor: string;
+}
 
 @Component({
   selector: 'app-avatar-modal',
@@ -11,7 +18,7 @@ import {CarPopowerComponent} from '../../pages/login/components/car-popower/car-
 })
 export class AvatarModalComponent implements OnInit {
     public isOpened = false;
-    public statusList$: BehaviorSubject<any> = new BehaviorSubject<any>([
+    public statusList$: BehaviorSubject<IStatusInfo[]> = new BehaviorSubject<IStatusInfo[]>([
         {
             name: 'На линии',
             color: '#00A73D',
@@ -28,6 +35,11 @@ export class AvatarModalComponent implements OnInit {
             bgColor: 'rgba(255, 29, 37, 0.2)'
         }
     ]);
+    public readonly tabs: string[] = [
+        'Информация',
+        'обучение',
+        'тех. поддержка'
+    ];
 
     constructor(
         private navCtrl: NavController,
@@ -56,6 +68,10 @@ export class AvatarModalComponent implements OnInit {
 
     public changeCar(): void {
         this.presentModal().then();
+    }
+
+    public selectTab(idx: number): void {
+        this.userInfo.currentTab$.next(idx);
     }
 
     private async presentModal() {

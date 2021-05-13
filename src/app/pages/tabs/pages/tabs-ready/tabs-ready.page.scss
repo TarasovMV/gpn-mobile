@@ -18,13 +18,13 @@
     font-size: sizeHeight(24);
     letter-spacing: sizeWidth(1.5);
     text-transform: uppercase;
-    color: #8C99B2;
+    color: var(--text-main-color);
 
     border-bottom: sizeHeight(6) solid transparent;
 
     &_active {
-      border-color: #0089FF;
-      color: #0089FF;
+      border-color: var(--border-blue-color);
+      color: var(--border-blue-color);
     }
   }
 
@@ -50,7 +50,7 @@
 
       .extra-info {
         font-size: sizeHeight(30);
-        color: #606580;
+        color: var(--text-subscript-color);
       }
 
       .item {
@@ -61,15 +61,17 @@
         display: flex;
         align-items: center;
 
-        background: #272A38;
+        background: var(--bg-header-color);
         border-radius: sizeHeight(8);
+
+        filter: drop-shadow(0px 0px sizeHeight(20) var(--gradient-main-color-1));
 
         .bottle-icon {
           margin-right: sizeWidth(25);
-          color: #0089FF;
+          color: var(--border-blue-color);
 
           &_delivered {
-            color: #00A73D;
+            color: var(--index-green1-color);
           }
         }
 
@@ -83,15 +85,15 @@
 
           .title {
             font-size: sizeHeight(34);
-            color: #8C99B2;
+            color: var(--text-main-color);
           }
 
           .manufacture {
             font-size: sizeHeight(24);
-            color: #606580;
+            color: var(--text-subscript-color);
 
             &__name {
-              color: #FFFFFF;
+              color: var(--text-contrast-color);
             }
           }
         }
@@ -105,11 +107,11 @@
         align-items: center;
         justify-content: center;
 
-        background: #0089FF;
+        background: var(--border-blue-color);
         border-radius: 50%;
 
         font-size: sizeHeight(40);
-        color: #FFFFFF;
+        color: var(--text-alwaysWhite-color);
 
         position: fixed;
         right: sizeHeight(30);

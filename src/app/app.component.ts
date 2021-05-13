@@ -1,6 +1,8 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {KeyboardService} from './@core/services/keyboard.service';
 import {Platform} from '@ionic/angular';
+import {ThemeServiceService} from './services/theme-service.service';
+import {DOCUMENT} from '@angular/common';
 
 @Component({
     selector: 'app-root',
@@ -13,10 +15,13 @@ export class AppComponent implements OnInit {
     constructor(
         private keyboardService: KeyboardService,
         private platform: Platform,
+        @Inject(DOCUMENT) private document: Document,
+        private themeService: ThemeServiceService
     ) {}
 
     public ngOnInit(): void {
         this.initializeApp();
+        this.themeService.setThemeConfiguratorRoot(this.document);
     }
 
     private initializeApp(): void {

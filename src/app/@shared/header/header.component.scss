@@ -5,20 +5,23 @@
 
 .container {
   height: sizeHeight(128);
+  min-height: sizeHeight(128);
   width: 100%;
   padding-right: sizeWidth(30);
 
   display: flex;
   align-items: center;
 
-  background: #272A38;
+  background: var(--bg-header-color);
+
+  filter: drop-shadow(0px 0px sizeHeight(20) var(--gradient-main-color-1));
 
   .avatar {
     margin-left: auto;
     position: relative;
 
     svg-icon {
-      color: #4B5169;
+      color: var(--border-forms-color);
     }
 
     .indicator {
@@ -29,7 +32,7 @@
       align-items: center;
       justify-content: center;
 
-      background: rgba(0, 167, 61, 0.2);
+      background: var(--opacity-green-20-color);
       border-radius: 50%;
 
       position: absolute;
@@ -40,9 +43,76 @@
         height: sizeHeight(15);
         width: sizeHeight(15);
 
-        background: #00A73D;
+        background: var(--index-green1-color);
         border-radius: 50%;
       }
     }
+  }
+
+  .switch-btn {
+    height: sizeHeight(48);
+    width: sizeHeight(96);
+    margin-left: auto;
+    display: inline-block;
+
+    background: var(--text-subscript-color);
+    border: sizeHeight(2) solid var(--gray-G8-color);
+    border-radius: sizeHeight(50);
+
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    transition-duration: 300ms;
+
+    .sun, .moon {
+      height: sizeHeight(40);
+      width: sizeHeight(40);
+
+      border-radius: 50%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      position: absolute;
+      top: sizeHeight(2);
+
+      svg-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .sun {
+      left: sizeWidth(1);
+    }
+
+    .moon {
+      left: sizeHeight(48);
+    }
+  }
+  .switch-btn::after {
+    content: "";
+
+    height: sizeHeight(40);
+    width: sizeHeight(40);
+
+    border-radius: 50%;
+    background: var(--text-alwaysWhite-color);
+
+    position: absolute;
+    top: sizeHeight(2);
+    left: sizeWidth(1);
+
+    z-index: 0;
+    transition-duration: 300ms; /* анимация */
+  }
+  .switch-on {
+    background: var(--border-blue-color);
+    border-color: var(--index-blue1-color);
+  }
+  .switch-on::after {
+    left: sizeHeight(48);
   }
 }

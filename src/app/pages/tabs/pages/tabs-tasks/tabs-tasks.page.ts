@@ -55,20 +55,12 @@ export class TabsTasksPage implements OnInit, IPageTab {
     }
 
     public async openChooseOverlay(): Promise<void> {
-        // const present = await this.presentModal();
-        // await present.onDidDismiss();
-        this.accept();
+        const present = await this.presentModal();
+        await present.onDidDismiss();
     }
 
     public openMap(): void {
         this.navCtrl.navigateRoot('/map').then();
-    }
-
-    public accept(): void {
-        this.newItems$.subscribe((data: ITasksItem[]) => {
-            this.tasksService.currentTask = data[0];
-        });
-        this.navCtrl.navigateRoot('nfc').then();
     }
 
     private async presentModal(): Promise<HTMLIonModalElement> {

@@ -3,6 +3,7 @@ import {ModalController, NavController} from '@ionic/angular';
 import {TasksService} from '../../services/tasks.service';
 import {ITasksItem} from '../tabs/pages/tabs-tasks/tabs-tasks.page';
 import {VerifyModalComponent} from './components/verify-modal/verify-modal.component';
+import {TabsInfoService} from '../../services/tabs/tabs-info.service';
 
 @Component({
     selector: 'app-nfc-verify.page',
@@ -16,12 +17,14 @@ export class NfcVerifyPage implements OnInit {
     constructor(
         private navCtrl: NavController,
         private modalCtrl: ModalController,
-        private tasksService: TasksService
+        private tabsService: TabsInfoService
     ) {
     }
 
     ngOnInit(): void {
-        this.currentTask = this.tasksService.currentTask;
+        this.tabsService.inProgressItems$.subscribe(val => {
+            this.currentTask = val[0];
+        });
     }
 
     public async openModal(): Promise<void> {

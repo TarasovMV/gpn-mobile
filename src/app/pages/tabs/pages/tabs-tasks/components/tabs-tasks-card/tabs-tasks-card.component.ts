@@ -50,7 +50,7 @@ export class TabsTasksCardComponent implements OnInit, AfterViewInit {
         const g: any = this.svg.append('g').style('transform', `translate(${size/2}px, ${size/2}px)`);
 
         g.append('path').attr('d', arcBg(0, 1))
-            .style('fill', 'rgba(96, 101, 128, 0.25)');
+            .style('fill', 'var(--chart-segment-color)');
 
         g.append('path').attr('d', arcBg(0, this.percent$.value / 100))
             .attr('class', 'arc');

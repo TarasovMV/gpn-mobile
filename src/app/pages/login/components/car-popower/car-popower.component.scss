@@ -18,7 +18,7 @@ button {
   flex-direction: column;
   align-items: center;
 
-  background: #1C1F2B;
+  background: var(--bg-body-color);
 
   .title {
     &__text{
@@ -28,7 +28,7 @@ button {
       text-align: center;
 
       font-size: sizeHeight(48);
-      color: #D7E2F2;
+      color: var(--text-contrast-color);
     }
   }
 
@@ -54,15 +54,16 @@ button {
       align-items: center;
       justify-content: center;
 
-      background: rgba(48, 53, 73, 0.5);
+      background: var(--bg-header-color);
       border-radius: sizeHeight(8);
+      box-shadow: 0px sizeHeight(4) sizeHeight(4) var(--gradient-main-color-1);
 
       font-size: sizeHeight(36);
-      color: #8C99B2;
+      color: var(--text-contrast-color);
 
       &_active {
-        background: #0089FF;
-        color: #FFFFFF;
+        background: var(--border-blue-color);
+        color:var(--text-alwaysWhite-color);
       }
     }
   }
@@ -84,24 +85,24 @@ button {
 
       font-size: sizeHeight(36);
 
-      color: #D7E2F2;
+      color: var(--text-contrast-color);
 
       &-next {
-        color: #FFFFFF;
-        background: #0089FF;
+        color: var(--text-alwaysWhite-color);
+        background: var(--border-blue-color);
 
         &:disabled {
-          background: #303549;
+          background: var(--bg-header-color);
+          color: var(--text-subscript-color);
+          box-shadow: 0 sizeHeight(4) sizeHeight(4) var(--gradient-main-color-1);
+          opacity: 1;
         }
       }
 
       &-cancel {
-        height: sizeHeight(80);
-        background: none;
-      }
-
-      &:disabled {
+        color: var(--text-contrast-color);
         opacity: 0.5;
+        background: none;
       }
     }
   }
