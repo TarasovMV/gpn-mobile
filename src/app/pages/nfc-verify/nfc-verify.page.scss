@@ -48,6 +48,30 @@
       align-items: center;
       height: 100%;
 
+      .nfc-icon-block {
+
+        .nfc-icon-item {
+
+          .nfc-stroke {
+            color: #606580;
+            opacity: 0.5;
+          }
+
+          .nfc_icon_external_circle {
+            position: absolute;
+            left: calc(21.8vw);
+            bottom: 31.2vh;
+          }
+
+          .nfc_connect_icon {
+            left: calc(50% - 21.53vw / 2);
+            top: calc(50% - 5vw);
+            position: absolute;
+            color: #0089FF;
+          }
+        }
+      }
+
       .task-info-block {
         padding-top: sizeHeight(33.5);
 
