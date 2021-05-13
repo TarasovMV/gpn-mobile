@@ -1,11 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {IPageTab, PageTabType} from '../../tabs.page';
 import {BehaviorSubject} from 'rxjs';
-import {NEW_TASKS, TASKS_IN_PROGRESS} from './mock';
 import {TabsInfoService} from '../../../../services/tabs/tabs-info.service';
 import {ModalController, NavController} from '@ionic/angular';
 import {ChooseTaskOverlayComponent} from './components/choose-task-overlay/choose-task-overlay.component';
-import {TasksService} from "../../../../services/tasks.service";
 
 export interface ITasksItem {
     num: string;
@@ -34,8 +32,8 @@ export class TabsTasksPage implements OnInit, IPageTab {
         public tabsService: TabsInfoService,
         public modalController: ModalController,
         private navCtrl: NavController,
-        private tasksService: TasksService,
-    ) {}
+    ) {
+    }
 
 
     ngOnInit() {

@@ -3,6 +3,7 @@ import {KeyboardService} from './@core/services/keyboard.service';
 import {Platform} from '@ionic/angular';
 import {ThemeServiceService} from './services/theme-service.service';
 import {DOCUMENT} from '@angular/common';
+import {BackgroundMode} from "@ionic-native/background-mode/ngx";
 
 @Component({
     selector: 'app-root',
@@ -16,7 +17,8 @@ export class AppComponent implements OnInit {
         private keyboardService: KeyboardService,
         private platform: Platform,
         @Inject(DOCUMENT) private document: Document,
-        private themeService: ThemeServiceService
+        private themeService: ThemeServiceService,
+        private backgroundMode: BackgroundMode
     ) {}
 
     public ngOnInit(): void {
@@ -27,6 +29,14 @@ export class AppComponent implements OnInit {
     private initializeApp(): void {
         this.platform.ready().then(() => {
             this.keyboardService.setInitSettings(this.platform, this.appWindow).then();
+            this.initBackgroundMode();
         });
+    }
+
+    private initBackgroundMode(): void {
+        this.backgroundMode.on('activate').subscribe(() => {
+            console.log('Background mode activated!');
+        });
+        this.backgroundMode.enable();
     }
 }
