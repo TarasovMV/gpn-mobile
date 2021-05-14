@@ -1,6 +1,8 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {Ndef, NFC} from "@ionic-native/nfc/ngx";
+import {Ndef, NdefEvent, NFC} from "@ionic-native/nfc/ngx";
 import {ModalController} from "@ionic/angular";
+import {Observable} from "rxjs";
+import {NfcService} from "../../../../services/nfc/nfc.service";
 
 @Component({
     selector: 'app-nfc-timer-modal',
@@ -17,7 +19,7 @@ export class NfcTimerModalComponent implements OnInit {
     private successTimeOut: number;
     private runInterval: number;
 
-    constructor(private nfc: NFC, private ndef: Ndef, private modalCtrl: ModalController, private changeDetectorRef: ChangeDetectorRef) {
+    constructor(private nfc: NFC, private ndef: Ndef, private modalCtrl: ModalController, private changeDetectorRef: ChangeDetectorRef, private nfcService: NfcService) {
     }
 
     public ngOnInit(): void {
@@ -31,8 +33,7 @@ export class NfcTimerModalComponent implements OnInit {
     }
 
     private initNfcReader(): void {
-        let flags = this.nfc.FLAG_READER_NFC_A | this.nfc.FLAG_READER_NFC_V;
-        this.nfc.readerMode(flags).subscribe(
+        this.nfcService.nfcListener.subscribe(
             tag => {
                 this.nfcLabelAccepted = true;
                 this.changeDetectorRef.detectChanges();

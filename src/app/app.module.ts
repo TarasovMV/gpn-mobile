@@ -8,7 +8,8 @@ import {CoreModule} from './@core/core.module';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {IonicStorageModule} from '@ionic/storage-angular';
 import {Ndef, NFC} from "@ionic-native/nfc/ngx";
-import {BackgroundMode} from "@ionic-native/background-mode/ngx";
+import {NfcService} from "./services/nfc/nfc.service";
+
 
 @NgModule({
     declarations: [AppComponent],
@@ -21,7 +22,7 @@ import {BackgroundMode} from "@ionic-native/background-mode/ngx";
         HammerModule,
         IonicStorageModule.forRoot()
     ],
-    providers: [{provide: RouteReuseStrategy, useClass: IonicRouteStrategy}, NFC, Ndef, BackgroundMode],
+    providers: [{provide: RouteReuseStrategy, useClass: IonicRouteStrategy}, NFC, Ndef, NfcService],
     bootstrap: [AppComponent],
 })
 export class AppModule {

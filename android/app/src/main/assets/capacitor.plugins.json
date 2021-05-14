@@ -1,0 +1,6 @@
+[
+	{
+		"pkg": "capacitor-ndef-intent",
+		"classpath": "localhost.capacitor.ndefintent.NDefIntentPlugin"
+	}
+]

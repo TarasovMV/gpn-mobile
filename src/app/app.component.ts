@@ -3,7 +3,11 @@ import {KeyboardService} from './@core/services/keyboard.service';
 import {Platform} from '@ionic/angular';
 import {ThemeServiceService} from './services/theme-service.service';
 import {DOCUMENT} from '@angular/common';
-import {BackgroundMode} from "@ionic-native/background-mode/ngx";
+import {Ndef, NdefEvent, NFC} from "@ionic-native/nfc/ngx";
+import {Capacitor} from "@capacitor/core";
+import {NDefIntent} from "capacitor-ndef-intent";
+import {Observable} from "rxjs";
+import {NfcService} from "./services/nfc/nfc.service";
 
 @Component({
     selector: 'app-root',
@@ -18,7 +22,9 @@ export class AppComponent implements OnInit {
         private platform: Platform,
         @Inject(DOCUMENT) private document: Document,
         private themeService: ThemeServiceService,
-        private backgroundMode: BackgroundMode
+        private nfc : NFC,
+        private ndef: Ndef,
+        private nfcService: NfcService
     ) {}
 
     public ngOnInit(): void {
@@ -29,14 +35,10 @@ export class AppComponent implements OnInit {
     private initializeApp(): void {
         this.platform.ready().then(() => {
             this.keyboardService.setInitSettings(this.platform, this.appWindow).then();
-            this.initBackgroundMode();
-        });
-    }
 
-    private initBackgroundMode(): void {
-        this.backgroundMode.on('activate').subscribe(() => {
-            console.log('Background mode activated!');
+            this.nfcService.nfcListener = this.nfc.addNdefFormatableListener();
+            this.nfcService.nfcListener.subscribe();
         });
-        this.backgroundMode.enable();
+
     }
 }

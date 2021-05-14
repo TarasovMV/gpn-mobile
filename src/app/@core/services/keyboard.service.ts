@@ -1,8 +1,8 @@
 import {ElementRef, Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {Platform} from '@ionic/angular';
-import {KeyboardResize, KeyboardStyle, Plugins} from '@capacitor/core';
-const { Keyboard } = Plugins;
+//import {KeyboardResize, KeyboardStyle, Plugins} from '@capacitor/core';
+//const { Keyboard } = Plugins;
 
 @Injectable({
     providedIn: 'root'
@@ -15,8 +15,8 @@ export class KeyboardService {
     public async setInitSettings(platform: Platform, appWindow: ElementRef): Promise<void> {
         try {
             this.actionListeners(platform, appWindow);
-            await Keyboard.setStyle({style: KeyboardStyle.Light});
-            await Keyboard.setResizeMode({mode: KeyboardResize.Ionic});
+          //  await Keyboard.setStyle({style: KeyboardStyle.Light});
+          //  await Keyboard.setResizeMode({mode: KeyboardResize.Ionic});
         } catch {}
     }
 
