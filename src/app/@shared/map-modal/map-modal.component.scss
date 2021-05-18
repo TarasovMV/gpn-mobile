@@ -1,0 +1,81 @@
+@import "src/theme/functions";
+* {
+  box-sizing: border-box;
+}
+
+button {
+  outline: none;
+  background: transparent;
+  border: none;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  padding: sizeHeight(50) sizeHeight(45);
+
+  position: relative;
+
+  background: var(--bg-body-color);
+
+  .cancel {
+    height: 2.2vh;
+    width: 2.2vh;
+
+    color: var(--border-icon-color);
+
+    position: absolute;
+    right: sizeHeight(30);
+    top: sizeHeight(30);
+  }
+
+  .title {
+    font-size: sizeHeight(34);
+    color: var(--text-contrast-color);
+  }
+
+  .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .info-extra, .info-main {
+      text-align: center;
+      font-size: sizeHeight(32);
+      color: var(--text-main-color);
+    }
+
+    .info-main {
+      margin-top: sizeHeight(25);
+      color: var(--text-accent-color);
+    }
+  }
+
+  .btn {
+    height: sizeHeight(74);
+    width: sizeWidth(400);
+    margin-top: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: sizeWidth(25);
+
+    background: var(--border-blue-color);
+    border-radius: sizeHeight(8);
+
+    font-size: sizeHeight(30);
+    color: var(--text-alwaysWhite-color);
+
+    svg-icon {
+      display: flex;
+    }
+  }
+}

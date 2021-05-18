@@ -64,13 +64,32 @@ html, body, .ion-app, .ion-content {
   }
 }
 
-.choose-task {
+.choose-task, .activity-modal, .map-modal {
   --height: 44vh;
+
+  .modal-wrapper {
+    width: sizeWidth(550);
+
+    border-radius: sizeHeight(8);
+    background: transparent;
+    filter: drop-shadow(0px 0px sizeHeight(20) var(--gradient-main-color-1));
+
+    overflow: hidden;
+  }
+}
+
+.map-modal {
+  --height: 32vh;
+}
+
+.simple-modal {
+  --height: 21vh;
 
   .modal-wrapper {
     width: sizeWidth(550);
     border-radius: sizeHeight(8);
     background: transparent;
+    filter: drop-shadow(0px 0px sizeHeight(20) var(--gradient-main-color-1));
 
     overflow: hidden;
   }

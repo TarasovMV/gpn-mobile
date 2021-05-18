@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
+import {SimpleModalComponent} from "../@shared/simple-modal/simple-modal.component";
+import {ModalController} from "@ionic/angular";
+import {ActivityModalComponent} from "../@shared/activity-modal/activity-modal.component";
 
 export interface IUser {
     firstName: string;
@@ -20,5 +23,18 @@ export class UserInfoService {
 
     // Выбранный таб в модальном окне
     public currentTab$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-    constructor() { }
+
+    constructor(public modalController: ModalController) { }
+
+    public async openActivityModal(): Promise<void> {
+        this.presentModalPassword().then();
+    }
+
+    private async presentModalPassword() {
+        const modal = await this.modalController.create({
+            component: ActivityModalComponent,
+            cssClass: 'activity-modal',
+        });
+        return await modal.present();
+    }
 }

@@ -5,6 +5,7 @@ import {KeyboardService} from '../../@core/services/keyboard.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {CarPopowerComponent} from './components/car-popower/car-popower.component';
+import {SimpleModalComponent} from '../../@shared/simple-modal/simple-modal.component';
 
 
 @Component({
@@ -38,13 +39,29 @@ export class LoginPage implements OnInit, OnDestroy {
     }
 
     public async submit(e: Event): Promise<void> {
-        this.presentModal().then();
+        // Временная логика
+        if(this.loginForm.get('login').value.length > 1) {
+            this.presentModalCar().then();
+        } else {
+            this.presentModalPassword().then();
+        }
     }
 
-    private async presentModal() {
+    private async presentModalCar() {
         const modal = await this.modalController.create({
             component: CarPopowerComponent,
             cssClass: 'car-modal'
+        });
+        return await modal.present();
+    }
+
+    private async presentModalPassword() {
+        const modal = await this.modalController.create({
+            component: SimpleModalComponent,
+            cssClass: 'simple-modal',
+            componentProps: {
+                message: 'Неверный пароль',
+            }
         });
         return await modal.present();
     }
