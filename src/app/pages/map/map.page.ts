@@ -11,9 +11,8 @@ import Hammer from 'hammerjs';
     styleUrls: ['./map.page.scss'],
 })
 export class MapPage implements OnInit, AfterViewInit {
-    @ViewChild('map') mapRef: ElementRef;
+    // @ViewChild('map') mapRef: ElementRef;
     @ViewChild('screen') screenRef: ElementRef;
-    @ViewChild('point') pointRef: ElementRef;
 
     width;
     height;
@@ -57,15 +56,7 @@ export class MapPage implements OnInit, AfterViewInit {
     ) {}
 
     ngOnInit(): void {
-        this.listener.pipe(filter((x, i) => i % 1 === 0)).subscribe(x => {
-
-            console.log(x);
-
-            this.array.push(x);
-            if (this.array.length > 10) {
-                this.array.shift();
-            }
-
+        this.listener.subscribe(x => {
             this.scaleStyle = this.zoomHandler(x.scale);
             this.rotationStyle = this.rotationHandler(x.rotation, x);
         });
@@ -78,7 +69,7 @@ export class MapPage implements OnInit, AfterViewInit {
     }
 
     init(): void {
-        const element = this.mapRef.nativeElement;
+        const element = this.screenRef.nativeElement;
         const mc = new Hammer.Manager(element);
         const tap = new Hammer.Tap();
         const pinch = new Hammer.Pinch();
@@ -124,7 +115,6 @@ export class MapPage implements OnInit, AfterViewInit {
 
             const testX = this.width / 2 - ((xP) * Math.cos(angle) - (yP) * Math.sin(angle)) + dX;
             const testY = this.height / 2 - ((xP) * Math.sin(angle) + (yP) * Math.cos(angle)) + dY;
-            console.log(testX, testY);
 
             this.pointStyle = `left: ${testX}px; top: ${testY}px`;
         });
