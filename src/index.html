@@ -14,6 +14,8 @@
 
   <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
 
+  <script type='application/javascript' src='/assets/libs/fastclick.js'></script>
+
   <!-- add to homescreen for ios -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
@@ -21,6 +23,11 @@
 
 <body>
   <app-root></app-root>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      FastClick.attach(document.body);
+    }, false);
+  </script>
 </body>
 
 </html>

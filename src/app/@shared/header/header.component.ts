@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ModalController} from '@ionic/angular';
 import {AvatarModalComponent} from '../avatar-modal/avatar-modal.component';
 import {BehaviorSubject} from 'rxjs';
-import {ThemeServiceService} from '../../services/theme-service.service';
+import {ThemeService} from '../../services/theme.service';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +14,7 @@ export class HeaderComponent implements OnInit {
 
     constructor(
       public modalController: ModalController,
-      public theme: ThemeServiceService
+      public theme: ThemeService
     ) { }
 
     ngOnInit() {}

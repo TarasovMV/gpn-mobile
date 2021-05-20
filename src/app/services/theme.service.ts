@@ -5,7 +5,7 @@ import {Storage} from '@ionic/storage';
 @Injectable({
   providedIn: 'root'
 })
-export class ThemeServiceService {
+export class ThemeService {
     private readonly renderer: Renderer2;
     private themeConfigurator: ThemeConfigurator;
     public isDarkTheme: Observable<boolean>;
