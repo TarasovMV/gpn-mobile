@@ -1,11 +1,27 @@
 @import "src/theme/functions.scss";
 
+@mixin ripple-animation($color) {
+  0% {
+    box-shadow: 0 0 0 10vw rgba($color, 0.8),
+    0 0 0 20vw rgba($color, 0.6),
+    0 0 0 30vw rgba($color, 0.4),
+    0 0 0 40vw rgba($color, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 0 20vw rgba($color, 0.7),
+    0 0 0 30vw rgba($color, 0.5),
+    0 0 0 40vw rgba($color, 0.3),
+    0 0 0 50vw rgba($color, 0);
+  }
+}
+
 .container {
   height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  background: #12151E;
   align-items: center;
 
   .timer-container {
@@ -30,46 +46,27 @@
     border-radius: 50%;
     position: absolute;
     bottom: calc(32.65vh + 10.25vw);
-    $rippleRunColor: #14304F;
-    animation: ripple1 0.85s linear infinite;
-
-    @keyframes ripple1 {
-      0% {
-        box-shadow: 0 0 0 10vw rgba($rippleRunColor, 0.8),
-        0 0 0 20vw rgba($rippleRunColor, 0.6),
-        0 0 0 30vw rgba($rippleRunColor, 0.4),
-        0 0 0 40vw rgba($rippleRunColor, 0.2);
-      }
-      100% {
-        box-shadow: 0 0 0 20vw rgba($rippleRunColor, 0.7),
-        0 0 0 30vw rgba($rippleRunColor, 0.5),
-        0 0 0 40vw rgba($rippleRunColor, 0.3),
-        0 0 0 50vw rgba($rippleRunColor, 0);
-      }
+    animation: ripple-run 0.85s linear infinite;
+    @keyframes ripple-run {
+      @include ripple-animation(#14304F);
     }
   }
 
-  .timer-success-ripple {
+  .timer-ripple {
+    position: absolute;
     width: 30vw;
     height: 30vw;
     border-radius: 50%;
-    position: absolute;
     bottom: calc(32.65vh + 10.25vw);
-    $rippleSuccessColor: #00A73D;
-    animation: ripple2 0.85s ease-in-out infinite;
+    animation: ripple-run 0.85s ease-in-out infinite;
+    @keyframes ripple-run {
+      @include ripple-animation(#14304F);
+    }
 
-    @keyframes ripple2 {
-      0% {
-        box-shadow: 0 0 0 10vw rgba($rippleSuccessColor, 0.8),
-        0 0 0 20vw rgba($rippleSuccessColor, 0.7),
-        0 0 0 30vw rgba($rippleSuccessColor, 0.5),
-        0 0 0 40vw rgba($rippleSuccessColor, 0.35);
-      }
-      100% {
-        box-shadow: 0 0 0 20vw rgba($rippleSuccessColor, 0.7),
-        0 0 0 30vw rgba($rippleSuccessColor, 0.5),
-        0 0 0 40vw rgba($rippleSuccessColor, 0.3),
-        0 0 0 56vw rgba($rippleSuccessColor, 0);
+    &__success {
+      animation: ripple-success 0.85s ease-in-out infinite;
+      @keyframes ripple-success {
+        @include ripple-animation(#00A73D);
       }
     }
   }

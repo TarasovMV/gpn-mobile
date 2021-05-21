@@ -11,7 +11,7 @@ import {take} from "rxjs/operators";
 })
 export class NfcTimerModalComponent implements OnInit {
 
-    public nfcLabelAccepted: boolean = false;
+    public isNfcAccepted: boolean = false;
     public timerDuration: number = 35;
     public currentTimerValue: number = this.timerDuration;
 
@@ -37,7 +37,7 @@ export class NfcTimerModalComponent implements OnInit {
 
     private initNfcReader(): void {
         this.nfcService.nfcHandler$.pipe(take(1)).subscribe((tag) => {
-            this.nfcLabelAccepted = true;
+            this.isNfcAccepted = true;
             this.changeDetectorRef.detectChanges();
             this.successTimeOut = window.setTimeout(async () => {
                 this.stopTimeouts();

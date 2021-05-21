@@ -8,7 +8,7 @@
       >
       </svg-icon>
     </div>
-    <span class="task-number-span">{{(currentTask$ | async).num | splitNumberSign}}</span>
+    <span class="task-number-span">{{(currentTask$ | async)?.num | splitNumberSign}}</span>
   </app-header>
   <div class="content-wrapper">
     <app-step-progress-bar [activeStepIndex]="1" [stepsCount]="3">
@@ -19,7 +19,7 @@
      <span class="gray-text">
     Установка:
     <span class="light-text">
-      {{(currentTask$ | async).manufacture}}
+      {{(currentTask$ | async)?.manufacture}}
     </span>
   </span>
         </div>
@@ -27,13 +27,13 @@
      <span class="gray-text">
     Отсканируйте NFC метку для подтверждения выгрузки
     <span class="light-text">
-      пустой тары ({{(currentTask$ | async).tare }} шт)
+      пустой тары ({{(currentTask$ | async)?.tare || 0 }} шт)
     </span>
        <span class="gray-text">
       и загрузки
     </span>
     <span class="light-text">
-      проб ({{(currentTask$ | async).test}})
+      проб ({{(currentTask$ | async)?.test}})
     </span>
   </span>
         </div>
