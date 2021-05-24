@@ -98,7 +98,6 @@ export class MapPage implements OnInit, AfterViewInit {
             if (this.isPinch || !this.isPan) {
                 return;
             }
-            console.log(x);
             this.positionHandler(x.deltaX, x.deltaY);
             this.transformStyle = `transform: translate(${this.x}px, ${this.y}px)`;
             this.cdRef.detectChanges();

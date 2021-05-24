@@ -9,18 +9,15 @@
         }"
       ></svg-icon>
     </div>
-    <div class="title">{{(tabsService.inProgressItems$|async)[0].num}}</div>
+    <div class="title">{{(tabsService.inProgressItems$ | async)[0].num}}</div>
   </app-header>
-  <div #map [style]="transformStyle" class="box">
+  <div [style]="transformStyle" class="box">
     <div [style]="rotationStyle" class="entry-box">
       <div [style]="scaleStyle" class="entry-box">
         <img style="transform: scale(10)" src="assets/Icons/map/map.svg"/>
       </div>
     </div>
   </div>
-<!--  <div #map [style]="transformStyle" class="box">-->
-<!--    <div [style]="rotationStyle" class="entry-box"></div>-->
-<!--  </div>-->
   <div class="progress">
     <app-map-progress
       [percent]="60"

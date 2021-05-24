@@ -20,6 +20,13 @@ export class NfcService {
             () => console.log('Success reading tag'),
             () => console.error('Error reading tag (background)')
         ).subscribe((tag) => this.handleNfc(tag));
+
+        this.nfc.addMimeTypeListener(
+            'text/any',
+            () => console.log('Success reading tag mime'),
+            () => console.error('Error reading tag (background mime)')
+        ).subscribe((tag) => this.handleNfc(tag));
+
         this.nfc.readerMode(this.flags).subscribe(
             tag => this.handleNfc(tag),
             err => console.error('Error reading tag', err)
