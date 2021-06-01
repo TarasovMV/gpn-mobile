@@ -41,7 +41,6 @@
     .tab {
       width: sizeWidth(660);
       margin-top: sizeHeight(15);
-      gap: sizeHeight(20);
 
       display: flex;
       flex-direction: column;
@@ -57,6 +56,7 @@
         height: sizeHeight(210);
         width: sizeWidth(660);
         padding: 0 sizeWidth(24);
+        margin-bottom: sizeHeight(20);
 
         display: flex;
         align-items: center;
@@ -81,7 +81,11 @@
 
           display: flex;
           flex-direction: column;
-          gap: sizeHeight(20);
+
+          column-gap: sizeHeight(20);
+          -webkit-column-gap: sizeHeight(20);
+          -moz-column-gap: sizeHeight(20);
+          -o-column-gap: sizeHeight(20);
 
           .title {
             font-size: sizeHeight(34);

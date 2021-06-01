@@ -66,7 +66,11 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: sizeWidth(25);
+
+    column-gap: sizeWidth(25);
+    -webkit-column-gap: sizeWidth(25);
+    -moz-column-gap: sizeWidth(25);
+    -o-column-gap: sizeWidth(25);
 
     background: var(--border-blue-color);
     border-radius: sizeHeight(8);

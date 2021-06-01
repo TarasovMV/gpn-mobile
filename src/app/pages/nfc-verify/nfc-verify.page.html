@@ -1,71 +1,46 @@
 <div class="container">
-  <app-header class="header">
-    <div (click)="back()" class="back-button">
-      <svg-icon [svgStyle]="{
-         'width': '1.7vh',
-         'height': '3.4vh'
-       }" class="back-button__icon" src="assets/Icons/shared/back.svg"
-      >
-      </svg-icon>
+  <app-header>
+    <div class="arrow" (click)="back()">
+      <svg-icon
+        src="/assets/Icons/tabs/arrowLeft.svg"
+        [svgStyle]="{
+          'height.vh': 3.9,
+          'width.vh': 3.9
+        }"
+      ></svg-icon>
     </div>
-    <span class="task-number-span">{{(currentTask$ | async)?.num | splitNumberSign}}</span>
+    <div class="title">{{(currentTask$ | async)?.num | splitNumberSign}}</div>
   </app-header>
-  <div class="content-wrapper">
-    <app-step-progress-bar [activeStepIndex]="1" [stepsCount]="3">
-    </app-step-progress-bar>
-    <div class="content">
-      <div class="task-info-block">
-        <div class="content-text-block">
-     <span class="gray-text">
-    Установка:
-    <span class="light-text">
-      {{(currentTask$ | async)?.manufacture}}
-    </span>
-  </span>
-        </div>
-        <div class="content-text-block">
-     <span class="gray-text">
-    Отсканируйте NFC метку для подтверждения выгрузки
-    <span class="light-text">
-      пустой тары ({{(currentTask$ | async)?.tare || 0 }} шт)
-    </span>
-       <span class="gray-text">
-      и загрузки
-    </span>
-    <span class="light-text">
-      проб ({{(currentTask$ | async)?.test}})
-    </span>
-  </span>
-        </div>
+
+  <div class="content">
+    <app-step-progress-bar [stepsCount]="3" [activeStepIndex]="1"></app-step-progress-bar>
+
+    <div class="task=info-block">
+      <div class="content-text-block">
+        <span class="gray-text">Установка:<span class="light-text">{{(currentTask$ | async)?.manufacture}}</span></span>
       </div>
+      <div class="content-text-block">
+        <span class="gray-text">
+          Отсканируйте NFC метку для подтверждения выгрузки
+          <span class="light-text">пустой тары ({{(currentTask$ | async)?.tare}} шт)</span>
+          <span class="gray-text"> и загрузки </span>
+          <span class="light-text">проб ({{(currentTask$ | async)?.test}})</span>
+        </span>
+      </div>
+
       <div class="nfc-icon-block">
-        <div class="nfc-icon-item">
-          <svg-icon [svgStyle]="{
-        'width': '55.4vw',
-        'height': '55.4vw'
-      }" class="nfc-stroke"
-                    src="assets/Icons/nfc/nfc_stroke.svg"
-          ></svg-icon>
-          <svg class="nfc_icon_external_circle" height="55.4vw" width="55.4vw">
-            <circle cx="50%" cy="50%" fill="#1C1F2B" r="41%" stroke="#028AFE" stroke-width="2%"></circle>
-          </svg>
-          <svg-icon [svgStyle]="{
-        'width': '21.5vw',
-        'height': '21.5vw'
-      }" class="nfc_connect_icon"
-                    src="assets/Icons/nfc/nfc_connect_icon.svg"
-          ></svg-icon>
-        </div>
-      </div>
-      <div class="footer">
-        <button (click)="enableNfc()"
-                class="btn btn__margin-bottom">Включить NFC
-        </button>
-        <button class="btn"
-                disabled>Завершить задание
-        </button>
+        <svg-icon
+          src="assets/Icons/nfc/nfc_icon.svg"
+          [svgStyle]="{
+              'width': '34vh',
+              'height': '34vh'
+            }"
+        ></svg-icon>
       </div>
     </div>
+
+    <button class="btn btn_activateNFC" (click)="enableNfc()">Включить NFC</button>
+    <button class="btn" disabled>Завершить задание</button>
   </div>
 </div>
 

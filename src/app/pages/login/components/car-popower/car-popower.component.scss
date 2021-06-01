@@ -44,11 +44,15 @@ button {
 
     display: flex;
     flex-wrap: wrap;
-    gap: sizeWidth(8);
+    column-gap: sizeWidth(8);
+    -webkit-column-gap: sizeWidth(8);
+    -moz-column-gap: sizeWidth(8);
+    -o-column-gap: sizeWidth(8);
 
     &__item {
       height: sizeHeight(112);
       width: sizeWidth(312);
+      margin-bottom: sizeWidth(8);
 
       display: flex;
       align-items: center;

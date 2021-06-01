@@ -7,19 +7,16 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class StepProgressBarComponent implements OnInit {
 
-    @Input()
-    public stepsCount: number;
-    @Input()
-    public activeStepIndex: number;
-    public numbers: number[]
+    @Input() public stepsCount: number;
+    @Input() public activeStepIndex: number;
+    public numbers: number[];
 
-  constructor() {
-  }
+    constructor() {}
 
-  ngOnInit() {
-      this.numbers = []
+    ngOnInit() {
+      this.numbers = [];
       for (let n = 0; n < this.stepsCount; n++) {
-          this.numbers.push(n)
+          this.numbers.push(n);
       }
-  }
+    }
 }

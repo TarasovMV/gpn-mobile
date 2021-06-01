@@ -6,13 +6,24 @@
 .container {
   position: relative;
   display: flex;
+  flex: 1;
   justify-content: space-between;
+  align-items: center;
+
+  .line {
+    border-top: sizeHeight(4) dashed var(--border-icon-color);
+    flex: 1;
+
+    &:last-child {
+      display: none;
+    }
+  }
 }
 
 .step {
   z-index: 5;
-  background: #12151E;
-  border: sizeHeight(5) solid #4B5169;
+  background: var(--bg-dashboard-color);
+  border: sizeHeight(5) solid var(--border-forms-color);
   box-sizing: border-box;
   border-radius: 100px;
   height: sizeHeight(50);
@@ -26,26 +37,18 @@
 }
 
 .step.active {
-  border: sizeHeight(5) solid #0089FF;
-  background: #1C1F2B;
+  border: sizeHeight(5) solid var(--border-blue-color);
+  background: var(--bg-body-color);
 }
 
 .white-circle {
   width: 100%;
   height: 100%;
   border-radius: sizeHeight(20);
-  background: white;
+  background: var(--header-logo-bg);
 }
 
 .checkbox {
   margin-top: sizeHeight(0);
 
-}
-
-hr {
-  margin-top: sizeHeight(24);
-  width: 89%;
-  height: sizeHeight(7);
-  border-top: sizeHeight(4) dashed #606580;
-  position: absolute;
 }

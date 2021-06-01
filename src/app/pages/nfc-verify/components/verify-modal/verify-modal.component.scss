@@ -5,9 +5,8 @@
 }
 
 .container {
-  padding: sizeHeight(43);
-  padding-top: sizeHeight(45);
-  background: #1C1F2B;
+  padding: sizeHeight(45) sizeHeight(43) sizeHeight(43);
+  background: var(--bg-body-color);
   display: flex;
   flex-direction: column;
   border-radius: sizeHeight(8);
@@ -21,7 +20,7 @@
 
       .header {
         font-size: sizeHeight(32);
-        color: #D7E2F2;
+        color: var(--text-contrast-color);
       }
     }
 
@@ -29,7 +28,7 @@
       margin-top: sizeHeight(8);
 
       .info-block-header {
-        color: #8C99B2;
+        color: var(--text-main-color);
         font-size: sizeHeight(34);
       }
 
@@ -40,20 +39,20 @@
         align-items: center;
 
         ion-checkbox {
-          --checkmark-color: white;
-          --background-checked: #0089FF;
+          --checkmark-color: var(--text-alwaysWhite-color);
+          --background-checked: var(--border-blue-color);
           height: sizeWidth(40);
           width: sizeWidth(40);
           margin-right: sizeWidth(24);
         }
 
         .gray-text {
-          color: #8C99B2;
+          color: var(--text-main-color);
           font-size: sizeHeight(29);
         }
 
         .light-text {
-          color: #D7E2F2;
+          color: var(--text-contrast-color);
           font-size: sizeHeight(29);
           display: inline-block;
           margin-right: sizeWidth(12);
@@ -63,14 +62,14 @@
   }
 
   .accept-button {
-    background: #0089FF;
-    border: 1px solid #303549;
+    padding: 0 sizeWidth(48);
+    background: var(--border-blue-color);
     border-radius: sizeWidth(10);
     font-size: sizeHeight(39);
     height: sizeHeight(110);
     outline: none;
     margin: 0 auto;
-    color: #D7E2F2;
+    color: var(--text-alwaysWhite-color);
   }
 
   .close-button {
@@ -79,7 +78,7 @@
     top: sizeWidth(21);
 
     &__icon {
-      color: #606580;
+      color: var(--border-icon-color);
     }
   }
 }

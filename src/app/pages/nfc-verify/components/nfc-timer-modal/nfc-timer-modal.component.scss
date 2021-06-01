@@ -2,15 +2,15 @@
 
 @mixin ripple-animation($color) {
   0% {
-    box-shadow: 0 0 0 10vw rgba($color, 0.8),
-    0 0 0 20vw rgba($color, 0.6),
-    0 0 0 30vw rgba($color, 0.4),
-    0 0 0 40vw rgba($color, 0.2);
+    box-shadow: 0 0 0 10vw rgba($color, 0.3),
+    0 0 0 20vw rgba($color, 0.2),
+    0 0 0 30vw rgba($color, 0.1),
+    0 0 0 40vw rgba($color, 0.05);
   }
   100% {
-    box-shadow: 0 0 0 20vw rgba($color, 0.7),
-    0 0 0 30vw rgba($color, 0.5),
-    0 0 0 40vw rgba($color, 0.3),
+    box-shadow: 0 0 0 20vw rgba($color, 0.3),
+    0 0 0 30vw rgba($color, 0.2),
+    0 0 0 40vw rgba($color, 0.1),
     0 0 0 50vw rgba($color, 0);
   }
 }
@@ -21,7 +21,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  background: #12151E;
+  background: var(--bg-dashboard-color);
   align-items: center;
 
   .timer-container {
@@ -30,12 +30,12 @@
     z-index: 1;
 
     .timer-background-circle {
-      fill: #1C1F2B;
-      stroke: #12151E;
+      fill: var(--bg-body-color);
+      stroke: var(--bg-dashboard-color);
     }
 
     .timer-success-circle {
-      fill: #1C1F2B;
+      fill: var(--bg-body-color);
       stroke: #00A73D;
     }
   }
@@ -60,7 +60,7 @@
     bottom: calc(32.65vh + 10.25vw);
     animation: ripple-run 0.85s ease-in-out infinite;
     @keyframes ripple-run {
-      @include ripple-animation(#14304F);
+      @include ripple-animation(#0089FF);
     }
 
     &__success {
@@ -106,13 +106,13 @@
     z-index: 15;
 
     .help-text {
-      color: #0089FF;
+      color: var(--border-blue-color);
       font-size: sizeHeight(24);
       line-height: sizeHeight(29);
     }
 
     .timer-value-text {
-      color: white;
+      color: var(--gray-slyder);
       font-size: sizeHeight(100);
     }
   }

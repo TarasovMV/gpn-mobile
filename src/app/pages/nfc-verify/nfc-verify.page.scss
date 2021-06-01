@@ -4,120 +4,95 @@
   box-sizing: border-box
 }
 
+button {
+  outline: none;
+  background: transparent;
+  border: none;
+}
+
 .container {
-  display: flex;
-  flex-flow: column;
-  flex-direction: column;
-  height: 100vh;
+  height: 100%;
   width: 100%;
-  background: #1C1F2B;
 
-  padding-bottom: sizeHeight(60);
+  display: flex;
+  flex-direction: column;
 
-  .header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
-    .back-button {
-      margin-left: sizeWidth(34);
-      margin-top: sizeHeight(5);
-
-      &__icon {
-        color: #606580;
-      }
-    }
-
-    .task-number-span {
-      margin-left: sizeWidth(34);
-      color: #D7E2F2;
-      font-size: sizeHeight(42);
-    }
+  .title {
+    margin-left: sizeWidth(20);
+    font-size: sizeHeight(42);
+    color: var(--text-contrast-color);
   }
 
-  .content-wrapper {
-    padding-right: sizeWidth(40);
-    padding-left: sizeWidth(40);
-    padding-top: sizeHeight(22.5);
-    height: 100%;
+  .arrow {
+    height: 3.9vh;
+    width: 3.9vh;
+    margin-left: sizeWidth(30);
 
-    .content {
+    color: var(--border-icon-color);
+  }
+
+  .content {
+    height: 90vh;
+    padding: sizeHeight(20) sizeWidth(40) sizeHeight(60);
+    background: var(--bg-body-color);
+
+    display: flex;
+    flex-direction: column;
+
+    .content-text-block {
+      margin-top: sizeHeight(20);
+      font-size: sizeHeight(36);
+      word-wrap: break-word;
+
+      .gray-text {
+        color: var(--text-main-color);
+      }
+
+      .light-text {
+        color: var(--text-contrast-color);
+      }
+
+      &:first-child {
+        margin-top: sizeHeight(30);
+      }
+    }
+
+    .nfc-icon-block {
+      height: 34vh;
+      width: 100%;
+      margin: sizeHeight(60) 0;
+
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      height: 100%;
 
-      .nfc-icon-block {
-
-        .nfc-icon-item {
-
-          .nfc-stroke {
-            color: #606580;
-            opacity: 0.5;
-          }
-
-          .nfc_icon_external_circle {
-            position: absolute;
-            left: calc(21.8vw);
-            bottom: 31.2vh;
-          }
-
-          .nfc_connect_icon {
-            left: calc(50% - 21.53vw / 2);
-            top: calc(50% - 5vw);
-            position: absolute;
-            color: #0089FF;
-          }
-        }
+      svg-icon {
+        display: flex;
+        color: var(--chart-segment-color);
       }
+    }
 
-      .task-info-block {
-        padding-top: sizeHeight(33.5);
+    .btn {
+      height: sizeHeight(110);
+      width: 100%;
 
-        .content-text-block {
-          margin-top: sizeHeight(16);
-          font-size: sizeHeight(34);
-          word-wrap: break-word;
+      margin-top: sizeHeight(20);
 
-          .gray-text {
-            color: #606580;
-          }
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-          .light-text {
-            color: #D7E2F2;
-          }
-        }
-      }
+      background: var(--bg-buttons-color);
+      border-radius: sizeHeight(8);
 
-      .footer {
-        padding-left: sizeWidth(2);
-        padding-right: sizeWidth(2);
-        margin-bottom: sizeHeight(60);
+      font-size: sizeHeight(36);
+      color: var(--text-contrast-color);
 
-        .btn {
-          height: sizeHeight(110);
-          font-size: sizeHeight(40);
-          color: #D7E2F2;
-          outline: none;
-          width: 100%;
-          background: #0089FF;
-          border-radius: sizeHeight(8);
-
-          &:disabled {
-            background: #303549;
-          }
-
-          &__margin-bottom {
-            margin-bottom: sizeHeight(30);
-          }
-        }
+      &_activateNFC {
+        margin-top: auto;
+        background: var(--border-blue-color);
+        color: var(--text-alwaysWhite-color);
       }
     }
   }
 }
-
-
-
-
-

@@ -83,7 +83,11 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: sizeHeight(10);
+
+      column-gap: sizeHeight(10);
+      -webkit-column-gap: sizeHeight(10);
+      -moz-column-gap: sizeHeight(10);
+      -o-column-gap: sizeHeight(10);
 
       background: var(--bg-header-color);
       border-left: sizeWidth(8) solid var(--index-fact-color);

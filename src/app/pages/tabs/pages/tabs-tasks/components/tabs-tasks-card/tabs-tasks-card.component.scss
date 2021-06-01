@@ -63,7 +63,6 @@ span {
 
     display: flex;
     flex-direction: column;
-    gap: sizeHeight(6);
 
     .title {
       margin-bottom: sizeHeight(10);
@@ -80,6 +79,7 @@ span {
     &__item {
       display: flex;
       align-items: center;
+      margin-bottom: sizeHeight(6);
 
       .icon {
         height: sizeHeight(56);

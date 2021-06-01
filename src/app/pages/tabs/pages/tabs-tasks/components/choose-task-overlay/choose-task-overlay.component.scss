@@ -45,11 +45,11 @@ button {
 
     display: flex;
     flex-wrap: wrap;
-    row-gap: sizeHeight(24);
 
     .item {
       height: sizeHeight(40);
       width: 50%;
+      margin-bottom: sizeHeight(24);
 
       display: flex;
       align-items: center;
