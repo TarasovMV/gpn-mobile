@@ -84,11 +84,6 @@
       justify-content: center;
       align-items: center;
 
-      column-gap: sizeHeight(10);
-      -webkit-column-gap: sizeHeight(10);
-      -moz-column-gap: sizeHeight(10);
-      -o-column-gap: sizeHeight(10);
-
       background: var(--bg-header-color);
       border-left: sizeWidth(8) solid var(--index-fact-color);
       border-radius: sizeHeight(8);
@@ -101,6 +96,7 @@
       }
 
       .value {
+        margin-top: sizeHeight(10);
         font-size: sizeHeight(64);
         color: var(--text-accent-color);
       }

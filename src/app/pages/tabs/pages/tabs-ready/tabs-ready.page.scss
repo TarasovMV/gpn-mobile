@@ -82,11 +82,6 @@
           display: flex;
           flex-direction: column;
 
-          column-gap: sizeHeight(20);
-          -webkit-column-gap: sizeHeight(20);
-          -moz-column-gap: sizeHeight(20);
-          -o-column-gap: sizeHeight(20);
-
           .title {
             font-size: sizeHeight(34);
             color: var(--text-main-color);

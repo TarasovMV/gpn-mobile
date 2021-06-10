@@ -44,10 +44,14 @@ button {
 
     display: flex;
     flex-wrap: wrap;
-    column-gap: sizeWidth(8);
-    -webkit-column-gap: sizeWidth(8);
-    -moz-column-gap: sizeWidth(8);
-    -o-column-gap: sizeWidth(8);
+
+    :nth-child(odd) {
+      margin-right: 4px;
+    }
+
+    :nth-child(even) {
+      margin-left: 4px;
+    }
 
     &__item {
       height: sizeHeight(112);
