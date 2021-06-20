@@ -14,7 +14,11 @@
   <div [style]="transformStyle" class="box">
     <div [style]="rotationStyle" class="entry-box">
       <div [style]="scaleStyle" class="entry-box">
-        <img style="transform: scale(10)" src="assets/Icons/map/map.svg"/>
+        <div (click)="trackPosition($event)" class="entry-box entry-box__map" [style]="mapStyle">
+          <img src="assets/Icons/map/map.svg"/>
+          <div class="point" [style.left]="point.x + 'px'" [style.top]="point.y + 'px'"></div>
+          <div #svg class="svg"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -40,6 +44,7 @@
 
   <div
     class="circle-btn geo"
+    (click)="goToPosition()"
   >
     <svg-icon
       [svgStyle]="{
