@@ -99,6 +99,7 @@ export class MapPage implements OnInit, AfterViewInit {
                 return;
             }
             this.positionHandler(x.deltaX, x.deltaY);
+            console.log(`w: ${this.x}, h: ${this.y}`);
             this.transformStyle = `transform: translate(${this.x}px, ${this.y}px)`;
             this.cdRef.detectChanges();
         });
@@ -147,6 +148,7 @@ export class MapPage implements OnInit, AfterViewInit {
             this.isPan = false;
             this.xOrigin = this.x;
             this.yOrigin = this.y;
+
             this.cdRef.detectChanges();
         });
 
@@ -221,7 +223,6 @@ export class MapPage implements OnInit, AfterViewInit {
 
             return `
                 transform:
-                    translate(${this.xNewR}px, ${this.yNewR}px)
                     rotate(${this.rotationOrigin}deg);
                 transform-origin: ${this.xImageR}px ${this.yImageR}px;
             `;
