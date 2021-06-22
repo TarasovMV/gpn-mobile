@@ -28,7 +28,7 @@ export class EndTaskComponent implements OnInit {
         this.tabsService.deliveredItems$.next(delivered);
         newTasks.shift();
         this.tabsService.newItems$.next(newTasks);
-        this.tabsService. currentTask$.next(newTasks[0]);
+        this.tabsService.currentTab$.next(1);
         this.navCtrl.navigateRoot('/tabs/tabs-ready').then();
     }
 }

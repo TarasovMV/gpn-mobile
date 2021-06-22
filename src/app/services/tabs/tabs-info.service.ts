@@ -14,12 +14,12 @@ export class TabsInfoService {
     public diagramData$: BehaviorSubject<IDiagram> = new BehaviorSubject<IDiagram>(MAIN_PAGE_DATA);
     public currentTab$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
-    public currentTask$: BehaviorSubject<ITasksItem> = new BehaviorSubject<ITasksItem>(null);
+    public currentTask$: BehaviorSubject<ITasksItem> = new BehaviorSubject<ITasksItem>(NEW_TASKS[0]);
 
     public inProgressItems$: BehaviorSubject<ITasksItem[]> = new BehaviorSubject<ITasksItem[]>(TASKS_IN_PROGRESS);
     public newItems$: BehaviorSubject<ITasksItem[]> = new BehaviorSubject<ITasksItem[]>(NEW_TASKS);
 
-    public selectedItems$: BehaviorSubject<ITasksItem[]> = new BehaviorSubject<ITasksItem[]>([]);
+    public selectedItems$: BehaviorSubject<ITasksItem[]> = new BehaviorSubject<ITasksItem[]>([NEW_TASKS[0]]);
     public deliveredItems$: BehaviorSubject<ITasksItem[]> = new BehaviorSubject<ITasksItem[]>([]);
 
     constructor() { }

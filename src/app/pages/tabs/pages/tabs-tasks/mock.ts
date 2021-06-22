@@ -21,11 +21,12 @@ export const NEW_TASKS: ITasksItem[] = [
         manufacture: 'АТ-9',
         tare: 4,
         test: 6,
-        startPoint: {x: 282, y: 121},
+        startPoint: {x: 325, y: 168},
         routes: [
-            {x: 368, y: 121},
-            {x: 368, y: 202},
-            {x: 378, y: 202}
+            {x: 369, y: 168},
+            {x: 369, y: 272},
+            {x: 367, y: 272},
+            {x: 367, y: 267}
         ]
     },
     {
@@ -33,11 +34,12 @@ export const NEW_TASKS: ITasksItem[] = [
         manufacture: 'АТ-8',
         tare: 11,
         test: 11,
-        startPoint: {x: 282, y: 121},
+        startPoint: {x: 367, y: 267},
         routes: [
-            {x: 368, y: 121},
-            {x: 368, y: 202},
-            {x: 378, y: 202}
+            {x: 367, y: 275},
+            {x: 369, y: 275},
+            {x: 448, y: 275},
+            {x: 448, y: 282},
         ]
     },
     {

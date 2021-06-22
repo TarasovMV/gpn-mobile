@@ -4,11 +4,11 @@ import {
     ChangeDetectorRef,
     Component,
     ElementRef,
-    NgZone,
+    NgZone, OnDestroy,
     OnInit,
     ViewChild
 } from '@angular/core';
-import {BehaviorSubject, Subject} from 'rxjs';
+import {BehaviorSubject, Subject, Subscription} from 'rxjs';
 import {TabsInfoService} from '../../services/tabs/tabs-info.service';
 import {ModalController, NavController} from '@ionic/angular';
 import Hammer from 'hammerjs';
@@ -28,16 +28,18 @@ interface IMapConfig {
     styleUrls: ['./map.page.scss'],
     // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MapPage implements OnInit, AfterViewInit {
+export class MapPage implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('screen') screenRef: ElementRef;
     @ViewChild('svg') svgElement: ElementRef;
+
+    public subscription: Subscription;
 
     width;
     height;
 
     public config: IMapConfig = {
-        width: 411,
-        height: 231.2,
+        width: 720,
+        height: 405,
         initScale: 10,
     };
 
@@ -94,11 +96,17 @@ export class MapPage implements OnInit, AfterViewInit {
         public modalController: ModalController,
     ) {}
 
+    ngOnDestroy(): void {
+        // this.subscription.unsubscribe();
+    }
+
     ngOnInit(): void {
-        this.tabsService.currentTask$.subscribe(item => {
+        /*this.subscription = this.tabsService.currentTask$.subscribe(item => {
+            this.setCameraPosition(item.startPoint.x, item.startPoint.y);
             this.currentRoute = item.routes;
             this.position$.next(item.startPoint);
-        });
+            this.fakeDriving().then();
+        });*/
         this.listener.subscribe(x => {
             this.scaleStyle = this.zoomHandler(x.scale);
             this.rotationStyle = this.rotationHandler(x.rotation, x);
@@ -110,7 +118,7 @@ export class MapPage implements OnInit, AfterViewInit {
         this.width = this.screenRef.nativeElement.clientWidth;
         this.height = this.screenRef.nativeElement.offsetHeight;
         this.init();
-        this.drawSvg();
+        //this.drawSvg();
     }
 
     init(): void {
@@ -329,12 +337,6 @@ export class MapPage implements OnInit, AfterViewInit {
             .attr('viewBox', `0 0 ${this.config.width} ${this.config.height}`);
 
         this.position$.subscribe(c => this.drawCarPoint(c.x, c.y));
-        this.tabsService.currentTask$.subscribe(item => {
-            this.setCameraPosition(item.startPoint.x, item.startPoint.y);
-            this.currentRoute = item.routes;
-            this.position$.next(item.startPoint);
-            this.fakeDriving().then();
-        });
     }
 
     private async fakeDriving(): Promise<void> {
