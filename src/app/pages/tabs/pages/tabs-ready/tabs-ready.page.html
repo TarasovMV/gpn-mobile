@@ -2,14 +2,14 @@
   <app-header>
     <div
       class="tab-btn"
-      [class.tab-btn_active]="i === currentTab"
+      [class.tab-btn_active]="i === (tabsService.currentTab$ | async)"
       *ngFor="let tab of (tabs$ | async); let i = index"
       (click)="changeTab(i)"
     >{{tab}}</div>
   </app-header>
   <div class="content">
     <ng-container
-      [ngSwitch]="currentTab"
+      [ngSwitch]="(tabsService.currentTab$ | async)"
     >
       <div
         class="tab"
@@ -18,7 +18,7 @@
         <span class="extra-info">Для завершения задания выгрузите пробы в ЕЛК и поднесите телефон к NFC метке</span>
         <div
           class="item"
-          *ngFor="let selected of (selectedItems$ | async)"
+          *ngFor="let selected of (tabsService.selectedItems$ | async)"
         >
           <svg-icon
             class="bottle-icon"
@@ -46,7 +46,7 @@
       >
         <div
           class="item"
-          *ngFor="let delivered of (deliveredItems$ | async)"
+          *ngFor="let delivered of (tabsService.deliveredItems$ | async)"
         >
           <svg-icon
             class="bottle-icon bottle-icon_delivered"

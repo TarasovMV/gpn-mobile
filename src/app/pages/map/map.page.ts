@@ -10,9 +10,11 @@ import {
 } from '@angular/core';
 import {BehaviorSubject, Subject} from 'rxjs';
 import {TabsInfoService} from '../../services/tabs/tabs-info.service';
-import {NavController} from '@ionic/angular';
+import {ModalController, NavController} from '@ionic/angular';
 import Hammer from 'hammerjs';
 import * as d3 from 'd3';
+import {ICoord} from '../tabs/pages/tabs-tasks/tabs-tasks.page';
+import {ResolveTaskComponent} from './components/resolve-task/resolve-task.component';
 
 interface IMapConfig {
     width: number;
@@ -81,21 +83,22 @@ export class MapPage implements OnInit, AfterViewInit {
 
     private svg: any;
 
-    private currentRoute: any[] = [
-        {x: 195.5, y: 116},
-        {x: 211, y: 116},
-        {x: 211, y: 95}
-    ];
-    private position$: BehaviorSubject<any> = new BehaviorSubject<any>({x: 195.5, y: 135});
+    private currentRoute: ICoord[] = [];
+    private position$: BehaviorSubject<ICoord> = new BehaviorSubject<ICoord>({x: 0, y: 0});
 
     constructor(
         public tabsService: TabsInfoService,
         private navCtrl: NavController,
         private zone: NgZone,
         private cdRef: ChangeDetectorRef,
+        public modalController: ModalController,
     ) {}
 
     ngOnInit(): void {
+        this.tabsService.currentTask$.subscribe(item => {
+            this.currentRoute = item.routes;
+            this.position$.next(item.startPoint);
+        });
         this.listener.subscribe(x => {
             this.scaleStyle = this.zoomHandler(x.scale);
             this.rotationStyle = this.rotationHandler(x.rotation, x);
@@ -296,7 +299,6 @@ export class MapPage implements OnInit, AfterViewInit {
 
     public redirectToTab(): void {
         this.navCtrl.navigateRoot('/tabs/tabs-tasks').then();
-        this.tabsService.tasksCurrentTab$.next(1);
     }
 
     public goToPosition(): void {
@@ -327,7 +329,12 @@ export class MapPage implements OnInit, AfterViewInit {
             .attr('viewBox', `0 0 ${this.config.width} ${this.config.height}`);
 
         this.position$.subscribe(c => this.drawCarPoint(c.x, c.y));
-        this.fakeDriving().then();
+        this.tabsService.currentTask$.subscribe(item => {
+            this.setCameraPosition(item.startPoint.x, item.startPoint.y);
+            this.currentRoute = item.routes;
+            this.position$.next(item.startPoint);
+            this.fakeDriving().then();
+        });
     }
 
     private async fakeDriving(): Promise<void> {
@@ -372,14 +379,17 @@ export class MapPage implements OnInit, AfterViewInit {
                     flag = false;
                 }
                 this.position$.next(position);
-                setTimeout(() => resolve(), 30);
+                setTimeout(() => resolve(), dT);
             });
 
             while(flag) {
                 await promiseFn();
             }
             this.currentRoute.splice(this.currentRoute.indexOf(route), 1);
+
         }
+
+        await this.openEndTaskModal();
     }
 
     private drawRoute(coords: {x: number; y: number}[]): void {
@@ -435,6 +445,14 @@ export class MapPage implements OnInit, AfterViewInit {
             y2: arr[i + 1]?.y
         })).filter(x => !!x.x2 && !!x.y2).map(l => Math.sqrt(Math.pow((l.x1 - l.x2), 2) + Math.pow((l.y1 - l.y2), 2)))
             .reduce((acc, next) => acc + next);
+    }
+
+    private async openEndTaskModal(): Promise<void> {
+        const modal = await this.modalController.create({
+            component: ResolveTaskComponent,
+            cssClass: 'simple-modal',
+        });
+        return await modal.present();
     }
 }
 

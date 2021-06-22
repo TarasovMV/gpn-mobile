@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {Ndef, NFC} from "@ionic-native/nfc/ngx";
-import {ModalController} from "@ionic/angular";
+import {ModalController, NavController} from "@ionic/angular";
 import {NfcService} from "../../../../@core/services/nfc.service";
 import {take} from "rxjs/operators";
 
@@ -23,6 +23,7 @@ export class NfcTimerModalComponent implements OnInit {
         private modalCtrl: ModalController,
         private changeDetectorRef: ChangeDetectorRef,
         private nfcService: NfcService,
+        private navCtrl: NavController,
     ) {}
 
     public ngOnInit(): void {
@@ -33,6 +34,7 @@ export class NfcTimerModalComponent implements OnInit {
     public async close(): Promise<void> {
         this.stopTimeouts();
         await this.modalCtrl.dismiss();
+        await this.navCtrl.navigateRoot('/end-task');
     }
 
     private initNfcReader(): void {

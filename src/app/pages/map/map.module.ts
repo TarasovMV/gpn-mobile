@@ -7,9 +7,10 @@ import {IonicModule} from '@ionic/angular';
 import {MapPage} from './map.page';
 import {RouterModule} from '@angular/router';
 import {HammerModule} from '@angular/platform-browser';
-import {SharedModule} from "../../@shared/shared.module";
-import {AngularSvgIconModule} from "angular-svg-icon";
-import {MapProgressComponent} from "./components/map-progress/map-progress.component";
+import {SharedModule} from '../../@shared/shared.module';
+import {AngularSvgIconModule} from 'angular-svg-icon';
+import {MapProgressComponent} from './components/map-progress/map-progress.component';
+import {ResolveTaskComponent} from './components/resolve-task/resolve-task.component';
 
 @NgModule({
     imports: [
@@ -21,7 +22,7 @@ import {MapProgressComponent} from "./components/map-progress/map-progress.compo
         SharedModule,
         AngularSvgIconModule,
     ],
-    declarations: [MapPage, MapProgressComponent]
+    declarations: [MapPage, MapProgressComponent, ResolveTaskComponent]
 })
 export class MapPageModule {
 }

@@ -117,6 +117,13 @@ span {
       .title {
         color: var(--text-accent-color);
       }
+
+      &__item {
+        .icon {
+          color: var(--text-alwaysWhite-color);
+          background: var(--border-blue-color);
+        }
+      }
     }
 
     .chart {

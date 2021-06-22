@@ -3,6 +3,7 @@ import {IPageTab, PageTabType} from '../../tabs.page';
 import {BehaviorSubject} from 'rxjs';
 import {DELIVERED, SELECTED} from './mock';
 import {NavController} from "@ionic/angular";
+import {TabsInfoService} from "../../../../services/tabs/tabs-info.service";
 
 
 export interface IDeliveryItems {
@@ -18,14 +19,10 @@ export interface IDeliveryItems {
 
 export class TabsReadyPage implements OnInit, IPageTab {
     public route: PageTabType = 'ready';
-    public tabs$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(['в машине', 'в елк']);
-
-    public selectedItems$: BehaviorSubject<IDeliveryItems[]> = new BehaviorSubject<IDeliveryItems[]>(SELECTED);
-    public deliveredItems$: BehaviorSubject<IDeliveryItems[]> = new BehaviorSubject<IDeliveryItems[]>(DELIVERED);
-
-    public currentTab = 0;
+    public tabs$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(['в машине', 'завершено']);
     constructor(
         private navCtrl: NavController,
+        public tabsService: TabsInfoService
     ) {
     }
 
@@ -33,7 +30,7 @@ export class TabsReadyPage implements OnInit, IPageTab {
     }
 
     public changeTab(i): void {
-        this.currentTab = i;
+        this.tabsService.currentTab$.next(i);
     }
 
     public toNfc(): void {

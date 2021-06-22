@@ -1,6 +1,6 @@
 <div class="container">
   <div class="info">
-    <div class="info__title">{{name}}</div>
+    <div class="info__title">{{(tabsService.currentTask$ | async)?.manufacture}}</div>
     <div class="info__time">осталось ехать 5 мин</div>
   </div>
 

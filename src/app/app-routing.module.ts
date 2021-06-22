@@ -23,6 +23,10 @@ const routes: Routes = [
         loadChildren: () => import('./pages/nfc-verify/nfc-verify.module').then(m => m.NfcVerifyModule)
     },
     {
+        path: 'end-task',
+        loadChildren: () => import('./pages/end-task/end-task.module').then(m => m.EndTaskModule)
+    },
+    {
         path: '**',
         redirectTo: 'login',
         pathMatch: 'full',

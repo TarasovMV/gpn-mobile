@@ -12,21 +12,14 @@ import {VerifyModalComponent} from "./components/verify-modal/verify-modal.compo
     styleUrls: ['./nfc-verify.page.scss']
 })
 export class NfcVerifyPage implements OnInit {
-
-    public currentTask$: BehaviorSubject<ITasksItem>;
-
     constructor(
         private navCtrl: NavController,
         private modalCtrl: ModalController,
-        private tabsInfoService: TabsInfoService
+        public tabsService: TabsInfoService
     ) {
     }
 
-    public ngOnInit(): void {
-        this.tabsInfoService.newItems$.subscribe((data: ITasksItem[]) => {
-            this.currentTask$ = new BehaviorSubject<ITasksItem>(data[0]);
-        });
-    }
+    public ngOnInit(): void {}
 
     public async openModal(): Promise<void> {
         const modal = await this.modalCtrl.create({
@@ -40,7 +33,6 @@ export class NfcVerifyPage implements OnInit {
     }
 
     public async enableNfc(): Promise<void> {
-        console.log('nfc');
         await this.openModal();
     }
 

@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {TabsInfoService} from '../../../../services/tabs/tabs-info.service';
 
 @Component({
   selector: 'app-map-progress',
@@ -6,9 +7,11 @@ import {Component, Input, OnInit} from '@angular/core';
   styleUrls: ['./map-progress.component.scss'],
 })
 export class MapProgressComponent implements OnInit {
-    @Input() percent: number = 0;
+    @Input() percent = 0;
     @Input() name: string;
-    constructor() { }
+    constructor(
+        public tabsService: TabsInfoService
+    ) { }
 
     ngOnInit() {}
 

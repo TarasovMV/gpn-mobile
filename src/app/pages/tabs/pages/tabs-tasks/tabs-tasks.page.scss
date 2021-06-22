@@ -7,25 +7,10 @@
   display: flex;
   flex-direction: column;
 
-  .tab-btn {
-    height: 100%;
-    width: sizeWidth(310);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: sizeHeight(24);
-    letter-spacing: sizeWidth(1.5);
-    text-transform: uppercase;
-    color: var(--text-main-color);
-
-    border-bottom: sizeHeight(6) solid transparent;
-
-    &_active {
-      border-color: var(--border-blue-color);
-      color: var(--border-blue-color);
-    }
+  .title {
+    margin-left: sizeWidth(50);
+    font-size: sizeHeight(42);
+    color: var(--text-contrast-color);
   }
 
   .content {

@@ -46,11 +46,11 @@ button {
     flex-wrap: wrap;
 
     :nth-child(odd) {
-      margin-right: 4px;
+      margin-right: sizeWidth(4);
     }
 
     :nth-child(even) {
-      margin-left: 4px;
+      margin-left: sizeWidth(4);
     }
 
     &__item {
