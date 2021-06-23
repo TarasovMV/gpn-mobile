@@ -16,6 +16,7 @@ export interface ITasksItem {
     startPoint?: ICoord;
     endPoint?: ICoord;
     routes?: ICoord[];
+    specialProps?: string[]; // Временно для мультика
 }
 
 export interface ICoord {

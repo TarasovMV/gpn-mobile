@@ -1,8 +1,8 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {Ndef, NFC} from "@ionic-native/nfc/ngx";
-import {ModalController, NavController} from "@ionic/angular";
-import {NfcService} from "../../../../@core/services/nfc.service";
-import {take} from "rxjs/operators";
+import {Ndef, NFC} from '@ionic-native/nfc/ngx';
+import {ModalController, NavController} from '@ionic/angular';
+import {NfcService} from '../../../../@core/services/nfc.service';
+import {take} from 'rxjs/operators';
 
 @Component({
     selector: 'app-nfc-timer-modal',
@@ -11,8 +11,8 @@ import {take} from "rxjs/operators";
 })
 export class NfcTimerModalComponent implements OnInit {
 
-    public isNfcAccepted: boolean = false;
-    public timerDuration: number = 35;
+    public isNfcAccepted = false;
+    public timerDuration = 35;
     public currentTimerValue: number = this.timerDuration;
 
     private runTimeOut: number;

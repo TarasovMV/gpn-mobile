@@ -19,6 +19,9 @@
         <div
           class="item"
           *ngFor="let selected of (tabsService.selectedItems$ | async)"
+          [ngClass]="{
+            noneDisplay: selected?.specialProps?.includes('elk')
+          }"
         >
           <svg-icon
             class="bottle-icon"
@@ -47,6 +50,9 @@
         <div
           class="item"
           *ngFor="let delivered of (tabsService.deliveredItems$ | async)"
+          [ngClass]="{
+            noneDisplay: delivered?.specialProps?.includes('elk')
+          }"
         >
           <svg-icon
             class="bottle-icon bottle-icon_delivered"

@@ -1,6 +1,15 @@
 <div class="container">
-  <span class="info">Вы на месте</span>
-  <span class="info">Установка {{(tabsService.currentTask$ | async)?.manufacture}}</span>
+  <ng-container *ngIf="type === 'endOne'">
+    <span class="info">Вы на месте</span>
+    <span class="info">Установка {{(tabsService.currentTask$ | async)?.manufacture}}</span>
+  </ng-container>
+  <ng-container *ngIf="type === 'new'">
+    <span class="info">Новое задание по пути</span>
+  </ng-container>
+  <ng-container *ngIf="type === 'endAll'">
+    <span class="info">Вы на месте</span>
+    <span class="info">ЕЛК</span>
+  </ng-container>
   <div
     class="btn"
     (click)="accept()"
@@ -12,7 +21,7 @@
         'height.vh': 3.9
       }"
     ></svg-icon>
-    Выполнить задание
+    {{type === 'endAll' ? 'Завершить все задания' : 'Выполнить задание'}}
   </div>
 
   <div

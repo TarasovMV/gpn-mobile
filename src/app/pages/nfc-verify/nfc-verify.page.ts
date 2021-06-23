@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ModalController, NavController} from '@ionic/angular';
 import {ITasksItem} from '../tabs/pages/tabs-tasks/tabs-tasks.page';
-import {TabsInfoService} from "../../services/tabs/tabs-info.service";
-import {BehaviorSubject} from "rxjs";
-import {NfcTimerModalComponent} from "./components/nfc-timer-modal/nfc-timer-modal.component";
-import {VerifyModalComponent} from "./components/verify-modal/verify-modal.component";
+import {TabsInfoService} from '../../services/tabs/tabs-info.service';
+import {BehaviorSubject} from 'rxjs';
+import {NfcTimerModalComponent} from './components/nfc-timer-modal/nfc-timer-modal.component';
+import {VerifyModalComponent} from './components/verify-modal/verify-modal.component';
 
 @Component({
     selector: 'app-nfc-verify.page',
