@@ -48,11 +48,12 @@
       background: var(--border-blue-color);
       border-radius: sizeHeight(8);
 
+      transition: 400ms;
       position: relative;
 
       svg-icon {
         position: absolute;
-        right: -2.4vh;
+        right: -1.9vh;
       }
     }
   }

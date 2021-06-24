@@ -79,6 +79,8 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
     rotationStyle: string;
     pointStyle: string;
     currentPosition: ICoord;
+    allTime: number = 15 * 1000;
+    currentTime: number = 0;
 
     private svg: any;
 
@@ -369,7 +371,6 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
 
     private async fakeDriving(): Promise<void> {
         let timeToStop = -1; // Показатель прекращения движения
-        const allTime = 15 * 1000;
         const dT = 30;
         const routes = [...this.currentRoute];
         const position = {
@@ -377,12 +378,21 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
             y: this.position$.getValue().y
         };
         const distance = this.getDistance([position, ...routes]);
-        const dS = distance / (allTime / dT);
+        const dS = distance / (this.allTime / dT);
 
-        if (this.tabsService.currentTask$.value?.specialProps?.includes('elk') && !this.tabsService.currentTask$.value?.specialProps?.includes('last'))
-        {setTimeout(() => {
-            timeToStop = 0; // Значение при котором оборвем цикл
-        }, 5000);}
+        const allTimeInterval = setInterval(()=> {
+            if (this.currentTime < this.allTime) {
+                this.currentTime += 50;
+            }
+        }, 50);
+
+        if (this.tabsService.currentTask$.value?.specialProps?.includes('elk')
+            && !this.tabsService.currentTask$.value?.specialProps?.includes('last')) {
+            setTimeout(() => {
+                timeToStop = 0; // Значение при котором оборвем цикл
+                clearInterval(allTimeInterval);
+            }, 5000);
+        }
 
         for (const route of routes) {
             const pos = [this.position$.getValue(), route];
@@ -435,6 +445,9 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
             }
             this.currentRoute.splice(this.currentRoute.indexOf(route), 1);
         }
+
+        clearInterval(allTimeInterval);
+
         if (this.tabsService.currentTask$.value?.specialProps?.includes('last')) {
             await this.openEndTaskModal('endAll');
         }

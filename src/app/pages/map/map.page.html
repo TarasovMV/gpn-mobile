@@ -24,7 +24,7 @@
   </div>
   <div class="progress">
     <app-map-progress
-      [percent]="60"
+      [percent]="currentTime / allTime * 100"
       [name]="((tabsService?.inProgressItems$ | async) || [null])[0]?.manufacture"
     ></app-map-progress>
   </div>
