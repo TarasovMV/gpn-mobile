@@ -44,6 +44,7 @@ export class NfcTimerModalComponent implements OnInit {
             this.successTimeOut = window.setTimeout(async () => {
                 this.stopTimeouts();
                 await this.modalCtrl.dismiss();
+                await this.navCtrl.navigateRoot('/end-task');
             }, 3000);
         });
     }
