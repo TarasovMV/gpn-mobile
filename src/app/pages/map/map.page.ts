@@ -465,13 +465,21 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
 
     private drawNavPoints(coords: {x: number; y: number}[]): void {
         this.svg.selectAll('.nav-point').remove();
+        this.svg.selectAll('.nav-point-inner').remove();
         coords.forEach(c => {
             this.svg
                 .append('circle')
-                .attr('r', 2)
+                .attr('r', 1.4)
+                .attr('stroke-width', 0.1)
                 .attr('cx', c.x)
                 .attr('cy', c.y)
                 .attr('class', 'nav-point');
+            this.svg
+                .append('circle')
+                .attr('r', 0.7)
+                .attr('cx', c.x)
+                .attr('cy', c.y)
+                .attr('class', 'nav-point-inner');
         });
     }
 
@@ -479,12 +487,19 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
         this.drawRoute([{x, y}, ...this.currentRoute]);
         this.drawNavPoints([this.currentRoute[this.currentRoute.length - 1]]);
         this.svg.select('.car-point').remove();
+        this.svg.select('.car-point-back').remove();
         this.svg.append('circle')
             .attr('id', 999)
             .attr('r', 1)
             .attr('cx', x)
             .attr('cy', y)
             .attr('class', 'car-point');
+        this.svg.append('circle')
+            .attr('id', 998)
+            .attr('r', 3)
+            .attr('cx', x)
+            .attr('cy', y)
+            .attr('class', 'car-point-back');
         this.setCameraPosition(x, y);
     }
 

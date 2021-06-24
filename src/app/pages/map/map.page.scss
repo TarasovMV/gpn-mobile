@@ -131,11 +131,19 @@
 
       ::ng-deep {
         .nav-point {
-          fill: white;
+          fill: transparent;
+          stroke: white;
+          &-inner {
+            fill: white;
+          }
         }
 
         .car-point {
           fill: black;
+          &-back {
+            fill: var(--border-blue-color);
+            fill-opacity: 0.2;
+          }
         }
       }
     }
