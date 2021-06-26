@@ -40,14 +40,14 @@
         <div class="dropdown__current" *ngIf="(userInfo.statusIndex$ | async) !== -1">
           <div
             class="indicator"
-            [style.background]="(statusList$ | async)[(userInfo.statusIndex$ | async)].bgColor"
+            [style.background]="(userInfo.statusList$ | async)[(userInfo.statusIndex$ | async)].bgColor"
           >
             <div
               class="indicator__inner"
-              [style.background]="(statusList$ | async)[(userInfo.statusIndex$ | async)].color"
+              [style.background]="(userInfo.statusList$ | async)[(userInfo.statusIndex$ | async)].color"
             ></div>
           </div>
-          <span>{{(statusList$ | async)[(userInfo.statusIndex$ | async)].name}}</span>
+          <span>{{(userInfo.statusList$ | async)[(userInfo.statusIndex$ | async)].name}}</span>
         </div>
         <span class="name" *ngIf="(userInfo.statusIndex$ | async) === -1">Статус</span>
         <svg-icon
@@ -59,7 +59,7 @@
         ></svg-icon>
 
         <div class="dropdown-list">
-          <div class="dropdown__item" (click)="chooseStatus(i)" *ngFor="let item of (statusList$ | async); let i = index">
+          <div class="dropdown__item" (click)="chooseStatus(i)" *ngFor="let item of (userInfo.statusList$ | async); let i = index">
             <div
               class="indicator"
               [style.background]="item.bgColor"

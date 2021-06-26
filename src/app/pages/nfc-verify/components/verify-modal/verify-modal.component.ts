@@ -18,6 +18,17 @@ export class VerifyModalComponent {
         await this.modalCtrl.dismiss();
     }
 
+    public async openModal(): Promise<void> {
+        const modal = await this.modalCtrl.create({
+                component: NfcTimerModalComponent,
+                cssClass: 'nfc-timer-modal',
+                backdropDismiss: true
+            }
+        );
+        await modal.present();
+        // await modal.present();
+    }
+
     public async presentNfcTimerModal(): Promise<void> {
         await this.modalCtrl.dismiss();
         const modal = await this.modalCtrl.create({component: NfcTimerModalComponent, cssClass: 'nfc-timer-modal'});

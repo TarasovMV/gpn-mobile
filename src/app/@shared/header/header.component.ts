@@ -3,6 +3,7 @@ import {ModalController} from '@ionic/angular';
 import {AvatarModalComponent} from '../avatar-modal/avatar-modal.component';
 import {BehaviorSubject} from 'rxjs';
 import {ThemeService} from '../../services/theme.service';
+import {UserInfoService} from '../../services/user-info.service';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +15,8 @@ export class HeaderComponent implements OnInit {
 
     constructor(
       public modalController: ModalController,
-      public theme: ThemeService
+      public theme: ThemeService,
+      public userInfo: UserInfoService
     ) { }
 
     ngOnInit() {}

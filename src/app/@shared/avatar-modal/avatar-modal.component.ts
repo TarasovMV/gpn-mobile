@@ -18,23 +18,6 @@ export interface IStatusInfo {
 })
 export class AvatarModalComponent implements OnInit {
     public isOpened = false;
-    public statusList$: BehaviorSubject<IStatusInfo[]> = new BehaviorSubject<IStatusInfo[]>([
-        {
-            name: 'На линии',
-            color: '#00A73D',
-            bgColor: 'rgba(0, 167, 61, 0.2)'
-        },
-        {
-            name: 'Занят',
-            color: '#F7931E',
-            bgColor: 'rgba(247, 147, 30, 0.2)'
-        },
-        {
-            name: 'Не активен',
-            color: '#FF1D25',
-            bgColor: 'rgba(255, 29, 37, 0.2)'
-        }
-    ]);
     public readonly tabs: string[] = [
         'Информация',
         'обучение',

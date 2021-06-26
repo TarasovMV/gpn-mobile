@@ -2,8 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {IPageTab, PageTabType} from '../../tabs.page';
 import {BehaviorSubject} from 'rxjs';
 import {DELIVERED, SELECTED} from './mock';
-import {NavController} from "@ionic/angular";
-import {TabsInfoService} from "../../../../services/tabs/tabs-info.service";
+import {ModalController, NavController} from '@ionic/angular';
+import {TabsInfoService} from '../../../../services/tabs/tabs-info.service';
+import {NfcTimerModalComponent} from '../../../nfc-verify/components/nfc-timer-modal/nfc-timer-modal.component';
 
 
 export interface IDeliveryItems {
@@ -22,7 +23,8 @@ export class TabsReadyPage implements OnInit, IPageTab {
     public tabs$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(['в машине', 'завершено']);
     constructor(
         private navCtrl: NavController,
-        public tabsService: TabsInfoService
+        public tabsService: TabsInfoService,
+        public modalCtrl: ModalController
     ) {
     }
 
@@ -33,8 +35,20 @@ export class TabsReadyPage implements OnInit, IPageTab {
         this.tabsService.currentTab$.next(i);
     }
 
-    public toNfc(): void {
-        this.navCtrl.navigateRoot('/nfc').then();
+    public async openModal(): Promise<void> {
+        const modal = await this.modalCtrl.create({
+                component:  NfcTimerModalComponent,
+                cssClass: 'nfc-timer-modal',
+                backdropDismiss: true
+            }
+        );
+        await modal.present();
+    }
+
+    public async toNfc(): Promise<void> {
+        if (!this.tabsService.newItems$.value.length) {
+            await this.openModal();
+        }
     }
 
 }

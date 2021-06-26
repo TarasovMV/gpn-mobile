@@ -12,8 +12,14 @@
         'height': '3.9vh'
       }"
     ></svg-icon>
-    <div class="indicator">
-      <div class="indicator__inner"></div>
+    <div
+      class="indicator"
+      [style.background]="(userInfo.statusList$ | async)[(userInfo.statusIndex$ | async)].bgColor"
+    >
+      <div
+        class="indicator__inner"
+        [style.background]="(userInfo.statusList$ | async)[(userInfo.statusIndex$ | async)].color"
+      ></div>
     </div>
   </div>
   <div class="switch-btn" *ngIf="withThemeSwitch" (click)="toggleSwitch()" [class.switch-on]="!(theme.isDarkTheme | async)">

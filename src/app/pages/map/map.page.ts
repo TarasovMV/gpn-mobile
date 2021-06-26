@@ -125,12 +125,16 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
                     //this.setCameraPosition(item.startPoint.x, item.startPoint.y);
                     this.currentRoute = [
                         {
-                            x: 511,
-                            y: 681,
+                            x: 373 / this.config.width * 1000,
+                            y: 168 / this.config.height * 1000,
                         },
                         {
-                            x: 433,
-                            y: 681,
+                            x: 373 / this.config.width * 1000,
+                            y: 278 / this.config.height * 1000,
+                        },
+                        {
+                            x: 323 / this.config.width * 1000,
+                            y: 278 / this.config.height * 1000,
                         }
                     ];
                     this.position$.next({x: item.startPoint.x, y: item.startPoint.y});
@@ -391,7 +395,7 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
             setTimeout(() => {
                 timeToStop = 0; // Значение при котором оборвем цикл
                 clearInterval(allTimeInterval);
-            }, 5000);
+            }, 4370);
         }
 
         for (const route of routes) {

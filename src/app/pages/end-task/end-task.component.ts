@@ -29,6 +29,23 @@ export class EndTaskComponent implements OnInit {
         newTasks.shift();
         this.tabsService.newItems$.next(newTasks);
         this.tabsService.currentTab$.next(0);
-        this.navCtrl.navigateRoot('/tabs/tabs-ready').then();
+        if (newTasks.length === 0) {
+            this.tabsService.deliveredItems$.next(selected.filter(item => !!item));
+            this.tabsService.selectedItems$.next([]);
+            this.tabsService.currentTab$.next(1);
+
+            this.navCtrl.navigateRoot('/tabs/tabs-ready').then();
+            return;
+        }
+
+        if (newTasks.filter(item => !item.specialProps && !item?.specialProps?.includes('elk')).length === 0) {
+            this.tabsService.currentTask$.next(newTasks[0]);
+            newTasks.shift();
+            this.tabsService.newItems$.next(newTasks);
+            this.navCtrl.navigateRoot('/map').then();
+        }
+        else {
+            this.navCtrl.navigateRoot('/tabs/tabs-ready').then();
+        }
     }
 }
