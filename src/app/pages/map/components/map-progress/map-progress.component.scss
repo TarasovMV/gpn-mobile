@@ -22,13 +22,18 @@
     justify-content: space-between;
 
     &__title {
+      margin-right: sizeWidth(5);
       font-size: sizeHeight(40);
       color: var(--text-contrast-color);
+      white-space: nowrap;
     }
 
     &__time {
       font-size: sizeHeight(29);
       color: var(--text-main-color);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 

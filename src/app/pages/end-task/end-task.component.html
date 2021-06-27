@@ -56,7 +56,9 @@
       ></svg-icon>
     </div>
 
-    <button class="btn btn_active" (click)="nextTask()">{{(this.tabsService.newItems$ | async).length === 0? 'Выполнить' : 'Следующее задание'}}</button>
+    <button class="btn btn_active" (click)="nextTask()">
+      <span>{{((this.tabsService.newItems$ | async).length === 0)? 'Завершить все задания' : (this.tabsService.newItems$ | async)[1]?.specialProps?.includes('elk') ? 'Завершить заданиe' : 'Следующее задание'}}</span>
+    </button>
     <button class="btn" disabled>Завершить задание</button>
   </div>
 </div>

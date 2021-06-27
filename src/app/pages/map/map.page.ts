@@ -123,21 +123,21 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
             this.tabsService.currentTask$.subscribe(item => {
                 if(item?.specialProps?.includes('new')) {
                     //this.setCameraPosition(item.startPoint.x, item.startPoint.y);
+                    this.position$.next({x: 369, y: 164});
                     this.currentRoute = [
                         {
-                            x: 373 / this.config.width * 1000,
-                            y: 168 / this.config.height * 1000,
+                            x: 370 / this.config.width * 1000,
+                            y: 165 / this.config.height * 1000,
                         },
                         {
-                            x: 373 / this.config.width * 1000,
-                            y: 278 / this.config.height * 1000,
+                            x: 370 / this.config.width * 1000,
+                            y: 276 / this.config.height * 1000,
                         },
                         {
                             x: 323 / this.config.width * 1000,
-                            y: 278 / this.config.height * 1000,
+                            y: 276 / this.config.height * 1000,
                         }
                     ];
-                    this.position$.next({x: item.startPoint.x, y: item.startPoint.y});
                 }
                 else {
                     this.setCameraPosition(item.startPoint.x * this.config.width / 1000, item.startPoint.y * this.config.height / 1000);
@@ -427,6 +427,10 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
                     x: this.position$.getValue().x + powX * dx,
                     y: this.position$.getValue().y + powY * dy,
                 };
+
+                console.log(powY * (this.currentPosition.y - route.y));
+                console.log(powX * (this.currentPosition.x - route.x));
+                debugger;
                 if (powY * (this.currentPosition.y - route.y) > 0 || powX * (this.currentPosition.x - route.x) > 0) {
                     console.log(route.y);
                     this.position$.next(route);
