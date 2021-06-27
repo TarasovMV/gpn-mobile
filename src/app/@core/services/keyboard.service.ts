@@ -16,7 +16,7 @@ export class KeyboardService {
         try {
             this.actionListeners(platform, appWindow);
             await Keyboard.setStyle({style: KeyboardStyle.Light});
-            await Keyboard.setResizeMode({mode: KeyboardResize.Ionic});
+            await Keyboard.setResizeMode({mode: KeyboardResize.None});
         } catch {}
     }
 

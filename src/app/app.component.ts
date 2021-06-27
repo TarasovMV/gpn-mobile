@@ -54,7 +54,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     private initializeApp(): void {
         this.platform.ready().then(() => {
-            this.keyboardService.setInitSettings(this.platform, this.appWindow).then();
+            setTimeout(() => this.keyboardService.setInitSettings(this.platform, this.appWindow).then());
         });
         this.nfcService.initNfc();
     }

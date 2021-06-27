@@ -30,7 +30,7 @@ export class TabsPage implements OnInit {
             route: 'ready',
             name: 'Выполнено'
         }
-        ];
+    ];
 
     private readonly tabsRouting: {[key in PageTabType]: string} = {
         main: 'tabs/tabs-main',
