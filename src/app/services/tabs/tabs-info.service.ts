@@ -23,4 +23,16 @@ export class TabsInfoService {
     public deliveredItems$: BehaviorSubject<ITasksItem[]> = new BehaviorSubject<ITasksItem[]>([]);
 
     constructor() { }
+
+    public startMove(): void {
+        console.log('Движение началось');
+    }
+
+    public endMove(): void {
+        console.log('Движение закончилось');
+    }
+
+    public cancelData(): void {
+        console.log('Приложение запустилось что-то сбросилось');
+    }
 }

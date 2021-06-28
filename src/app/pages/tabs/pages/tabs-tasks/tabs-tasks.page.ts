@@ -17,6 +17,7 @@ export interface ITasksItem {
     endPoint?: ICoord;
     routes?: ICoord[];
     specialProps?: string[]; // Временно для мультика
+    testList?: {name: string; val: number}[];
 }
 
 export interface ICoord {

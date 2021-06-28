@@ -49,6 +49,7 @@
         .gray-text {
           color: var(--text-main-color);
           font-size: sizeHeight(29);
+          white-space: nowrap;
         }
 
         .light-text {

@@ -1,6 +1,8 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {ModalController, NavController} from '@ionic/angular';
 import {NfcTimerModalComponent} from '../nfc-timer-modal/nfc-timer-modal.component';
+import {TasksService} from '../../../../services/tasks.service';
+import {TabsInfoService} from '../../../../services/tabs/tabs-info.service';
 
 @Component({
     selector: 'app-verify-modal',
@@ -11,6 +13,7 @@ import {NfcTimerModalComponent} from '../nfc-timer-modal/nfc-timer-modal.compone
 export class VerifyModalComponent {
     constructor(
         public modalCtrl: ModalController,
+        public tabsService: TabsInfoService
     ) {
     }
 

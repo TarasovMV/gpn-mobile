@@ -20,7 +20,7 @@ export const NEW_TASKS: ITasksItem[] = [
         num: '№115623',
         manufacture: 'КЦА',
         tare: 4,
-        test: 6,
+        test: 1,
         startPoint: {x: 449 / 720 * 1000, y: 282 / 405 * 1000},
         routes: [
             {x: 449 / 720 * 1000, y: 275 / 405 * 1000},
@@ -30,13 +30,19 @@ export const NEW_TASKS: ITasksItem[] = [
             {x: 371 / 720 * 1000, y: 266 / 405 * 1000},
             {x: 367 / 720 * 1000, y: 266 / 405 * 1000},
             {x: 367 / 720 * 1000, y: 266 / 405 * 1000},
+        ],
+        testList: [
+            {
+                name: 'ВСГ КЦА (конц. Н2=99,9%об.)',
+                val: 4
+            }
         ]
     },
     {
         num: '№115627',
         manufacture: 'АТ-9',
         tare: 10,
-        test: 10,
+        test: 1,
         startPoint: {x: 367 / 720 * 1000, y: 266 / 405 * 1000},
         routes: [
             {x: 370 / 720 * 1000, y: 266 / 405 * 1000},
@@ -44,13 +50,19 @@ export const NEW_TASKS: ITasksItem[] = [
             {x: 370 / 720 * 1000, y: 167 / 405 * 1000},
             {x: 313 / 720 * 1000, y: 167 / 405 * 1000},
             {x: 313 / 720 * 1000, y: 171 / 405 * 1000}
+        ],
+        testList: [
+            {
+                name: 'Фр. бензин.100-180оС (АТ-9)',
+                val: 2
+            }
         ]
     },
     {
         num: 'В ЕЛК',
         manufacture: 'В ЕЛК',
-        tare: 11,
-        test: 11,
+        tare: 3,
+        test: 1,
         startPoint: {x: 313 / 720 * 1000, y: 171 / 405 * 1000},
         routes: [
             {x: 313 / 720 * 1000, y: 167 / 405 * 1000},

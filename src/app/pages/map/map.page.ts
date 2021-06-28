@@ -112,7 +112,6 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
     ngAfterViewInit(): void {
         this.width = this.screenRef.nativeElement.clientWidth;
         this.height = this.screenRef.nativeElement.offsetHeight;
-        console.log('width: ' + this.width);
         this.config = {
             width: this.width,
             height: 405 / 720 * this.width,
@@ -123,19 +122,19 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
             this.tabsService.currentTask$.subscribe(item => {
                 if(item?.specialProps?.includes('new')) {
                     //this.setCameraPosition(item.startPoint.x, item.startPoint.y);
-                    this.position$.next({x: 369, y: 164});
+                    this.position$.next({x: 369 * this.config.width / 720, y: 164 * this.config.height / 405});
                     this.currentRoute = [
                         {
-                            x: 370 / this.config.width * 1000,
-                            y: 165 / this.config.height * 1000,
+                            x: 370 * this.config.width / 720 / this.config.width * 1000,
+                            y: 165 * this.config.height / 405 / this.config.height * 1000,
                         },
                         {
-                            x: 370 / this.config.width * 1000,
-                            y: 276 / this.config.height * 1000,
+                            x: 370 * this.config.width / 720 / this.config.width * 1000,
+                            y: 276 * this.config.height / 405 / this.config.height * 1000,
                         },
                         {
-                            x: 323 / this.config.width * 1000,
-                            y: 276 / this.config.height * 1000,
+                            x: 323 * this.config.width / 720 / this.config.width * 1000,
+                            y: 276 * this.config.height / 405 / this.config.height * 1000,
                         }
                     ];
                 }
@@ -384,6 +383,8 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
         const distance = this.getDistance([position, ...routes]);
         const dS = distance / (this.allTime / dT);
 
+        this.tabsService.startMove(); // Метод вызывается в начале движения
+
         const allTimeInterval = setInterval(()=> {
             if (this.currentTime < this.allTime) {
                 this.currentTime += 50;
@@ -428,9 +429,6 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
                     y: this.position$.getValue().y + powY * dy,
                 };
 
-                console.log(powY * (this.currentPosition.y - route.y));
-                console.log(powX * (this.currentPosition.x - route.x));
-                debugger;
                 if (powY * (this.currentPosition.y - route.y) > 0 || powX * (this.currentPosition.x - route.x) > 0) {
                     console.log(route.y);
                     this.position$.next(route);
@@ -444,6 +442,7 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
                     clearTimeout(time);
                     this.svg.selectAll('.nav-line').remove();
                     this.openEndTaskModal('new');
+                    this.tabsService.endMove(); // Движение также закончилось
                     return;
                 }
             });
@@ -455,6 +454,8 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
         }
 
         clearInterval(allTimeInterval);
+
+        this.tabsService.endMove(); // Метод вызывается в конце движения
 
         if (this.tabsService.currentTask$.value?.specialProps?.includes('last')) {
             await this.openEndTaskModal('endAll');

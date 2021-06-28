@@ -6,6 +6,7 @@ import {DOCUMENT} from '@angular/common';
 import {UserInfoService} from './services/user-info.service';
 import {Subscription} from 'rxjs';
 import {NfcService} from "./@core/services/nfc.service";
+import {TabsInfoService} from "./services/tabs/tabs-info.service";
 
 @Component({
     selector: 'app-root',
@@ -23,11 +24,14 @@ export class AppComponent implements OnInit, OnDestroy {
         private themeService: ThemeService,
         private nfcService: NfcService,
         private userInfo: UserInfoService,
+        private tasksService: TabsInfoService
     ) {}
 
     public ngOnInit(): void {
         this.initializeApp();
         this.themeService.setThemeConfiguratorRoot(this.document).then();
+
+        this.tasksService.cancelData(); // Сброс каких-то данных
 
         this.userInfo.statusIndex$.next(1);
 

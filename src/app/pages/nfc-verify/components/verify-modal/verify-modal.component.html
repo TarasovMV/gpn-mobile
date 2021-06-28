@@ -4,34 +4,32 @@
       <span class="header">Подтвердите выполнение</span>
     </div>
     <div class="info-block">
-      <span class="info-block-header">Выгружены пустые тары (4)</span>
-      <div class="info-block-item">
-        <ion-checkbox checked></ion-checkbox>
-        <span class="light-text">АИ-95</span>
-        <span class="gray-text">2 шт</span>
-      </div>
-      <div class="info-block-item">
-        <ion-checkbox checked></ion-checkbox>
-        <span class="light-text">АИ-95</span>
-        <span class="gray-text">2 шт</span>
-      </div>
-      <div class="info-block-item">
-        <ion-checkbox checked></ion-checkbox>
-        <span class="light-text">АИ-95</span>
-        <span class="gray-text">2 шт</span>
-      </div>
+      <span class="info-block-header">Выгружены пустые тары (0)</span>
+<!--      <div class="info-block-item">-->
+<!--        <ion-checkbox checked></ion-checkbox>-->
+<!--        <span class="light-text">АИ-95</span>-->
+<!--        <span class="gray-text">2 шт</span>-->
+<!--      </div>-->
+<!--      <div class="info-block-item">-->
+<!--        <ion-checkbox checked></ion-checkbox>-->
+<!--        <span class="light-text">АИ-95</span>-->
+<!--        <span class="gray-text">2 шт</span>-->
+<!--      </div>-->
+<!--      <div class="info-block-item">-->
+<!--        <ion-checkbox checked></ion-checkbox>-->
+<!--        <span class="light-text">АИ-95</span>-->
+<!--        <span class="gray-text">2 шт</span>-->
+<!--      </div>-->
     </div>
     <div class="info-block">
-      <span class="info-block-header">Загружены пробы (6)</span>
-      <div class="info-block-item">
+      <span class="info-block-header">Загружены пробы ({{(tabsService.currentTask$ | async).test}})</span>
+      <div
+        class="info-block-item"
+        *ngFor="let test of (tabsService.currentTask$ | async)?.testList"
+      >
         <ion-checkbox checked></ion-checkbox>
-        <span class="light-text">АИ-95</span>
-        <span class="gray-text">2 шт</span>
-      </div>
-      <div class="info-block-item">
-        <ion-checkbox checked></ion-checkbox>
-        <span class="light-text">АИ-95</span>
-        <span class="gray-text">2 шт</span>
+        <span class="light-text">{{test.name}}</span>
+        <span class="gray-text">{{test.val}} шт</span>
       </div>
     </div>
   </div>

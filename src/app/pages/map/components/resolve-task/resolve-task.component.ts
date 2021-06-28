@@ -49,7 +49,13 @@ export class ResolveTaskComponent implements OnInit {
                 test: 8,
                 startPoint: this.coord,
                 routes: [{x: this.coord.x, y: 276 / 405 * 1000}],
-                specialProps: ['new']
+                specialProps: ['new'],
+                testList: [
+                    {
+                        name: ' Бензин кат. риформ. Л-35/11-1000',
+                        val: 2
+                    }
+                ]
             });
             this.tabsService.newItems$.next(newTasks);
             await this.dismiss();
