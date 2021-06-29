@@ -6,6 +6,7 @@ import {NEW_TASKS, TASKS_IN_PROGRESS} from '../../pages/tabs/pages/tabs-tasks/mo
 import {ITasksItem} from '../../pages/tabs/pages/tabs-tasks/tabs-tasks.page';
 import {DELIVERED, SELECTED} from '../../pages/tabs/pages/tabs-ready/mock';
 import {IDeliveryItems} from '../../pages/tabs/pages/tabs-ready/tabs-ready.page';
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -22,17 +23,46 @@ export class TabsInfoService {
     public selectedItems$: BehaviorSubject<ITasksItem[]> = new BehaviorSubject<ITasksItem[]>([]);
     public deliveredItems$: BehaviorSubject<ITasksItem[]> = new BehaviorSubject<ITasksItem[]>([]);
 
-    constructor() { }
+    private readonly restUrl: string = 'https://tpmobs.koa.gazprom-neft.ru/mobile_web_api';
+
+    constructor(private http: HttpClient) { }
 
     public startMove(): void {
         console.log('Движение началось');
+        this.startMoveRequest().then();
     }
 
     public endMove(): void {
         console.log('Движение закончилось');
+        this.endMoveRequest().then();
     }
 
     public cancelData(): void {
         console.log('Приложение запустилось что-то сбросилось');
+        this.cancelDataRequest().then();
+    }
+
+    public async startMoveRequest(): Promise<void> {
+        try {
+            await this.http.post(`${this.restUrl}/setStartMove`, {}).toPromise();
+        } catch(e) {
+            console.error(e);
+        }
+    }
+
+    public async endMoveRequest(): Promise<void> {
+        try {
+            await this.http.post(`${this.restUrl}/setStopMove`, {}).toPromise();
+        } catch(e) {
+            console.error(e);
+        }
+    }
+
+    public async cancelDataRequest(): Promise<void> {
+        try {
+            await this.http.post(`${this.restUrl}/setResetRoute`, {}).toPromise();
+        } catch(e) {
+            console.error(e);
+        }
     }
 }

@@ -31,8 +31,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.initializeApp();
         this.themeService.setThemeConfiguratorRoot(this.document).then();
 
-        this.tasksService.cancelData(); // Сброс каких-то данных
-
         this.userInfo.statusIndex$.next(1);
 
         this.subscription = this.userInfo.statusIndex$.subscribe(value => {
@@ -59,6 +57,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private initializeApp(): void {
         this.platform.ready().then(() => {
             setTimeout(() => this.keyboardService.setInitSettings(this.platform, this.appWindow).then());
+            setTimeout(() => this.tasksService.cancelData(), 1000);
         });
         this.nfcService.initNfc();
     }
