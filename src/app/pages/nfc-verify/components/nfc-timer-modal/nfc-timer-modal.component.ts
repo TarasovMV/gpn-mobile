@@ -34,11 +34,26 @@ export class NfcTimerModalComponent implements OnInit {
     }
 
     public async close(): Promise<void> {
+        this.stopTimeouts();
+        this.tasksToReady();
+        await this.modalCtrl.dismiss();
+    }
+
+    private initNfcReader(): void {
+        this.nfcService.nfcHandler$.pipe(take(1)).subscribe((tag) => {
+            this.isNfcAccepted = true;
+            this.changeDetectorRef.detectChanges();
+            this.successTimeOut = window.setTimeout(async () => {
+                this.stopTimeouts();
+                this.tasksToReady();
+                await this.modalCtrl.dismiss();
+            }, 3000);
+        });
+    }
+
+    private tasksToReady(): void {
         const newTasks = this.tabsService.newItems$.value;
         const selected = this.tabsService.selectedItems$.value;
-
-        this.stopTimeouts();
-        await this.modalCtrl.dismiss();
 
         if (newTasks.length === 0) {
             selected.push(newTasks[0]);
@@ -51,41 +66,11 @@ export class NfcTimerModalComponent implements OnInit {
             this.tabsService.selectedItems$.next([]);
             this.tabsService.currentTab$.next(1);
 
-            await this.navCtrl.navigateRoot('/tabs/tabs-ready').then();
+            this.navCtrl.navigateRoot('/tabs/tabs-ready').then();
         }
         else {
-            await this.navCtrl.navigateRoot('/end-task');
+            this.navCtrl.navigateRoot('/end-task');
         }
-    }
-
-    private initNfcReader(): void {
-        const newTasks = this.tabsService.newItems$.value;
-        const selected = this.tabsService.selectedItems$.value;
-
-        this.nfcService.nfcHandler$.pipe(take(1)).subscribe((tag) => {
-            this.isNfcAccepted = true;
-            this.changeDetectorRef.detectChanges();
-            this.successTimeOut = window.setTimeout(async () => {
-                this.stopTimeouts();
-                await this.modalCtrl.dismiss();
-                if (newTasks.length === 0) {
-                    selected.push(newTasks[0]);
-                    this.tabsService.selectedItems$.next(selected);
-                    newTasks.shift();
-                    this.tabsService.newItems$.next(newTasks);
-                    this.tabsService.currentTab$.next(0);
-
-                    this.tabsService.deliveredItems$.next(selected.filter(item => !!item));
-                    this.tabsService.selectedItems$.next([]);
-                    this.tabsService.currentTab$.next(1);
-
-                    await this.navCtrl.navigateRoot('/tabs/tabs-ready').then();
-                }
-                else {
-                    await this.navCtrl.navigateRoot('/end-task');
-                }
-            }, 3000);
-        });
     }
 
     private initTimer(): void {

@@ -37,7 +37,7 @@ export class EndTaskComponent implements OnInit {
             this.navCtrl.navigateRoot('/map').then();
         }
         else {
-            this.navCtrl.navigateRoot('/tabs/tabs-ready').then();
+            this.navCtrl.navigateRoot('/tabs/tabs-tasks').then();
         }
     }
 }
