@@ -45,8 +45,8 @@ export class ResolveTaskComponent implements OnInit {
             newTasks.unshift({
                 num: '№115626',
                 manufacture: 'Л-35-11-100',
-                tare: 8,
-                test: 8,
+                tare: 0,
+                test: 2,
                 startPoint: this.coord,
                 routes: [{x: this.coord.x, y: 276 / 405 * 1000}],
                 specialProps: ['new'],

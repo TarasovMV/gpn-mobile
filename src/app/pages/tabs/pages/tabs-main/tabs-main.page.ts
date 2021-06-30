@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {IPageTab, PageTabType} from '../../tabs.page';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, combineLatest} from 'rxjs';
 import {MAIN_PAGE_DATA} from './mock';
 import * as d3 from 'd3';
 import {NavController} from '@ionic/angular';
@@ -38,14 +38,41 @@ export class TabsMainPage implements OnInit, IPageTab, AfterViewInit {
         this.drawSvg(this.diagramData$.value);
     }
 
-    ngOnInit() {
-        this.tabsService.diagramData$.subscribe(val => {
-            this.diagramData$.next(val);
-        });
-    }
+    ngOnInit() {}
 
     ngAfterViewInit() {
-        this.drawSvg(this.diagramData$.value);
+        combineLatest(
+            this.tabsService.newItems$,
+            this.tabsService.selectedItems$,
+            this.tabsService.deliveredItems$
+        ).subscribe(tasks => {
+            const newItems = tasks[0].filter(item => !!item && (!item.specialProps || item?.specialProps?.includes('new')));
+            const selected = tasks[1].filter(item => !!item && (!item.specialProps || item?.specialProps?.includes('new')));
+            const delivered = tasks[2].filter(item => !!item && (!item.specialProps || item?.specialProps?.includes('new')));
+
+            const data: IDiagram = {
+                total: newItems.length + selected.length + delivered.length,
+                sections: [
+                    {
+                        name: 'Новые',
+                        value: newItems.length,
+                        color: 'var(--index-fact-color)'
+                    },
+                    {
+                        name: 'В работе',
+                        value: selected.length,
+                        color: 'var(--border-blue-color)'
+                    },
+                    {
+                        name: 'Выполнены',
+                        value: delivered.length,
+                        color: 'var(--index-green1-color)'
+                    }
+                ]
+            };
+            this.diagramData$.next(data);
+            this.drawSvg(this.diagramData$.value);
+        });
     }
 
     public redirectToTab(tabName: string): void {

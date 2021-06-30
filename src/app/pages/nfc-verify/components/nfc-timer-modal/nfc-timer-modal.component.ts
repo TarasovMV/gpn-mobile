@@ -3,6 +3,7 @@ import {Ndef, NFC} from '@ionic-native/nfc/ngx';
 import {ModalController, NavController} from '@ionic/angular';
 import {NfcService} from '../../../../@core/services/nfc.service';
 import {take} from 'rxjs/operators';
+import {TabsInfoService} from '../../../../services/tabs/tabs-info.service';
 
 @Component({
     selector: 'app-nfc-timer-modal',
@@ -24,6 +25,7 @@ export class NfcTimerModalComponent implements OnInit {
         private changeDetectorRef: ChangeDetectorRef,
         private nfcService: NfcService,
         private navCtrl: NavController,
+        private tabsService: TabsInfoService
     ) {}
 
     public ngOnInit(): void {
@@ -32,19 +34,56 @@ export class NfcTimerModalComponent implements OnInit {
     }
 
     public async close(): Promise<void> {
+        const newTasks = this.tabsService.newItems$.value;
+        const selected = this.tabsService.selectedItems$.value;
+
         this.stopTimeouts();
         await this.modalCtrl.dismiss();
-        await this.navCtrl.navigateRoot('/end-task');
+
+        if (newTasks.length === 0) {
+            selected.push(newTasks[0]);
+            this.tabsService.selectedItems$.next(selected);
+            newTasks.shift();
+            this.tabsService.newItems$.next(newTasks);
+            this.tabsService.currentTab$.next(0);
+
+            this.tabsService.deliveredItems$.next(selected.filter(item => !!item));
+            this.tabsService.selectedItems$.next([]);
+            this.tabsService.currentTab$.next(1);
+
+            await this.navCtrl.navigateRoot('/tabs/tabs-ready').then();
+        }
+        else {
+            await this.navCtrl.navigateRoot('/end-task');
+        }
     }
 
     private initNfcReader(): void {
+        const newTasks = this.tabsService.newItems$.value;
+        const selected = this.tabsService.selectedItems$.value;
+
         this.nfcService.nfcHandler$.pipe(take(1)).subscribe((tag) => {
             this.isNfcAccepted = true;
             this.changeDetectorRef.detectChanges();
             this.successTimeOut = window.setTimeout(async () => {
                 this.stopTimeouts();
                 await this.modalCtrl.dismiss();
-                await this.navCtrl.navigateRoot('/end-task');
+                if (newTasks.length === 0) {
+                    selected.push(newTasks[0]);
+                    this.tabsService.selectedItems$.next(selected);
+                    newTasks.shift();
+                    this.tabsService.newItems$.next(newTasks);
+                    this.tabsService.currentTab$.next(0);
+
+                    this.tabsService.deliveredItems$.next(selected.filter(item => !!item));
+                    this.tabsService.selectedItems$.next([]);
+                    this.tabsService.currentTab$.next(1);
+
+                    await this.navCtrl.navigateRoot('/tabs/tabs-ready').then();
+                }
+                else {
+                    await this.navCtrl.navigateRoot('/end-task');
+                }
             }, 3000);
         });
     }

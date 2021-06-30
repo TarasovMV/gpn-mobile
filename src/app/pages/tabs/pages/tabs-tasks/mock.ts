@@ -19,8 +19,8 @@ export const NEW_TASKS: ITasksItem[] = [
     {
         num: '№115623',
         manufacture: 'КЦА',
-        tare: 4,
-        test: 1,
+        tare: 0,
+        test: 2,
         startPoint: {x: 449 / 720 * 1000, y: 282 / 405 * 1000},
         routes: [
             {x: 449 / 720 * 1000, y: 275 / 405 * 1000},
@@ -41,8 +41,8 @@ export const NEW_TASKS: ITasksItem[] = [
     {
         num: '№115627',
         manufacture: 'АТ-9',
-        tare: 10,
-        test: 1,
+        tare: 0,
+        test: 2,
         startPoint: {x: 367 / 720 * 1000, y: 266 / 405 * 1000},
         routes: [
             {x: 370 / 720 * 1000, y: 266 / 405 * 1000},

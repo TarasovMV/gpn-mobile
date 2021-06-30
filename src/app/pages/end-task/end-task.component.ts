@@ -29,14 +29,6 @@ export class EndTaskComponent implements OnInit {
         newTasks.shift();
         this.tabsService.newItems$.next(newTasks);
         this.tabsService.currentTab$.next(0);
-        if (newTasks.length === 0) {
-            this.tabsService.deliveredItems$.next(selected.filter(item => !!item));
-            this.tabsService.selectedItems$.next([]);
-            this.tabsService.currentTab$.next(1);
-
-            this.navCtrl.navigateRoot('/tabs/tabs-ready').then();
-            return;
-        }
 
         if (newTasks.filter(item => !item.specialProps && !item?.specialProps?.includes('elk')).length === 0) {
             this.tabsService.currentTask$.next(newTasks[0]);

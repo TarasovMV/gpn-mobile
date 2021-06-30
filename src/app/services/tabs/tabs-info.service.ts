@@ -12,7 +12,7 @@ import {HttpClient} from "@angular/common/http";
   providedIn: 'root'
 })
 export class TabsInfoService {
-    public diagramData$: BehaviorSubject<IDiagram> = new BehaviorSubject<IDiagram>(MAIN_PAGE_DATA);
+    public diagramData$: BehaviorSubject<IDiagram> = new BehaviorSubject<IDiagram>(null);
     public currentTab$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
     public currentTask$: BehaviorSubject<ITasksItem> = new BehaviorSubject<ITasksItem>(null);
