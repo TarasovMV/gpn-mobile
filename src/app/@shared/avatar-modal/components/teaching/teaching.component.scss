@@ -1,0 +1,152 @@
+@import "src/theme/functions";
+* {
+  box-sizing: border-box;
+}
+
+svg-icon {
+  display: flex;
+}
+
+.container {
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .main-video {
+    height: sizeHeight(405);
+    width: 100%;
+    margin-top: sizeHeight(32);
+    margin-bottom: sizeHeight(25);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--chart-segment-color);
+    color: var(--index-fact-color);
+
+    position: relative;
+
+    .current-video {
+      height: 100%;
+      width: 100%;
+    }
+
+    .play-container {
+      height: 100%;
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      position: absolute;
+
+      .play {
+        color: var(--border-icon-color);
+      }
+
+      .title {
+        width: sizeWidth(400);
+        font-size: sizeHeight(34);
+        color: var(--text-main-color);
+
+        position: absolute;
+        bottom: sizeHeight(60);
+        left: sizeWidth(45);
+      }
+    }
+  }
+
+  .video-list {
+    height: sizeHeight(530);
+    width: sizeWidth(660);
+
+    align-items: center;
+
+    overflow-y: scroll;
+
+    .video-item {
+      height: sizeWidth(350);
+      width: sizeWidth(660);
+
+      margin-top: sizeHeight(20);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: sizeWidth(30);
+
+      overflow: hidden;
+
+      cursor: pointer;
+
+      .preview {
+        height: 100%;
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        color: var(--index-fact-color);
+
+        position: relative;
+
+        &__icon {
+          height: 100%;
+          width: 100%;
+
+          position: absolute;
+        }
+
+        .play {
+          color: var(--text-alwaysWhite-color);
+          position: absolute;
+        }
+
+        .info {
+          height: sizeHeight(50);
+          width: sizeWidth(610);
+
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          font-size: sizeHeight(24);
+          color: var(--text-alwaysWhite-color);
+
+          position: absolute;
+          left: sizeWidth(25);
+          bottom: sizeHeight(20);
+
+          .name {
+            width: 60vw;
+
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+
+          .duration {
+            height: 100%;
+            width: sizeWidth(75);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: sizeHeight(20);
+
+            border: sizeWidth(2) solid var(--text-alwaysWhite-color);
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: sizeWidth(4);
+          }
+        }
+      }
+    }
+  }
+}

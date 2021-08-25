@@ -1,0 +1,139 @@
+@import "src/theme/functions.scss";
+* {
+  box-sizing: border-box;
+}
+input, button {
+  outline: none;
+  background: transparent;
+  border: none;
+}
+.container {
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
+  width: 100%;
+  padding: sizeHeight(30) sizeWidth(30) sizeHeight(60);
+
+  background: var(--bg-body-color);
+  overflow: scroll;
+
+  .title {
+    height: sizeHeight(110);
+    padding: 0 sizeWidth(5);
+
+    display: flex;
+    align-items: flex-end;
+
+    font-size: sizeHeight(30);
+
+    &__text {
+      margin-left: sizeWidth(50);
+      color: var(--text-accent-color);
+    }
+
+    svg-icon {
+      height: sizeHeight(100);
+      color: var(--header-logo-bg);
+    }
+  }
+
+  .main-icon {
+    margin: sizeWidth(50) 0;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+
+    svg-icon {
+      width: sizeWidth(650);
+    }
+  }
+
+  form {
+    height: sizeHeight(170);
+    min-height: sizeHeight(170);
+    margin-top: sizeHeight(10);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .input-container {
+      height: sizeHeight(64);
+      position: relative;
+
+      input {
+        height: 100%;
+        width: 100%;
+        padding-top: sizeHeight(30);
+
+        border-bottom: sizeHeight(2) solid var(--border-vidget-color);
+
+        font-size: sizeHeight(25);
+        color: var(--text-accent-color);
+
+        &:focus{
+          border-color: var(--border-blue-color);
+        }
+      }
+
+      label {
+        height: 100%;
+        width: 100%;
+
+        font-size: sizeHeight(25);
+        color: var(--text-accent-color);
+
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        pointer-events: none;
+
+        .input-title {
+          position: absolute;
+          bottom: sizeHeight(15);
+          left: 0;
+          transition: all 0.4s ease;
+        }
+      }
+
+      input:focus + label .input-title, input:valid + label .input-title{
+        font-size: sizeHeight(20);
+        transform: translateY(- sizeHeight(24));
+      }
+    }
+  }
+
+  .forgot-password {
+    margin: sizeHeight(90) 0;
+    a {
+      font-weight: bold;
+      font-size: sizeHeight(27);
+
+      text-decoration: none;
+      color: var(--text-accent-color);
+    }
+  }
+
+  .btn {
+    height: sizeHeight(110);
+    min-height: sizeHeight(110);
+    width: 100%;
+    margin-top: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: sizeHeight(39);
+
+    color: var(--text-alwaysWhite-color);
+
+    background: var(--border-blue-color);
+    border-radius: sizeHeight(8);
+
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
+}

@@ -1,0 +1,127 @@
+@import "src/theme/functions.scss";
+
+* {
+  box-sizing: border-box
+}
+
+button {
+  outline: none;
+  background: transparent;
+  border: none;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    margin-left: sizeWidth(20);
+    font-size: sizeHeight(42);
+    color: var(--text-contrast-color);
+  }
+
+  .arrow {
+    height: 3.9vh;
+    width: 3.9vh;
+    margin-left: sizeWidth(30);
+
+    color: var(--border-icon-color);
+  }
+
+  .content {
+    height: 90vh;
+    padding: sizeHeight(20) sizeWidth(40) sizeHeight(60);
+    background: var(--bg-body-color);
+
+    display: flex;
+    flex-direction: column;
+
+    .content-text-block {
+      margin-top: sizeHeight(20);
+
+      display: flex;
+      justify-content: space-between;
+
+      font-size: sizeHeight(36);
+      word-wrap: break-word;
+
+      .gray-text {
+        display: flex;
+        align-items: center;
+        color: var(--text-main-color);
+      }
+
+      .light-text {
+        display: flex;
+        align-items: center;
+        color: var(--text-contrast-color);
+      }
+
+      .subscript-text {
+        display: flex;
+        align-items: center;
+        color: var(--text-subscript-color);
+      }
+
+      &:first-child {
+        margin-top: sizeHeight(30);
+      }
+
+      .icons {
+        display: flex;
+        align-items: center;
+
+        .icon {
+          height: sizeHeight(56);
+          width: sizeHeight(56);
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          background: var(--border-blue-color);
+          color: var(--text-alwaysWhite-color);
+          border-radius: sizeHeight(8);
+
+          &:first-child {
+            margin-right: sizeWidth(12);
+          }
+        }
+      }
+    }
+
+    .main-block {
+      height: auto;
+      width: 100%;
+      margin-top: sizeHeight(40);
+
+      color: var(--bg-dashboard-color);
+    }
+
+    .btn {
+      height: sizeHeight(110);
+      width: 100%;
+
+      margin-top: sizeHeight(20);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: var(--bg-buttons-color);
+      border-radius: sizeHeight(8);
+
+      font-size: sizeHeight(36);
+      color: var(--text-contrast-color);
+
+      &_active {
+        margin-top: auto;
+        background: var(--border-blue-color);
+        color: var(--text-alwaysWhite-color);
+      }
+    }
+  }
+}

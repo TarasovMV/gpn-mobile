@@ -1,0 +1,143 @@
+@import "src/theme/functions";
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+
+  .tab-btn {
+    height: 100%;
+    width: sizeWidth(310);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: sizeHeight(24);
+    letter-spacing: sizeWidth(1.5);
+    text-transform: uppercase;
+    color: var(--text-main-color);
+
+    border-bottom: sizeHeight(6) solid transparent;
+
+    &_active {
+      border-color: var(--border-blue-color);
+      color: var(--border-blue-color);
+    }
+  }
+
+  .content {
+    height: 83vh;
+    padding-bottom: sizeHeight(10);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    overflow: auto;
+
+    .tab {
+      width: sizeWidth(660);
+      margin-top: sizeHeight(15);
+
+      display: flex;
+      flex-direction: column;
+
+      position: relative;
+
+      .extra-info {
+        font-size: sizeHeight(30);
+        color: var(--text-subscript-color);
+      }
+
+      .item {
+        height: sizeHeight(210);
+        width: sizeWidth(660);
+        padding: 0 sizeWidth(24);
+        margin-bottom: sizeHeight(20);
+
+        display: flex;
+        align-items: center;
+
+        background: var(--bg-header-color);
+        border-radius: sizeHeight(8);
+
+        filter: drop-shadow(0px 0px sizeHeight(20) var(--gradient-main-color-1));
+
+        .bottle-icon {
+          margin-right: sizeWidth(25);
+          color: var(--border-blue-color);
+
+          &_delivered {
+            color: var(--index-green1-color);
+          }
+        }
+
+        .description {
+          height: sizeHeight(150);
+          flex: 1;
+
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+
+          .title {
+            font-size: sizeHeight(34);
+            color: var(--text-main-color);
+          }
+
+          .manufacture {
+            font-size: sizeHeight(24);
+            color: var(--text-subscript-color);
+
+            &__name {
+              color: var(--text-contrast-color);
+            }
+          }
+        }
+      }
+
+      .nfc-btn {
+        height: sizeHeight(144);
+        width: 100%;
+        padding: sizeHeight(16) sizeWidth(40);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: var(--bg-dashboard-color);
+
+        font-size: sizeHeight(40);
+        color: var(--text-alwaysWhite-color);
+
+        position: fixed;
+        right: sizeHeight(0);
+        bottom: sizeHeight(0);
+
+        box-shadow: 0px (- sizeHeight(8)) sizeHeight(8) var(--gradient-main-color-1);
+
+        .btn {
+          height: 100%;
+          width: 100%;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          background: var(--border-blue-color);
+          border-radius: sizeHeight(8);
+
+          font-size: sizeHeight(40);
+          color: var(--text-alwaysWhite-color);
+        }
+      }
+    }
+  }
+}
+
+.noneDisplay {
+  display: none;
+}

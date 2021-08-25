@@ -1,0 +1,45 @@
+<div class="container">
+  <ng-content></ng-content>
+  <div
+    class="avatar"
+    (click)="openModal($event)"
+    *ngIf="!withThemeSwitch"
+  >
+    <svg-icon
+      src="assets/Icons/header/avatar.svg"
+      [svgStyle]="{
+        'width': '3.9vh',
+        'height': '3.9vh'
+      }"
+    ></svg-icon>
+    <div
+      class="indicator"
+      [style.background]="(userInfo.statusList$ | async)[(userInfo.statusIndex$ | async)].bgColor"
+    >
+      <div
+        class="indicator__inner"
+        [style.background]="(userInfo.statusList$ | async)[(userInfo.statusIndex$ | async)].color"
+      ></div>
+    </div>
+  </div>
+  <div class="switch-btn" *ngIf="withThemeSwitch" (click)="toggleSwitch()" [class.switch-on]="!(theme.isDarkTheme | async)">
+    <div class="moon">
+      <svg-icon
+        src="assets/Icons/header/moon.svg"
+        [svgStyle]="{
+          'width.vh': 2.2,
+          'height.vh': 2.2
+        }"
+      ></svg-icon>
+    </div>
+    <div class="sun">
+      <svg-icon
+        src="assets/Icons/header/sun.svg"
+        [svgStyle]="{
+          'width.vh': 2.2,
+          'height.vh': 2.2
+        }"
+      ></svg-icon>
+    </div>
+  </div>
+</div>

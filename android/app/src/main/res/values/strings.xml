@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Driver</string>
-    <string name="title_activity_main">Driver</string>
-    <string name="package_name">io.gpn.driver</string>
-    <string name="custom_url_scheme">io.gpn.driver</string>
+    <string name="app_name">Отбор проб</string>
+    <string name="title_activity_main">installation-operator</string>
+    <string name="package_name">io.avsv.operator</string>
+    <string name="custom_url_scheme">io.avsv.operator</string>
 </resources>

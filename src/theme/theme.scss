@@ -1,0 +1,11 @@
+@import "light-style";
+@import "dark-style";
+
+:root {
+  .theme-light {
+    @include light-style();
+  }
+  .theme-dark {
+    @include dark-style();
+  }
+}

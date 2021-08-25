@@ -1,0 +1,42 @@
+<div class="container">
+  <div
+    class="main-video"
+  >
+    <video
+      #video
+      controls="controls"
+      [src]="(videos$ | async)[currentVideoId]?.src"
+      class="current-video"
+      [poster]="(videos$ | async)[currentVideoId]?.preview"
+    ></video>
+  </div>
+
+  <div class="video-list">
+    <div
+      class="video-item"
+      *ngFor="let video of (videos$ | async); let i = index"
+      (click)="showVideo(i)"
+    >
+      <div class="preview">
+        <img
+          class="preview__icon"
+          src="{{video?.preview}}"
+        />
+
+        <svg-icon
+          class="play"
+          src="assets/Icons/avatar-modal/play.svg"
+          [svgStyle]="{
+            'width.vw': 6.6,
+            'height.vh': 4.8
+          }"
+        ></svg-icon>
+
+        <div class="info">
+          <span class="name">{{video?.name}}</span>
+          <div class="duration">{{video?.duration}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<div class="container" (click)="close()">
+  <div *ngIf="!isNfcAccepted" class="timer-container">
+    <svg fill="none" height="50.5vw" width="50.5vw" xmlns="http://www.w3.org/2000/svg">
+      <circle class="timer-background-circle" cx="50%" cy="50%" r="47%" stroke-width="1.5%"/>
+    </svg>
+  </div>
+  <div *ngIf="isNfcAccepted" class="timer-container">
+    <svg fill="none" height="50.5vw" viewBox="0 0 488 488" width="50.5vw" xmlns="http://www.w3.org/2000/svg">
+      <circle class="timer-success-circle" cx="50%" cy="50%" fill="currentColor" r="47%" stroke="currentColor"
+              stroke-width="1.5%"/>
+      <path d="M205.062 245.918L229.441 270.777C230.795 272.158 233.504 272.158 234.858 270.777L282.937 221.75"
+            stroke="#00A73D" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"
+            stroke-width="6.05442"/>
+      <path
+        d="M243.999 317.424C284.55 317.424 317.424 284.551 317.424 243.999C317.424 203.448 284.55 170.574 243.999 170.574C203.447 170.574 170.574 203.448 170.574 243.999C170.574 284.551 203.447 317.424 243.999 317.424Z"
+        stroke="#00A73D" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="6.05442"/>
+    </svg>
+  </div>
+  <ng-container *ngIf="!isNfcAccepted">
+    <div class="timer-info-block">
+      <div class="help-text">Поднесите телефон к NFC метке</div>
+      <div class="timer-value-text" id="timerValue">{{currentTimerValue}}</div>
+    </div>
+    <div class="timer">
+      <svg height="100%" width="100%">
+        <circle class="timer__circle" cx="50%" cy="50%" fill="none" r="47%" stroke="#00A73D" stroke-linecap="round"
+                stroke-width="1.5%"></circle>
+      </svg>
+    </div>
+  </ng-container>
+  <div class="timer-ripple" [class.timer-ripple__success]="isNfcAccepted"></div>
+</div>
+

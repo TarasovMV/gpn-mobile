@@ -1,0 +1,45 @@
+<div class="container">
+  <app-header
+    class = header
+    [withThemeSwitch]="true"
+  >
+    <div class="arrow" (click)="dismiss()">
+      <svg-icon
+        src="/assets/Icons/tabs/arrowLeft.svg"
+        [svgStyle]="{
+          'height.vh': 3.9,
+          'width.vh': 3.9
+        }"
+      ></svg-icon>
+    </div>
+    <div class="title">Назад</div>
+  </app-header>
+  <div class="tabs-container">
+    <div *ngFor="let tab of tabs; let i = index"
+         class="tab"
+         [class.tab_active]="i === (userInfo.currentTab$ | async)"
+         (click)="selectTab(i)"
+    >
+      <span>{{tab}}</span>
+    </div>
+  </div>
+  <div class="content">
+    <ng-container
+      [ngSwitch]="(userInfo.currentTab$ | async)"
+    >
+      <app-user-info
+        *ngSwitchCase="0"
+        (onChangeUser)="changeUser()"
+        (onChangeCar)="changeCar()"
+      ></app-user-info>
+
+      <app-teaching
+        *ngSwitchCase="1"
+      ></app-teaching>
+
+      <app-support
+        *ngSwitchCase="2"
+      ></app-support>
+    </ng-container>
+  </div>
+</div>

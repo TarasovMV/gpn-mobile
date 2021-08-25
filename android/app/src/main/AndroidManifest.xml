@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.gpn.driver">
+    package="io.ionic.starter">
 
     <application
         android:allowBackup="true"
@@ -10,13 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- adjustPan for keyboard -->
         <activity
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
-            android:name="io.gpn.driver.MainActivity"
+            android:name="io.ionic.starter.MainActivity"
             android:label="@string/title_activity_main"
-            android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme.NoActionBarLaunch"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,17 +25,10 @@
             </intent-filter>
 
             <intent-filter>
-                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+              <action android:name="android.nfc.action.TECH_DISCOVERED" />
             </intent-filter>
             <meta-data android:name="android.nfc.action.TECH_DISCOVERED"
-                       android:resource="@xml/nfc_tech_filter" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="@string/custom_url_scheme" />
-            </intent-filter>
+              android:resource="@xml/nfc_tech_filter" />
 
         </activity>
 
@@ -50,24 +44,9 @@
     </application>
 
     <!-- Permissions -->
-
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Camera, Photos, input file -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- Geolocation API -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-feature android:name="android.hardware.location.gps" />
-    <!-- Network API -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- Navigator.getUserMedia -->
-    <!-- Video -->
-    <uses-permission android:name="android.permission.CAMERA" />
-    <!-- Audio -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
 
+    <!-- NFC -->
     <uses-permission android:name="android.permission.NFC" />
     <uses-feature android:name="android.hardware.nfc" android:required="false" />
 </manifest>

@@ -1,0 +1,57 @@
+<div class="dropdown">
+  <input
+    (click)="toggleDropdown()"
+    (focusout)="closeDropdown()"
+    type="text"
+    class="dropdown__current"
+  />
+  <div class="dropdown__current dropdown__current_event">
+    <ng-container *ngIf="!isStatusDropdown">
+      {{ data[currentItemIdx] }}
+    </ng-container>
+
+    <ng-container *ngIf="!!isStatusDropdown">
+      <div
+        class="indicator"
+        [style.background]="
+          (userInfo.statusList$ | async)[userInfo.statusIndex$ | async].bgColor
+        "
+      >
+        <div
+          class="indicator__inner"
+          [style.background]="
+            (userInfo.statusList$ | async)[userInfo.statusIndex$ | async].color
+          "
+        ></div>
+      </div>
+      <span>{{
+        (userInfo.statusList$ | async)[userInfo.statusIndex$ | async].name
+      }}</span>
+    </ng-container>
+  </div>
+  <div class="dropdown__menu">
+    <ng-container *ngIf="!isStatusDropdown">
+      <div
+        *ngFor="let item of data; let i = index"
+        class="dropdown__menu-item"
+        (click)="chooseItem(i)"
+        [@expandedPanel]="dropdownExpand ? 'expanded' : 'initial'"
+      >
+        {{ item }}
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!!isStatusDropdown">
+      <div
+        class="dropdown__menu-item"
+        [@expandedPanel]="dropdownExpand ? 'expanded' : 'initial'"
+        (click)="chooseStatus(i)"
+        *ngFor="let item of userInfo.statusList$ | async; let i = index"
+      >
+        <div class="indicator" [style.background]="item.bgColor">
+          <div class="indicator__inner" [style.background]="item.color"></div>
+        </div>
+        <span class="status-name">{{ item.name }}</span>
+      </div>
+    </ng-container>
+  </div>
+</div>

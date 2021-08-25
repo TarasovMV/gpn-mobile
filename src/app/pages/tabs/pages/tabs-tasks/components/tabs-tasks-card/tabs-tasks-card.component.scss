@@ -1,0 +1,135 @@
+@import "src/theme/functions";
+* {
+  box-sizing: border-box;
+}
+
+span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+} // Временно
+
+.item {
+  height: sizeHeight(210);
+  width: sizeWidth(660);
+  padding: 0 sizeWidth(10);
+  margin-bottom: sizeHeight(20);
+
+  display: flex;
+  align-items: center;
+
+  background: var(--bg-header-color);
+  border: 1px solid transparent;
+  border-radius: sizeHeight(8);
+
+  filter: drop-shadow(0px 0px sizeHeight(20) var(--gradient-main-color-1));
+
+  .chart {
+    height: sizeHeight(160);
+    width: sizeHeight(160);
+    min-width: sizeHeight(160);
+    margin-right: sizeWidth(15);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    .chart__info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      position: absolute;
+
+      .total {
+        font-size: sizeHeight(30);
+        color: var(--text-main-color);
+      }
+      .spent {
+        font-size: sizeHeight(34);
+        color: var(--index-fact-color);
+      }
+    }
+
+    ::ng-deep {
+      fill: var(--index-fact-color);
+    }
+  }
+
+  .description {
+    height: sizeHeight(186);
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    .title {
+      margin-bottom: sizeHeight(10);
+      font-size: sizeHeight(34);
+      color: var(--text-main-color);
+
+      .manufacture {
+        margin-left: sizeWidth(10);
+        font-size: sizeHeight(34);
+        color: var(--text-main-color);
+      }
+    }
+
+    &__item {
+      display: flex;
+      align-items: center;
+      margin-bottom: sizeHeight(6);
+
+      .icon {
+        height: sizeHeight(56);
+        width: sizeHeight(56);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: var(--gray-G8-color);
+        border-radius: sizeHeight(8);
+
+        color: var(--index-fact-color);
+
+        &_active {
+          background: var(--border-blue-color);
+          color: var(--text-alwaysWhite-color)
+        }
+      }
+
+      .info {
+        margin-left: sizeWidth(25);
+        font-size: sizeHeight(30);
+        color: var(--text-subscript-color);
+      }
+    }
+    overflow: hidden;
+  }
+
+  &_active {
+    border-color: var(--border-blue-color);
+
+    .description {
+      .title {
+        color: var(--text-accent-color);
+      }
+
+      &__item {
+        .icon {
+          color: var(--text-alwaysWhite-color);
+          background: var(--border-blue-color);
+        }
+      }
+    }
+
+    .chart {
+      ::ng-deep {
+        fill: var(--index-green1-color);
+      }
+    }
+  }
+}

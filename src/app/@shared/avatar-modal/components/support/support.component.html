@@ -1,0 +1,20 @@
+<div class="container">
+  <span class="reason">Причина обращения в тех. поддержку:</span>
+
+  <div class="dropdown">
+    <app-dropdown
+      [data]="dropdownList"
+      (onChanged)="changeDropdownValue($event)"
+    ></app-dropdown>
+  </div>
+
+  <textarea
+    *ngIf="currentValueIdx === 0"
+    placeholder="Напишите причину"
+  ></textarea>
+
+  <div class="btns">
+    <button class="btn">Отправить обращение</button>
+    <button class="btn">Позвонить оператору</button>
+  </div>
+</div>
