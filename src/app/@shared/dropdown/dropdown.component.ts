@@ -28,7 +28,7 @@ export class DropdownComponent implements OnInit {
   public dropdownExpand: boolean = false;
 
   constructor(
-    private userInfo: UserInfoService
+    public userInfo: UserInfoService
   ) {}
 
   public toggleDropdown(): void {

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Отбор проб</string>
-    <string name="title_activity_main">installation-operator</string>
-    <string name="package_name">io.avsv.operator</string>
-    <string name="custom_url_scheme">io.avsv.operator</string>
+    <string name="app_name">Водитель</string>
+    <string name="title_activity_main">Водитель</string>
+    <string name="package_name">io.avsv.driver</string>
+    <string name="custom_url_scheme">io.avsv.driver</string>
 </resources>
