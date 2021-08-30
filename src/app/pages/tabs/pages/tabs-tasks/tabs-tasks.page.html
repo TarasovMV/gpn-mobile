@@ -19,10 +19,7 @@
         [data]="item"
       ></app-tabs-tasks-card>
 
-      <div
-        class="circle-btn"
-        (click)="openMap()"
-      >
+      <div class="circle-btn" (click)="openMap()">
         <svg-icon
           [svgStyle]="{
               'height': '4.8vh',
@@ -30,6 +27,13 @@
             }"
           src="assets/Icons/tabs/tasks-tab/geo-map.svg"
         ></svg-icon>
+      </div>
+
+      <div
+        class="no-task-msg"
+        *ngIf="!((tabsService.inProgressItems$ | async).length + (tabsService.newItems$ | async).length)"
+      >
+        <span class="msg">Нет новых задач</span>
       </div>
     </div>
   </div>

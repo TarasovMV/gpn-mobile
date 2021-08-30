@@ -65,6 +65,12 @@ export class LoginPage implements OnInit, OnDestroy {
             statusBarIcon: true,
             vibrationLength: 300,
           });
+          await SsPush.showBannerNotification({
+            sound: false,
+            vibration: false,
+            statusBarIcon: true,
+            vibrationLength: 300,
+          });
         }
       });
     } else {

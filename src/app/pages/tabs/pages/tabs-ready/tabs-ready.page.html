@@ -12,10 +12,19 @@
   <div class="content">
     <ng-container [ngSwitch]="(tabsService.currentTab$ | async)">
       <div class="tab" *ngSwitchCase="0">
-        <span class="extra-info"
+        <span
+          *ngIf="!!(tabsService.selectedItems$ | async).length"
+          class="extra-info"
           >Для завершения задания выгрузите пробы в ЕЛК и поднесите телефон к
           NFC метке</span
         >
+
+        <div
+          class="no-task-msg"
+          *ngIf="!(tabsService.selectedItems$ | async).length"
+        >
+          <span class="msg">Нет задач в машине</span>
+        </div>
         <div
           class="item"
           *ngFor="let selected of (tabsService.selectedItems$ | async)"
@@ -53,11 +62,14 @@
 
       <div class="tab" *ngSwitchCase="1">
         <div
+          class="no-task-msg"
+          *ngIf="!(tabsService.deliveredItems$ | async).length"
+        >
+          <span class="msg">Нет завершенных задач</span>
+        </div>
+        <div
           class="item"
           *ngFor="let delivered of (tabsService.deliveredItems$ | async)"
-          [ngClass]="{
-            noneDisplay: delivered?.specialProps?.includes('elk')
-          }"
         >
           <svg-icon
             class="bottle-icon bottle-icon_delivered"

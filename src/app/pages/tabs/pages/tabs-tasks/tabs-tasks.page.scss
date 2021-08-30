@@ -50,6 +50,19 @@
         right: sizeHeight(30);
         bottom: sizeHeight(20);
       }
+
+      .no-task-msg {
+        height: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .msg {
+          font-size: sizeHeight(34);
+          color: var(--text-subscript-color);
+        }
+      }
     }
   }
 }
