@@ -11,7 +11,7 @@ import {
   NavController,
   PopoverController,
 } from '@ionic/angular';
-import { KeyboardService } from '../../@core/services/keyboard.service';
+import { KeyboardService } from '../../@core/services/platform/keyboard.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CarPopowerComponent } from './components/car-popower/car-popower.component';

@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {Ndef, NFC} from '@ionic-native/nfc/ngx';
 import {ModalController, NavController} from '@ionic/angular';
-import {NfcService} from '../../../../@core/services/nfc.service';
+import {NfcService} from '../../../../@core/services/platform/nfc.service';
 import {take} from 'rxjs/operators';
 import {TabsInfoService} from '../../../../services/tabs/tabs-info.service';
 

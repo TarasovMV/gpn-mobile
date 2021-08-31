@@ -1,11 +1,11 @@
 import {Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {KeyboardService} from './@core/services/keyboard.service';
+import {KeyboardService} from './@core/services/platform/keyboard.service';
 import {Platform} from '@ionic/angular';
 import {ThemeService} from './services/theme.service';
 import {DOCUMENT} from '@angular/common';
 import {UserInfoService} from './services/user-info.service';
 import {Subscription} from 'rxjs';
-import {NfcService} from "./@core/services/nfc.service";
+import {NfcService} from "./@core/services/platform/nfc.service";
 import {TabsInfoService} from "./services/tabs/tabs-info.service";
 
 @Component({

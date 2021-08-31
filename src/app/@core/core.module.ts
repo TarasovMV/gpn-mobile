@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {ErrorInterceptor} from './interceptors/error.interceptor';
 import {AuthenticationInterceptor} from './interceptors/authentication.interceptor';
-import {appConfigInit, AppConfigService} from './services/app-config.service';
+import {appConfigInit, AppConfigService} from './services/platform/app-config.service';
 import {Ndef, NFC} from '@ionic-native/nfc/ngx';
 
 
