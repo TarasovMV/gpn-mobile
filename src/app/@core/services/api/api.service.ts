@@ -4,6 +4,7 @@ import {AppConfigService} from '../platform/app-config.service';
 import {IUser, IUserCredentials} from '../../model/user.model';
 import {IVehicle} from "../../model/vehicle.model";
 import {ITask} from "../../model/task.model";
+import {IWorkShift, IWorkShiftStatus, IWorkShiftVehicle} from "../../model/workshift.model";
 
 @Injectable({
     providedIn: 'root'
@@ -28,5 +29,13 @@ export class ApiService {
 
     public async getVehicles(): Promise<IVehicle[]> {
         return await this.http.get<IVehicle[]>(`${this.restUrl}/api/Vehicle/free`).toPromise();
+    }
+
+    public async changeStatus(param: IWorkShiftStatus): Promise<IWorkShift> {
+        return await this.http.put<IWorkShift>(`${this.restUrl}/api/WorkShift/status`, param).toPromise();
+    }
+
+    public async changeVehicle(param: IWorkShiftVehicle): Promise<IWorkShift> {
+        return await this.http.put<IWorkShift>(`${this.restUrl}/api/WorkShift/vehicle`, param).toPromise();
     }
 }
