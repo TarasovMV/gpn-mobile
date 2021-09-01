@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {NavController} from '@ionic/angular';
+import {UserInfoService} from "../../services/user-info.service";
+import {TasksService} from "../../services/tasks.service";
+import {TabsInfoService} from "../../services/tabs/tabs-info.service";
 
 export interface IPageTab {
     readonly route: PageTabType;
@@ -38,9 +41,11 @@ export class TabsPage implements OnInit {
         ready: 'tabs/tabs-ready',
     };
 
-    constructor(private navCtrl: NavController) {}
+    constructor(private navCtrl: NavController, private userService: UserInfoService, private taskService: TabsInfoService) {}
 
-    ngOnInit(): void {}
+    ngOnInit() {
+        this.taskService.getTasks();
+    }
 
     public selectTab(tab: IPageTab): void {
         this.navCtrl.navigateRoot(this.tabsRouting[tab.route] ?? this.tabsRouting[this.currentTab$.value]).then();

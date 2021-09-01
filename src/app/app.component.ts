@@ -31,8 +31,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.initializeApp();
         this.themeService.setThemeConfiguratorRoot(this.document).then();
 
-        this.userInfo.statusIndex$.next(1);
-
         this.subscription = this.userInfo.statusIndex$.subscribe(value => {
             const time = 60000;
 

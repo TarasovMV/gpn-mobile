@@ -8,9 +8,6 @@
         *ngFor="let item of (tabsService.newItems$ | async); let i = index"
         [data]="item"
         [isActive]="true"
-        [ngClass]="{
-            noneDisplay: item?.specialProps?.includes('elk')
-        }"
         (click)="openMap()"
       ></app-tabs-tasks-card>
 

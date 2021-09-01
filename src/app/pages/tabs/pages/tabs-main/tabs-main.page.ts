@@ -1,10 +1,17 @@
-import {AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
-import {IPageTab, PageTabType} from '../../tabs.page';
-import {BehaviorSubject, combineLatest} from 'rxjs';
-import {MAIN_PAGE_DATA} from './mock';
+import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    HostListener,
+    OnInit,
+    ViewChild,
+} from '@angular/core';
+import { IPageTab, PageTabType } from '../../tabs.page';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { MAIN_PAGE_DATA } from './mock';
 import * as d3 from 'd3';
-import {NavController} from '@ionic/angular';
-import {TabsInfoService} from '../../../../services/tabs/tabs-info.service';
+import { NavController } from '@ionic/angular';
+import { TabsInfoService } from '../../../../services/tabs/tabs-info.service';
 
 export interface IDiagram {
     total: number;
@@ -21,12 +28,12 @@ export interface IDiagramSections {
     templateUrl: './tabs-main.page.html',
     styleUrls: ['./tabs-main.page.scss'],
 })
-
 export class TabsMainPage implements OnInit, IPageTab, AfterViewInit {
     @ViewChild('chart') chart: ElementRef;
     public route: PageTabType = 'main';
     public svg: any;
-    readonly diagramData$: BehaviorSubject<IDiagram> = new BehaviorSubject<IDiagram>(MAIN_PAGE_DATA);
+    readonly diagramData$: BehaviorSubject<IDiagram> =
+        new BehaviorSubject<IDiagram>(MAIN_PAGE_DATA);
 
     constructor(
         private navCtrl: NavController,
@@ -45,10 +52,10 @@ export class TabsMainPage implements OnInit, IPageTab, AfterViewInit {
             this.tabsService.newItems$,
             this.tabsService.selectedItems$,
             this.tabsService.deliveredItems$
-        ).subscribe(tasks => {
-            const newItems = tasks[0].filter(item => !!item && (!item.specialProps || item?.specialProps?.includes('new')));
-            const selected = tasks[1].filter(item => !!item && (!item.specialProps || item?.specialProps?.includes('new')));
-            const delivered = tasks[2].filter(item => !!item && (!item.specialProps || item?.specialProps?.includes('new')));
+        ).subscribe((tasks) => {
+            const newItems = tasks[0];
+            const selected = tasks[1];
+            const delivered = tasks[2];
 
             const data: IDiagram = {
                 total: newItems.length + selected.length + delivered.length,
@@ -56,19 +63,19 @@ export class TabsMainPage implements OnInit, IPageTab, AfterViewInit {
                     {
                         name: 'Новые',
                         value: newItems.length,
-                        color: 'var(--index-fact-color)'
+                        color: 'var(--index-fact-color)',
                     },
                     {
                         name: 'В работе',
                         value: selected.length,
-                        color: 'var(--border-blue-color)'
+                        color: 'var(--border-blue-color)',
                     },
                     {
                         name: 'Выполнены',
                         value: delivered.length,
-                        color: 'var(--index-green1-color)'
-                    }
-                ]
+                        color: 'var(--index-green1-color)',
+                    },
+                ],
             };
             this.diagramData$.next(data);
             this.drawSvg(this.diagramData$.value);
@@ -90,7 +97,10 @@ export class TabsMainPage implements OnInit, IPageTab, AfterViewInit {
     }
 
     private drawSvg(data: IDiagram): void {
-        const size: number = Math.min(this.chart.nativeElement.clientWidth, this.chart.nativeElement.clientHeight);
+        const size: number = Math.min(
+            this.chart.nativeElement.clientWidth,
+            this.chart.nativeElement.clientHeight
+        );
         const innerR = 0.4 * size;
         const outerR = 0.4 * 0.92 * size;
 
@@ -98,34 +108,44 @@ export class TabsMainPage implements OnInit, IPageTab, AfterViewInit {
             this.svg.remove();
         }
 
-        this.svg = d3.select(this.chart.nativeElement).append('svg').attr('width', `${size}px`).attr('height', `${size}px`);
+        this.svg = d3
+            .select(this.chart.nativeElement)
+            .append('svg')
+            .attr('width', `${size}px`)
+            .attr('height', `${size}px`);
 
-        const arcBg = (start: number, end: number) => d3.arc()
+        const arcBg = (start: number, end: number) =>
+            d3
+                .arc()
                 .innerRadius(innerR)
                 .outerRadius(outerR)
                 .startAngle(-start * 2 * Math.PI)
                 .endAngle(-end * 2 * Math.PI);
 
-        const arcBgBot = d3.arc()
+        const arcBgBot = d3
+            .arc()
             .innerRadius(1.04 * innerR)
             .outerRadius(0.88 * innerR)
             .startAngle(0)
             .endAngle(2 * Math.PI);
 
+        const g: any = this.svg
+            .append('g')
+            .style('transform', `translate(${size / 2}px, ${size / 2}px)`);
 
-        const g: any = this.svg.append('g').style('transform', `translate(${size/2}px, ${size/2}px)`);
-
-        g.append('path').attr('d', arcBgBot)
+        g.append('path')
+            .attr('d', arcBgBot)
             .style('fill', 'var(--gray-G11-color)');
 
         let startPos = 0;
         let endPos = 0;
         data.sections.forEach((section, i) => {
             if (i > 0) {
-                startPos += data.sections[i-1]?.value / data.total;
+                startPos += data.sections[i - 1]?.value / data.total;
             }
             endPos = startPos + section.value / data.total;
-            g.append('path').attr('d', arcBg(startPos, endPos))
+            g.append('path')
+                .attr('d', arcBg(startPos, endPos))
                 .style('fill', section.color);
         });
     }

@@ -9,7 +9,7 @@
         }"
       ></svg-icon>
     </div>
-    <div class="title">{{(tabsService.currentTask$ | async)?.num}}</div>
+    <div class="title">{{(tabsService.currentTask$ | async)?.number}}</div>
   </app-header>
   <div [style]="transformStyle" class="box">
     <div [style]="rotationStyle" class="entry-box">
@@ -25,7 +25,7 @@
   <div class="progress">
     <app-map-progress
       [percent]="currentTime / allTime * 100"
-      [name]="((tabsService?.inProgressItems$ | async) || [null])[0]?.manufacture"
+      [name]="((tabsService?.inProgressItems$ | async) || [null])[0]?.plantName"
     ></app-map-progress>
   </div>
 

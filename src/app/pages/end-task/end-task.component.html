@@ -9,14 +9,14 @@
         }"
       ></svg-icon>
     </div>
-    <div class="title">{{(tabsService.currentTask$ | async)?.num}}</div>
+    <div class="title">{{(tabsService.currentTask$ | async)?.number}}</div>
   </app-header>
 
   <div class="content">
     <app-step-progress-bar [stepsCount]="3" [activeStepIndex]="2"></app-step-progress-bar>
 
     <div class="content-text-block">
-      <span class="subscript-text">Установка:<span class="light-text">{{(tabsService.currentTask$ | async)?.manufacture}}</span></span>
+      <span class="subscript-text">Установка:<span class="light-text">{{(tabsService.currentTask$ | async)?.plantName}}</span></span>
       <div class="icons">
         <div
           class="icon"
@@ -57,7 +57,7 @@
     </div>
 
     <button class="btn btn_active" (click)="nextTask()">
-      <span>{{((this.tabsService.newItems$ | async).length === 0) || (this.tabsService.newItems$ | async)[1]?.specialProps?.includes('elk')? 'Завершить все задания' : 'Следующее задание'}}</span>
+      <span>Следующее задание</span>
     </button>
     <button class="btn" disabled>Завершить задание</button>
   </div>

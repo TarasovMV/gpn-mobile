@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
 import {ModalController, NavController} from '@ionic/angular';
 import {UserInfoService} from '../../services/user-info.service';
 import {CarPopowerComponent} from '../../pages/login/components/car-popower/car-popower.component';
-import {IPageTab, PageTabType} from "../../pages/tabs/tabs.page";
 
-export interface IStatusInfo {
-    name: string;
-    color: string;
-    bgColor: string;
+export interface IStatusColor {
+    color?: string;
+    bgColor?: string;
+}
+
+export interface IStatusInfo extends IStatusColor{
+    state: string;
+    id: number;
 }
 
 @Component({

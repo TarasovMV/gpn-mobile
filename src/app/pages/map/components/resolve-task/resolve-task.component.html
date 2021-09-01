@@ -1,7 +1,7 @@
 <div class="container">
   <ng-container *ngIf="type === 'endOne'">
     <span class="info">Вы на месте</span>
-    <span class="info">Установка {{(tabsService.currentTask$ | async)?.manufacture}}</span>
+    <span class="info">Установка {{(tabsService.currentTask$ | async)?.plantName}}</span>
   </ng-container>
   <ng-container *ngIf="type === 'new'">
     <span class="info">Новое задание по пути</span>

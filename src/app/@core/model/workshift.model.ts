@@ -20,3 +20,9 @@ export interface IWorkShiftVehicle {
     vehicleId: number;
 }
 
+export interface ISetWorkShift {
+    userId: number;
+    vehicleId: number;
+    driverStateId: number;
+}
+

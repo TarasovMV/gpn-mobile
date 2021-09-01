@@ -28,7 +28,6 @@ export class UserInfoComponent implements OnInit {
     this.userInfo.statusIndex$.next(i);
   }
 
-
   public changeCar(): void {
     this.onChangeCar.emit(true);
   }

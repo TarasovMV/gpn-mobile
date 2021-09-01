@@ -1,6 +1,6 @@
 <div class="container">
   <div class="info">
-    <div class="info__title">{{(tabsService.currentTask$ | async)?.manufacture}}</div>
+    <div class="info__title">{{(tabsService.currentTask$ | async)?.plantName}}</div>
     <div class="info__time">осталось ехать {{(15 - percent / 100 * 15) | number:'0.0-0'}} секунд</div>
   </div>
 

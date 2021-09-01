@@ -9,7 +9,7 @@
         }"
       ></svg-icon>
     </div>
-    <div class="title">{{(tabsService.currentTask$ | async)?.num | splitNumberSign}}</div>
+    <div class="title">{{(tabsService.currentTask$ | async)?.number | splitNumberSign}}</div>
   </app-header>
 
   <div class="content">
@@ -17,14 +17,14 @@
 
     <div class="task=info-block">
       <div class="content-text-block">
-        <span class="gray-text">Установка: <span class="light-text">{{(tabsService.currentTask$ | async)?.manufacture}}</span></span>
+        <span class="gray-text">Установка: <span class="light-text">{{(tabsService.currentTask$ | async)?.plantName}}</span></span>
       </div>
       <div class="content-text-block">
         <span class="gray-text">
           Отсканируйте NFC метку для подтверждения выгрузки
-          <span class="light-text">пустой тары ({{(tabsService.currentTask$ | async)?.tare}} шт)</span>
+          <span class="light-text">пустой тары ({{(tabsService.currentTask$ | async)?.tares.length}} шт)</span>
           <span class="gray-text"> и загрузки </span>
-          <span class="light-text">проб ({{(tabsService.currentTask$ | async)?.test}})</span>
+          <span class="light-text">проб ({{(tabsService.currentTask$ | async)?.probes.length}})</span>
         </span>
       </div>
 

@@ -26,7 +26,7 @@
         ></div>
       </div>
       <span>{{
-        (userInfo.statusList$ | async)[userInfo.statusIndex$ | async].name
+        (userInfo.statusList$ | async)[userInfo.statusIndex$ | async].state
       }}</span>
     </ng-container>
   </div>
@@ -51,7 +51,7 @@
         <div class="indicator" [style.background]="item.bgColor">
           <div class="indicator__inner" [style.background]="item.color"></div>
         </div>
-        <span class="status-name">{{ item.name }}</span>
+        <span class="status-name">{{ item.state }}</span>
       </div>
     </ng-container>
   </div>

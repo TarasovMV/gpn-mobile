@@ -3,6 +3,7 @@ import {ModalController, NavController} from '@ionic/angular';
 import {TabsInfoService} from '../../../../../../services/tabs/tabs-info.service';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {ITasksItem} from '../../tabs-tasks.page';
+import {ITask} from "../../../../../../@core/model/task.model";
 
 @Component({
   selector: 'app-choose-task-overlay',
@@ -10,7 +11,7 @@ import {ITasksItem} from '../../tabs-tasks.page';
   styleUrls: ['./choose-task-overlay.component.scss'],
 })
 export class ChooseTaskOverlayComponent implements OnInit {
-    taskList$: BehaviorSubject<ITasksItem[]> = new BehaviorSubject<ITasksItem[]>([]);
+    taskList$: BehaviorSubject<ITask[]> = new BehaviorSubject<ITask[]>([]);
     private subscription: Subscription;
 
     constructor(
@@ -21,7 +22,7 @@ export class ChooseTaskOverlayComponent implements OnInit {
 
     ngOnInit() {
         this.subscription = this.tabsService.newItems$.subscribe(val => {
-            const arr: ITasksItem[] = [];
+            const arr: ITask[] = [];
             val.forEach(item => {
                 item.checked = true;
                 arr.push(item);

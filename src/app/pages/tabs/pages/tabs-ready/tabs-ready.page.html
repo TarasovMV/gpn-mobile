@@ -28,9 +28,6 @@
         <div
           class="item"
           *ngFor="let selected of (tabsService.selectedItems$ | async)"
-          [ngClass]="{
-            noneDisplay: selected?.specialProps?.includes('elk')
-          }"
         >
           <svg-icon
             class="bottle-icon"
@@ -41,16 +38,16 @@
             }"
           ></svg-icon>
           <div class="description">
-            <span class="title">{{selected.num}}</span>
+            <span class="title">{{selected?.number}}</span>
             <span class="manufacture"
               >Установка:
               <span class="manufacture__name"
-                >{{selected.manufacture}}</span
+                >{{selected?.plantName}}</span
               ></span
             >
             <span class="manufacture"
               >Количество проб:
-              <span class="manufacture__name">{{selected.test}}</span></span
+              <span class="manufacture__name">{{selected?.probes.length}}</span></span
             >
           </div>
         </div>
@@ -80,11 +77,11 @@
             }"
           ></svg-icon>
           <div class="description">
-            <span class="title">{{delivered.num}}</span>
+            <span class="title">{{delivered?.number}}</span>
             <span class="manufacture"
               >Установка:
               <span class="manufacture__name"
-                >{{delivered.manufacture}}</span
+                >{{delivered?.plantName}}</span
               ></span
             >
           </div>

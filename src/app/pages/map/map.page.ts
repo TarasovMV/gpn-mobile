@@ -79,7 +79,7 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
     rotationStyle: string;
     pointStyle: string;
     currentPosition: ICoord;
-    allTime: number = 15 * 1000;
+    allTime: number = 5 * 1000;
     currentTime: number = 0;
 
     private svg: any;
@@ -118,39 +118,20 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
             initScale: 10,
         };
         this.mapStyle = 'transform: scale(' + this.config.initScale + ')';
-        this.subscriptions.push(
-            this.tabsService.currentTask$.subscribe(item => {
-                if(item?.specialProps?.includes('new')) {
-                    //this.setCameraPosition(item.startPoint.x, item.startPoint.y);
-                    this.position$.next({x: 369 * this.config.width / 720, y: 164 * this.config.height / 405});
-                    this.currentRoute = [
-                        {
-                            x: 370 * this.config.width / 720 / this.config.width * 1000,
-                            y: 165 * this.config.height / 405 / this.config.height * 1000,
-                        },
-                        {
-                            x: 370 * this.config.width / 720 / this.config.width * 1000,
-                            y: 276 * this.config.height / 405 / this.config.height * 1000,
-                        },
-                        {
-                            x: 323 * this.config.width / 720 / this.config.width * 1000,
-                            y: 276 * this.config.height / 405 / this.config.height * 1000,
-                        }
-                    ];
-                }
-                else {
-                    this.setCameraPosition(item.startPoint.x * this.config.width / 1000, item.startPoint.y * this.config.height / 1000);
-                    this.currentRoute = [...item.routes];
-                    this.position$.next({x: item.startPoint.x * this.config.width / 1000, y: item.startPoint.y * this.config.height / 1000});
-                }
-                this.currentRoute.forEach((c, i) => {
-                    this.currentRoute[i] = {x: c.x * this.config.width / 1000, y: c.y * this.config.height / 1000};
-                });
-                this.fakeDriving().then();
-            })
-        );
+        this.subscriptions.push();
         this.init();
         this.drawSvg();
+
+        const allTimeInterval = setInterval(()=> {
+            if (this.currentTime < this.allTime) {
+                this.currentTime += 50;
+            }
+        }, 50);
+
+        setTimeout(()=>{
+            this.openEndTaskModal('endOne').then();
+        }, 5100);
+
     }
 
     init(): void {
@@ -367,13 +348,9 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
             .attr('width', '100%')
             .attr('height', '100%')
             .attr('viewBox', `0 0 ${this.config.width} ${this.config.height}`);
-        console.log(this.position$.value);
-
-        this.position$.subscribe(c => this.drawCarPoint(c.x, c.y));
     }
 
     private async fakeDriving(): Promise<void> {
-        let timeToStop = -1; // Показатель прекращения движения
         const dT = 30;
         const routes = [...this.currentRoute];
         const position = {
@@ -384,20 +361,6 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
         const dS = distance / (this.allTime / dT);
 
         this.tabsService.startMove(); // Метод вызывается в начале движения
-
-        const allTimeInterval = setInterval(()=> {
-            if (this.currentTime < this.allTime) {
-                this.currentTime += 50;
-            }
-        }, 50);
-
-        if (this.tabsService.currentTask$.value?.specialProps?.includes('elk')
-            && !this.tabsService.currentTask$.value?.specialProps?.includes('last')) {
-            setTimeout(() => {
-                timeToStop = 0; // Значение при котором оборвем цикл
-                clearInterval(allTimeInterval);
-            }, 4370);
-        }
 
         for (const route of routes) {
             const pos = [this.position$.getValue(), route];
@@ -437,14 +400,6 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
                 this.position$.next(this.currentPosition);
 
                 const time = setTimeout(() => resolve(1), dT);
-
-                if (timeToStop === 0) {
-                    clearTimeout(time);
-                    this.svg.selectAll('.nav-line').remove();
-                    this.openEndTaskModal('new');
-                    this.tabsService.endMove(); // Движение также закончилось
-                    return;
-                }
             });
 
             while(flag) {
@@ -453,16 +408,7 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
             this.currentRoute.splice(this.currentRoute.indexOf(route), 1);
         }
 
-        clearInterval(allTimeInterval);
-
         this.tabsService.endMove(); // Метод вызывается в конце движения
-
-        if (this.tabsService.currentTask$.value?.specialProps?.includes('last')) {
-            await this.openEndTaskModal('endAll');
-        }
-        else {
-            await this.openEndTaskModal();
-        }
     }
 
     private drawRoute(coords: {x: number; y: number}[]): void {

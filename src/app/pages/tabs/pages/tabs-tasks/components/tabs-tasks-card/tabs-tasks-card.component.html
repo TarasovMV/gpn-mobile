@@ -9,7 +9,7 @@
     </div>
   </div>
   <div class="description">
-    <span class="title">{{data.num}},<span class="manufacture">Установка: {{data.manufacture}}</span></span>
+    <span class="title">{{data?.number}},<span class="manufacture">Установка: {{data?.plantName}}</span></span>
     <div class="description__item">
       <div class="icon">
         <svg-icon
@@ -20,7 +20,7 @@
           src="assets/Icons/tabs/tasks-tab/tare.svg"
         ></svg-icon>
       </div>
-      <span class="info">Доставить тару – {{data.tare}} шт</span>
+      <span class="info">Доставить тару – {{data?.tares.length}} шт</span>
     </div>
     <div class="description__item">
       <div
@@ -35,7 +35,7 @@
           src="assets/Icons/tabs/tasks-tab/test.svg"
         ></svg-icon>
       </div>
-      <span class="info">Получить пробы – {{data.test}} шт</span>
+      <span class="info">Получить пробы – {{data?.probes.length}} шт</span>
     </div>
   </div>
 </div>

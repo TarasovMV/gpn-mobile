@@ -4,7 +4,9 @@ import {AppConfigService} from '../platform/app-config.service';
 import {IUser, IUserCredentials} from '../../model/user.model';
 import {IVehicle} from "../../model/vehicle.model";
 import {ITask} from "../../model/task.model";
-import {IWorkShift, IWorkShiftStatus, IWorkShiftVehicle} from "../../model/workshift.model";
+import {ISetWorkShift, IWorkShift, IWorkShiftStatus, IWorkShiftVehicle} from "../../model/workshift.model";
+import {IStatusInfo} from "../../../@shared/avatar-modal/avatar-modal.component";
+import {UserInfoService} from "../../../services/user-info.service";
 
 @Injectable({
     providedIn: 'root'
@@ -31,8 +33,20 @@ export class ApiService {
         return await this.http.get<IVehicle[]>(`${this.restUrl}/api/Vehicle/free`).toPromise();
     }
 
+    public async getWorkShift(userId: number): Promise<IWorkShift> {
+        return await this.http.get<IWorkShift>(`${this.restUrl}/api/WorkShift/user/${userId}`).toPromise();
+    }
+
+    public async setWorkShift(params: ISetWorkShift): Promise<IWorkShift> {
+        return await this.http.post<IWorkShift>(`${this.restUrl}/api/WorkShift`, params).toPromise();
+    }
+
     public async changeStatus(param: IWorkShiftStatus): Promise<IWorkShift> {
         return await this.http.put<IWorkShift>(`${this.restUrl}/api/WorkShift/status`, param).toPromise();
+    }
+
+    public async getStatusList(): Promise<IStatusInfo[]> {
+        return await this.http.get<IStatusInfo[]>(`${this.restUrl}/api/DriverState`).toPromise();
     }
 
     public async changeVehicle(param: IWorkShiftVehicle): Promise<IWorkShift> {

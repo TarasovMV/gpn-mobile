@@ -9,6 +9,7 @@ export interface ITask {
     dateTimeStart: Date;
     dateTimeEnd: Date;
     availableTimeToExceed: number;
+    checked?: boolean;
     probes: {
         name: string;
         count: number;

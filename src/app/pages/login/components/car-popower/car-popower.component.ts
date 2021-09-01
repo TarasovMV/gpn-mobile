@@ -1,37 +1,44 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
-import {ModalController, NavController} from '@ionic/angular';
-import {UserInfoService} from '../../../../services/user-info.service';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { ModalController, NavController } from '@ionic/angular';
+import { UserInfoService } from '../../../../services/user-info.service';
+import { IVehicle } from '../../../../@core/model/vehicle.model';
+import { ApiService } from '../../../../@core/services/api/api.service';
 
 @Component({
-  selector: 'app-car-popower',
-  templateUrl: './car-popower.component.html',
-  styleUrls: ['./car-popower.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-car-popower',
+    templateUrl: './car-popower.component.html',
+    styleUrls: ['./car-popower.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CarPopowerComponent implements OnInit {
-    public carList$: BehaviorSubject<string[]>
-        = new BehaviorSubject(['А330АА50', 'А332АА50', 'Е331АА50', 'М333BП50', 'К333АА50', 'С334АА50', 'П333АА50', 'А333АА50']);
+    public carList$: BehaviorSubject<IVehicle[]> = new BehaviorSubject([]);
     private readonly nextUrl: string = 'tabs';
 
     constructor(
         public modalController: ModalController,
         private navCtrl: NavController,
-        public userInfo: UserInfoService
-    ) { }
+        public userInfo: UserInfoService,
+        private apiService: ApiService
+    ) {}
 
     public chooseCar(i: number): void {
-        this.userInfo.carNumber$.next(this.carList$.value[i]);
+        this.userInfo.carNumber$.next(this.carList$.getValue()[i].regNum);
+        this.userInfo.car$.next(this.carList$.getValue()[i]);
     }
 
     public dismiss(): void {
         this.modalController.dismiss().then();
     }
 
-    public accept() {
+    public async accept() {
         this.navCtrl.navigateRoot(this.nextUrl).then();
+        await this.userInfo.setWorkShift();
         this.dismiss();
     }
 
-    ngOnInit() {}
+    async ngOnInit() {
+        const cars = await this.apiService.getVehicles();
+        this.carList$.next(cars);
+    }
 }

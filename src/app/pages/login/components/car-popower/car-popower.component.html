@@ -8,11 +8,11 @@
   <div class="car-list">
     <div
       class="car-list__item"
-      [class.car-list__item_active]="(userInfo.carNumber$ | async) === car"
+      [class.car-list__item_active]="(userInfo.carNumber$ | async) === car.regNum"
       *ngFor="let car of (carList$ | async); let i = index"
       (click)="chooseCar(i)"
     >
-      {{car}}
+      {{car.regNum}}
     </div>
   </div>
 
