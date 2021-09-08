@@ -27,6 +27,7 @@ import { UserInfoService } from '../../services/user-info.service';
 })
 export class LoginPage implements OnInit, OnDestroy {
     @ViewChild('content') private content: ElementRef;
+    @ViewChild('ripple', { static: true }) public rippleEl: ElementRef;
     public loginForm: FormGroup = new FormGroup({
         userName: new FormControl('Uazov', Validators.required),
         password: new FormControl('pass', Validators.required),
@@ -86,7 +87,6 @@ export class LoginPage implements OnInit, OnDestroy {
             this.presentModalPassword().then();
         }
     }
-
     private async presentModalCar() {
         const modal = await this.modalController.create({
             component: CarPopowerComponent,

@@ -12,9 +12,11 @@
     ></svg-icon>
     <span class="name">Статус</span>
     <div class="dropdown">
-      <app-dropdown
-        [isStatusDropdown]="true"
-      ></app-dropdown>
+      <app-status-dropdown
+        [options]="(userInfo.statusList$ | async)"
+        [currentOptionId]="(userInfo.statusIndex$ | async)"
+        (onChanged)="changeStatus($event)"
+      ></app-status-dropdown>
     </div>
   </div>
   <div class="car">

@@ -10,21 +10,22 @@ import { CoreModule } from './@core/core.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RippleDirective } from './@core/directives/ripple.directive';
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    IonicModule.forRoot(),
-    AngularSvgIconModule.forRoot(),
-    AppRoutingModule,
-    CoreModule,
-    HammerModule,
-    IonicStorageModule.forRoot(),
-  ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
-  bootstrap: [AppComponent],
+    declarations: [AppComponent],
+    entryComponents: [],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        IonicModule.forRoot(),
+        AngularSvgIconModule.forRoot(),
+        AppRoutingModule,
+        CoreModule,
+        HammerModule,
+        IonicStorageModule.forRoot(),
+    ],
+    providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}

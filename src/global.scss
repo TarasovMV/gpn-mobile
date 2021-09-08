@@ -32,6 +32,10 @@ ion-content {
   --background: transparent !important;
 }
 
+ion-backdrop {
+  background-color: var(--bg-dashboard-color);
+}
+
 html, body, .ion-app, .ion-content {
   background: transparent !important;
 }
@@ -64,7 +68,7 @@ html, body, .ion-app, .ion-content {
   }
 }
 
-.choose-task, .activity-modal, .map-modal {
+.choose-task, .activity-modal, .map-modal, .choose-status, .current-status {
   --height: 44vh;
 
   .modal-wrapper {
@@ -76,6 +80,15 @@ html, body, .ion-app, .ion-content {
 
     overflow: hidden;
   }
+}
+
+.choose-status {
+  --height: 38vh;
+}
+.current-status {
+  height: auto;
+  --min-height: 38vh;
+  --max-height: 44vh;
 }
 
 .map-modal {

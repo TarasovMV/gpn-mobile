@@ -1,17 +1,30 @@
 <div class="container">
   <app-header>
-    <div
-      class="tab-btn"
-      [class.tab-btn_active]="i === (tabsService.currentTab$ | async)"
-      *ngFor="let tab of (tabs$ | async); let i = index"
-      (click)="changeTab(i)"
-    >
-      {{tab}}
+    <div class="header">
+      <div
+        class="tab-btn"
+        [class.tab-btn_active]="i === (tabsService.currentTab$ | async)"
+        *ngFor="let tab of (tabs$ | async); let i = index"
+        (click)="changeTab(i)"
+      >
+        {{tab}}
+      </div>
+      <div
+        class="header__active"
+        [style.transform]="'translateX(' + (0.9 * transformPage) / 2 + 'vw)'"
+        [style.transition.s]="swipeTransition"
+      ></div>
     </div>
   </app-header>
-  <div class="content">
-    <ng-container [ngSwitch]="(tabsService.currentTab$ | async)">
-      <div class="tab" *ngSwitchCase="0">
+  <div class="shadow shadow_top"></div>
+
+  <div class="content" #content>
+    <div
+      class="tab"
+      [style.transform]="'translateX(' + -transformPage + 'vw)'"
+      [style.transition.s]="swipeTransition"
+    >
+      <div class="tab__item">
         <span
           *ngIf="!!(tabsService.selectedItems$ | async).length"
           class="extra-info"
@@ -47,7 +60,9 @@
             >
             <span class="manufacture"
               >Количество проб:
-              <span class="manufacture__name">{{selected?.probes.length}}</span></span
+              <span class="manufacture__name"
+                >{{selected?.probes.length}}</span
+              ></span
             >
           </div>
         </div>
@@ -57,7 +72,7 @@
         </div>
       </div>
 
-      <div class="tab" *ngSwitchCase="1">
+      <div class="tab__item">
         <div
           class="no-task-msg"
           *ngIf="!(tabsService.deliveredItems$ | async).length"
@@ -87,6 +102,6 @@
           </div>
         </div>
       </div>
-    </ng-container>
+    </div>
   </div>
 </div>

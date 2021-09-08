@@ -36,26 +36,27 @@ export class UserInfoService {
         0
     );
 
+    public readonly statusColors: { [key: string]: IStatusColor } = {
+        1: {
+            color: '#F7931E',
+            bgColor: 'rgba(247, 147, 30, 0.2)',
+        },
+
+        3: {
+            color: '#00A73D',
+            bgColor: 'rgba(0, 167, 61, 0.2)',
+        },
+        2: {
+            color: '#FF1D25',
+            bgColor: 'rgba(255, 29, 37, 0.2)',
+        },
+    };
+
     private readonly defaultUser: Partial<IUser> = {
         firstName: 'Иван',
         lastName: 'Иванов',
         patronymic: 'Иванович',
     };
-
-    private readonly statusColors: IStatusColor[] = [
-        {
-            color: '#F7931E',
-            bgColor: 'rgba(247, 147, 30, 0.2)',
-        },
-        {
-            color: '#00A73D',
-            bgColor: 'rgba(0, 167, 61, 0.2)',
-        },
-        {
-            color: '#FF1D25',
-            bgColor: 'rgba(255, 29, 37, 0.2)',
-        },
-    ];
 
     constructor(
         public modalController: ModalController,
@@ -63,7 +64,7 @@ export class UserInfoService {
     ) {
         this.statusIndex$.subscribe(async (item) => {
             const workShiftId = this.workShift$.getValue();
-            const driverStateId = this.statusList$.getValue()[item]?.id;
+            const driverStateId = this.statusIndex$.getValue();
             if (item >= 0 && workShiftId && driverStateId) {
                 await this.apiService.changeStatus({
                     workShiftId,
@@ -87,7 +88,7 @@ export class UserInfoService {
     public async getStatus(): Promise<void> {
         const status = await this.apiService.getStatusList();
         status.forEach((item, i) => {
-            status[i] = { ...item, ...this.statusColors[i] };
+            status[i] = { ...item, ...this.statusColors[item.id] };
         });
         this.statusList$.next(status);
     }

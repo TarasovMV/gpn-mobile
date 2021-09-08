@@ -1,52 +1,40 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  trigger,
-  state,
-  style,
-  transition,
-  animate,
+    trigger,
+    state,
+    style,
+    transition,
+    animate,
 } from '@angular/animations';
-import {UserInfoService} from "../../services/user-info.service";
+import { UserInfoService } from '../../services/user-info.service';
+import {expandAnimation} from "../animations/expand.animation";
 
 @Component({
-  selector: 'app-dropdown',
-  templateUrl: './dropdown.component.html',
-  styleUrls: ['./dropdown.component.scss'],
-  animations: [
-    trigger('expandedPanel', [
-      state('initial', style({ height: 0 })),
-      state('expanded', style({ height: '*' })),
-      transition('initial <=> expanded', animate('0.4s')),
-    ]),
-  ],
+    selector: 'app-dropdown',
+    templateUrl: './dropdown.component.html',
+    styleUrls: ['./dropdown.component.scss'],
+    animations: [expandAnimation],
 })
 export class DropdownComponent implements OnInit {
-  @Input() data: any[];
-  @Input() isStatusDropdown: boolean = false;
-  @Output() onChanged = new EventEmitter<number>();
-  public currentItemIdx = 0;
-  public dropdownExpand: boolean = false;
+    @Input() data: string[];
+    @Output() onChanged = new EventEmitter<number>();
+    public currentItemIdx = 0;
+    public dropdownExpand: boolean = false;
 
-  constructor(
-    public userInfo: UserInfoService
-  ) {}
+    constructor(public userInfo: UserInfoService) {}
 
-  public toggleDropdown(): void {
-    this.dropdownExpand = !this.dropdownExpand;
-  }
+    public toggleDropdown(): void {
+        this.dropdownExpand = !this.dropdownExpand;
+    }
 
-  public closeDropdown(): void {
-    this.dropdownExpand = false;
-  }
+    public closeDropdown(): void {
+        this.dropdownExpand = false;
+    }
 
-  public chooseItem(idx: number): void {
-    this.currentItemIdx = idx;
-    this.onChanged.emit(this.currentItemIdx);
-  }
+    public chooseItem(idx: number): void {
+        this.currentItemIdx = idx;
+        this.onChanged.emit(this.currentItemIdx);
+    }
 
-  public chooseStatus(i: number): void {
-    this.userInfo.statusIndex$.next(i);
-  }
-
-  ngOnInit() {}
+    ngOnInit() {}
 }

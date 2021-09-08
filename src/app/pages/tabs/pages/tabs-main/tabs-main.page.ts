@@ -10,8 +10,9 @@ import { IPageTab, PageTabType } from '../../tabs.page';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { MAIN_PAGE_DATA } from './mock';
 import * as d3 from 'd3';
-import { NavController } from '@ionic/angular';
+import {ModalController, NavController} from '@ionic/angular';
 import { TabsInfoService } from '../../../../services/tabs/tabs-info.service';
+import {StatusBeginComponent} from "../../../../@shared/status-begin/status-begin.component";
 
 export interface IDiagram {
     total: number;
@@ -37,7 +38,8 @@ export class TabsMainPage implements OnInit, IPageTab, AfterViewInit {
 
     constructor(
         private navCtrl: NavController,
-        private tabsService: TabsInfoService
+        private tabsService: TabsInfoService,
+        public modalController: ModalController
     ) {}
 
     @HostListener('window:resize', ['$event'])
@@ -45,7 +47,9 @@ export class TabsMainPage implements OnInit, IPageTab, AfterViewInit {
         this.drawSvg(this.diagramData$.value);
     }
 
-    ngOnInit() {}
+    async ngOnInit() {
+        await this.presentModalChooseStatus();
+    }
 
     ngAfterViewInit() {
         combineLatest(
@@ -141,12 +145,20 @@ export class TabsMainPage implements OnInit, IPageTab, AfterViewInit {
         let endPos = 0;
         data.sections.forEach((section, i) => {
             if (i > 0) {
-                startPos += data.sections[i - 1]?.value / data.total;
+                startPos += data.sections[i - 1]?.value / (!data.total ? 0.000001 : data.total);
             }
-            endPos = startPos + section.value / data.total;
+            endPos = startPos + section.value / (!data.total ? 0.000001 : data.total);
             g.append('path')
                 .attr('d', arcBg(startPos, endPos))
                 .style('fill', section.color);
         });
+    }
+
+    private async presentModalChooseStatus() {
+        const modal = await this.modalController.create({
+            component: StatusBeginComponent,
+            cssClass: 'choose-status',
+        });
+        return await modal.present();
     }
 }

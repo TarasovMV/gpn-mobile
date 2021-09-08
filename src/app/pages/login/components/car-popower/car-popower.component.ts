@@ -27,14 +27,14 @@ export class CarPopowerComponent implements OnInit {
         this.userInfo.car$.next(this.carList$.getValue()[i]);
     }
 
-    public dismiss(): void {
-        this.modalController.dismiss().then();
+    public async dismiss(): Promise<void> {
+        await this.modalController.dismiss().then();
     }
 
     public async accept() {
+        await this.dismiss();
         this.navCtrl.navigateRoot(this.nextUrl).then();
         await this.userInfo.setWorkShift();
-        this.dismiss();
     }
 
     async ngOnInit() {

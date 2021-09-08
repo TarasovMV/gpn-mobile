@@ -2,18 +2,15 @@
   <app-header>
     <div class="title">Задания</div>
   </app-header>
+  <div class="shadow shadow_top"></div>
+  <div class="shadow shadow_bottom"></div>
   <div class="content">
     <div class="tab">
       <app-tabs-tasks-card
         *ngFor="let item of (tabsService.newItems$ | async); let i = index"
         [data]="item"
-        [isActive]="true"
+        [isActive]="i===0"
         (click)="openMap()"
-      ></app-tabs-tasks-card>
-
-      <app-tabs-tasks-card
-        *ngFor="let item of (tabsService.inProgressItems$ | async); let i = index"
-        [data]="item"
       ></app-tabs-tasks-card>
 
       <div class="circle-btn" (click)="openMap()">
@@ -28,7 +25,7 @@
 
       <div
         class="no-task-msg"
-        *ngIf="!((tabsService.inProgressItems$ | async).length + (tabsService.newItems$ | async).length)"
+        *ngIf="!(tabsService.newItems$ | async).length"
       >
         <span class="msg">Нет новых задач</span>
       </div>

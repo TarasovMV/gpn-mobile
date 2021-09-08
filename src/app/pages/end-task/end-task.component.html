@@ -16,7 +16,7 @@
     <app-step-progress-bar [stepsCount]="3" [activeStepIndex]="2"></app-step-progress-bar>
 
     <div class="content-text-block">
-      <span class="subscript-text">Установка:<span class="light-text">{{(tabsService.currentTask$ | async)?.plantName}}</span></span>
+      <span class="subscript-text">Установка: &nbsp;<span class="light-text"> {{(tabsService.currentTask$ | async)?.plantName}}</span></span>
       <div class="icons">
         <div
           class="icon"

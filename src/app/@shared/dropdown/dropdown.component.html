@@ -15,18 +15,18 @@
       <div
         class="indicator"
         [style.background]="
-          (userInfo.statusList$ | async)[userInfo.statusIndex$ | async].bgColor
+          (userInfo.statusList$ | async)[currentStatusIdx].bgColor
         "
       >
         <div
           class="indicator__inner"
           [style.background]="
-            (userInfo.statusList$ | async)[userInfo.statusIndex$ | async].color
+            (userInfo.statusList$ | async)[currentStatusIdx].color
           "
         ></div>
       </div>
       <span>{{
-        (userInfo.statusList$ | async)[userInfo.statusIndex$ | async].state
+        (userInfo.statusList$ | async)[currentStatusIdx].state
       }}</span>
     </ng-container>
   </div>

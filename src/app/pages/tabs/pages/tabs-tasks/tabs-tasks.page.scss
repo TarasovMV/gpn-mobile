@@ -7,6 +7,27 @@
   display: flex;
   flex-direction: column;
 
+  position: relative;
+
+  .shadow {
+    height: sizeHeight(20);
+    width: 100%;
+
+    position: absolute;
+
+    z-index: 999;
+
+    &_top {
+      top: 10vh;
+      background: linear-gradient(180deg, var(--gradient-main-color-1) -0.04%, var(--gradient-main-color-2) 99.96%);
+    }
+
+    &_bottom{
+      bottom: 0;
+      background: linear-gradient(0deg, var(--gradient-main-color-1) -0.04%, var(--gradient-main-color-2) 99.96%);
+    }
+  }
+
   .title {
     margin-left: sizeWidth(50);
     font-size: sizeHeight(42);
@@ -14,7 +35,7 @@
   }
 
   .content {
-    height: 83vh;
+    height: 82vh;
     padding-bottom: sizeHeight(10);
 
     display: flex;

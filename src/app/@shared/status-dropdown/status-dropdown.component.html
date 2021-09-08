@@ -1,0 +1,37 @@
+<div class="dropdown">
+  <input
+    (click)="toggleDropdown()"
+    (focusout)="closeDropdown()"
+    readonly
+    type="text"
+    class="dropdown__current"
+  />
+  <div class="dropdown__current dropdown__current_event">
+    <div
+      class="indicator"
+      [style.background]="options[currentStatusIdx]?.bgColor"
+    >
+      <div
+        class="indicator__inner"
+        [style.background]="options[currentStatusIdx]?.color"
+      ></div>
+    </div>
+    <span>{{ options[currentStatusIdx]?.state }}</span>
+  </div>
+  <div
+    class="dropdown__menu"
+    [ngClass]="{dropdown__menu_expanded: !dropdownExpand}"
+  >
+    <div
+      class="dropdown__menu-item"
+      [@expandedPanel]="dropdownExpand ? 'expanded' : 'initial'"
+      (click)="chooseStatus(i)"
+      *ngFor="let item of options; let i = index"
+    >
+      <div class="indicator" [style.background]="item?.bgColor">
+        <div class="indicator__inner" [style.background]="item?.color"></div>
+      </div>
+      <span class="status-name">{{ item?.state }}</span>
+    </div>
+  </div>
+</div>

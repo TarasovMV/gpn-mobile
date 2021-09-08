@@ -132,8 +132,44 @@ input, button {
     background: var(--border-blue-color);
     border-radius: sizeHeight(8);
 
+    position: relative;
+    overflow: hidden;
+
+    ::ng-deep {
+      .ripple {
+        height: 0;
+        width: 0;
+
+        border-radius: 50%;
+        background: var(--text-alwaysWhite-color);
+        opacity: 0.2;
+
+        position: absolute;
+
+        transform: translate(-50%, -50%);
+        transition: 1s;
+
+        pointer-events: none;
+
+        &_active {
+          animation: 700ms ripple ease-out;
+        }
+      }
+    }
+
     &:disabled {
       opacity: 0.5;
     }
+  }
+}
+
+@keyframes ripple {
+  from {
+    height: 0;
+    width: 0;
+  }
+  to {
+    height: 200vw;
+    width: 200vw;
   }
 }
