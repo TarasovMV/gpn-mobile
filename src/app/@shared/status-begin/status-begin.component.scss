@@ -54,6 +54,8 @@ button {
       display: flex;
       align-items: center;
 
+      z-index: 10000;
+
       .dropdown-container {
         height: sizeHeight(94);
         width: sizeWidth(292);
@@ -71,15 +73,5 @@ button {
     height: sizeHeight(96);
     width: 100%;
     margin-top: auto;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: var(--border-blue-color);
-    border-radius: sizeHeight(8);
-
-    font-size: sizeHeight(40);
-    color: var(--text-alwaysWhite-color);
   }
 }

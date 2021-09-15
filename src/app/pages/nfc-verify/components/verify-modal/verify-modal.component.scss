@@ -43,6 +43,7 @@
           --background-checked: var(--border-blue-color);
           height: sizeWidth(40);
           width: sizeWidth(40);
+          min-width: sizeWidth(40);
           margin-right: sizeWidth(24);
         }
 
@@ -63,14 +64,8 @@
   }
 
   .accept-button {
-    padding: 0 sizeWidth(48);
-    background: var(--border-blue-color);
-    border-radius: sizeWidth(10);
-    font-size: sizeHeight(39);
     height: sizeHeight(110);
-    outline: none;
     margin: 0 auto;
-    color: var(--text-alwaysWhite-color);
   }
 
   .close-button {

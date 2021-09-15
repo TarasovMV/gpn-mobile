@@ -35,27 +35,6 @@ span {
     justify-content: center;
 
     position: relative;
-
-    .chart__info {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-      position: absolute;
-
-      .total {
-        font-size: sizeHeight(30);
-        color: var(--text-main-color);
-      }
-      .spent {
-        font-size: sizeHeight(34);
-        color: var(--index-fact-color);
-      }
-    }
-
-    ::ng-deep {
-      fill: var(--index-fact-color);
-    }
   }
 
   .description {

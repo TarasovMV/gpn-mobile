@@ -45,7 +45,9 @@
   <div class="forgot-password">
     <a href="#">Забыли пароль?</a>
   </div>
-  <button class="btn" (click)="submit($event)" appRipple [disabled]="!loginForm.valid">
-    Войти
-  </button>
+  <div class="btn">
+    <app-button (click)="submit($event)" [disabled]="!loginForm.valid">
+      Войти
+    </app-button>
+  </div>
 </div>

@@ -21,12 +21,14 @@
       </div>
     </div>
   </div>
-  <div class="btn btn_active" (click)="dismiss()">Перерыв</div>
-  <div
+  <app-button class="btn btn_active" [isActive]="!!(taskInfo.newItems$ | async).length" (click)="dismiss()">
+    Перерыв
+  </app-button>
+  <app-button
     class="btn"
-    (click)="dismiss()"
-    *ngIf="(taskInfo.newItems$ | async).length"
+    (click)="endWorkShift()"
+    [isActive]="!(taskInfo.newItems$ | async).length"
   >
     Завершить смену
-  </div>
+  </app-button>
 </div>

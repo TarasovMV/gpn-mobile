@@ -61,15 +61,5 @@ button {
     height: sizeHeight(96);
     width: sizeWidth(300);
     margin-top: auto;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: var(--border-blue-color);
-    border-radius: sizeHeight(8);
-
-    font-size: sizeHeight(40);
-    color: var(--text-alwaysWhite-color);
   }
 }

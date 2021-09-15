@@ -3,29 +3,33 @@
     <span class="title__text">Выберите доступный автомобиль</span>
   </div>
   <div class="main-icon">
-    <img src="assets/Icons/login/car.png">
+    <img src="assets/Icons/login/car.png" />
   </div>
   <div class="car-list">
     <div
       class="car-list__item"
-      [class.car-list__item_active]="(userInfo.carNumber$ | async) === car.regNum"
-      *ngFor="let car of (carList$ | async); let i = index"
+      [class.car-list__item_active]="
+        (userInfo.carNumber$ | async) === car.regNum
+      "
+      *ngFor="let car of carList$ | async; let i = index"
       (click)="chooseCar(i)"
     >
-      {{car.regNum}}
+      {{ car.regNum }}
     </div>
   </div>
 
   <div class="btn-container">
-    <button
-      (click)="accept()"
-      class="btn btn-next"
-      [disabled]="!(userInfo.carNumber$ | async)"
-    >Далее</button>
-
-    <button
-      (click)="dismiss()"
-      class="btn btn-cancel"
-    >Отменить</button>
+    <div class="btn">
+      <app-button
+        (click)="accept()"
+        [isActive]="!!(userInfo.carNumber$ | async)"
+        [disabled]="!(userInfo.carNumber$ | async)"
+      >
+        Далее
+      </app-button>
+    </div>
+    <div class="btn">
+      <app-button (click)="dismiss()" [isActive]="false">Отменить</app-button>
+    </div>
   </div>
 </div>

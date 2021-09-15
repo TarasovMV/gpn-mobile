@@ -27,7 +27,8 @@ button {
     overflow: hidden;
   }
 
-  .status, .car {
+  .status,
+  .car {
     height: sizeHeight(92);
     width: 100%;
 
@@ -64,7 +65,6 @@ button {
 
     &_active {
       .dropdown {
-
         border-radius: sizeHeight(8) sizeHeight(8) 0 0;
 
         svg-icon {
@@ -86,16 +86,6 @@ button {
     width: sizeWidth(632);
 
     margin-top: sizeHeight(20);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: var(--bg-buttons-color);
-    border-radius: sizeHeight(8);
-
-    font-size: sizeHeight(36);
-    color: var(--text-contrast-color);
 
     &__change-car {
       margin-top: auto;

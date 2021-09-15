@@ -1,8 +1,5 @@
 <div class="container">
-  <div
-    class="cancel"
-    (click)="dismiss()"
-  >
+  <div class="cancel" (click)="dismiss()">
     <svg-icon
       src="assets/Icons/tabs/cancel.svg"
       [svgStyle]="{
@@ -13,12 +10,9 @@
   </div>
   <div class="content">
     <div class="message">
-      Вы <span class="danger">не активны</span> более 15 минут, если статус не будет изменен, задачи будут переназначены
+      Вы <span class="danger">не активны</span> более 15 минут, если статус не
+      будет изменен, задачи будут переназначены
     </div>
   </div>
-  <div
-    class="btn"
-    (click)="dismiss()"
-  >Понятно</div>
+  <app-button class="btn" (click)="dismiss()">Понятно</app-button>
 </div>
-

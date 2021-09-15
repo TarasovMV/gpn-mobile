@@ -1,0 +1,20 @@
+<button
+  appRipple
+  class="btn"
+  [ngClass]="{
+    btn_active: isActive,
+    btn_small: (size === 'small')
+  }"
+  [disabled]="disabled"
+>
+  <svg-icon
+    *ngIf="icon"
+    src="assets/Icons/button-icons/{{ icon }}.svg"
+    class="icon"
+    [svgStyle]="{
+      'width.vh': 3.9,
+      'height.vh': 3.9
+    }"
+  ></svg-icon>
+  <ng-content></ng-content>
+</button>

@@ -16,7 +16,11 @@ import { StatusDropdownComponent } from './status-dropdown/status-dropdown.compo
 import { StatusBeginComponent } from './status-begin/status-begin.component';
 import { StatusFilterPipe } from './status-begin/pipe/status-filter.pipe';
 import { StatusCurrentComponent } from './status-current/status-current.component';
-import {RippleDirective} from "../@core/directives/ripple.directive";
+import { RippleDirective } from '../@core/directives/ripple.directive';
+import { ButtonComponent } from './button/button.component';
+import { DialogModalComponent } from './dialog-modal/dialog-modal.component';
+import { StatisticModalComponent } from './statistic-modal/statistic-modal.component';
+import {NfcTimerModalComponent} from "../pages/nfc-verify/components/nfc-timer-modal/nfc-timer-modal.component";
 
 @NgModule({
     declarations: [
@@ -34,7 +38,11 @@ import {RippleDirective} from "../@core/directives/ripple.directive";
         StatusBeginComponent,
         StatusFilterPipe,
         StatusCurrentComponent,
-        RippleDirective
+        RippleDirective,
+        ButtonComponent,
+        DialogModalComponent,
+        StatisticModalComponent,
+        NfcTimerModalComponent
     ],
     exports: [
         HeaderComponent,
@@ -44,7 +52,11 @@ import {RippleDirective} from "../@core/directives/ripple.directive";
         MapModalComponent,
         StatusBeginComponent,
         StatusCurrentComponent,
-        RippleDirective
+        RippleDirective,
+        ButtonComponent,
+        DialogModalComponent,
+        StatisticModalComponent,
+        NfcTimerModalComponent
     ],
     imports: [CommonModule, AngularSvgIconModule, IonicModule],
 })

@@ -22,7 +22,7 @@ export class ResolveTaskComponent implements OnInit {
     }
 
     public async accept(): Promise<void> {
-        this.navCtrl.navigateRoot('/nfc');
+        await this.navCtrl.navigateRoot('/nfc');
         await this.dismiss();
     }
 

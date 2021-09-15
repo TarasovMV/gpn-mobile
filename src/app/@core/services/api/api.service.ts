@@ -3,8 +3,14 @@ import {HttpClient} from '@angular/common/http';
 import {AppConfigService} from '../platform/app-config.service';
 import {IUser, IUserCredentials} from '../../model/user.model';
 import {IVehicle} from "../../model/vehicle.model";
-import {ITask} from "../../model/task.model";
-import {ISetWorkShift, IWorkShift, IWorkShiftStatus, IWorkShiftVehicle} from "../../model/workshift.model";
+import {ITask, ITaskData} from "../../model/task.model";
+import {
+    ISetWorkShift,
+    IWorkShift,
+    IWorkShiftEnd,
+    IWorkShiftStatus,
+    IWorkShiftVehicle
+} from "../../model/workshift.model";
 import {IStatusInfo} from "../../../@shared/avatar-modal/avatar-modal.component";
 import {UserInfoService} from "../../../services/user-info.service";
 
@@ -25,8 +31,8 @@ export class ApiService {
         return await this.http.post<IUser>(`${this.restUrl}/api/auth`, cred).toPromise();
     }
 
-    public async getTasks(userId: number): Promise<ITask[]> {
-        return await this.http.get<ITask[]>(`${this.restUrl}/api/Task/driver/${userId}`).toPromise();
+    public async getTasks(userId: number): Promise<ITaskData> {
+        return await this.http.get<ITaskData>(`${this.restUrl}/api/Task/driver/${userId}`).toPromise();
     }
 
     public async getVehicles(): Promise<IVehicle[]> {
@@ -34,11 +40,16 @@ export class ApiService {
     }
 
     public async getWorkShift(userId: number): Promise<IWorkShift> {
-        return await this.http.get<IWorkShift>(`${this.restUrl}/api/WorkShift/user/${userId}`).toPromise();
+        return await this.http
+            .get<IWorkShift>(`${this.restUrl}/api/WorkShift/user/${userId}`)
+            .toPromise();
     }
 
     public async setWorkShift(params: ISetWorkShift): Promise<IWorkShift> {
         return await this.http.post<IWorkShift>(`${this.restUrl}/api/WorkShift`, params).toPromise();
+    }
+    public async endWorkShift(params: {userId: number}): Promise<IWorkShiftEnd> {
+        return await this.http.post<IWorkShiftEnd>(`${this.restUrl}/api/WorkShift/finish`, params).toPromise();
     }
 
     public async changeStatus(param: IWorkShiftStatus): Promise<IWorkShift> {

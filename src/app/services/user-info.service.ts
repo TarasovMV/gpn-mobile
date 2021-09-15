@@ -9,13 +9,14 @@ import {
 import { IUser, IUserCredentials } from '../@core/model/user.model';
 import { ApiService } from '../@core/services/api/api.service';
 import { IVehicle } from '../@core/model/vehicle.model';
+import { IWorkShiftEnd } from '../@core/model/workshift.model';
 
 @Injectable({
     providedIn: 'root',
 })
 export class UserInfoService {
     public currentUser: IUser = null;
-    public statusIndex$: BehaviorSubject<number> = new BehaviorSubject<number>(
+    public statusId$: BehaviorSubject<number> = new BehaviorSubject<number>(
         null
     );
     public workShift$: BehaviorSubject<number> = new BehaviorSubject<number>(
@@ -58,20 +59,23 @@ export class UserInfoService {
         patronymic: 'Иванович',
     };
 
+    public endStatistic$: BehaviorSubject<IWorkShiftEnd> =
+        new BehaviorSubject<IWorkShiftEnd>(null);
+
     constructor(
         public modalController: ModalController,
         private apiService: ApiService
     ) {
-        this.statusIndex$.subscribe(async (item) => {
-            const workShiftId = this.workShift$.getValue();
-            const driverStateId = this.statusIndex$.getValue();
-            if (item >= 0 && workShiftId && driverStateId) {
-                await this.apiService.changeStatus({
-                    workShiftId,
-                    driverStateId,
-                });
-            }
-        });
+        // this.statusId$.subscribe(async (item) => {
+        //     const workShiftId = this.workShift$.getValue();
+        //     const driverStateId = this.statusId$.getValue();
+        //     if (item >= 0 && workShiftId && driverStateId) {
+        //         await this.apiService.changeStatus({
+        //             workShiftId,
+        //             driverStateId,
+        //         });
+        //     }
+        // });
     }
 
     public async openActivityModal(): Promise<void> {
@@ -98,13 +102,13 @@ export class UserInfoService {
             this.currentUser.userId
         );
         this.workShift$.next(workShift.id);
+        this.statusId$.next(workShift.driverStateId);
     }
 
     public async setWorkShift(): Promise<void> {
         const userId = this.currentUser.userId;
         const vehicleId = this.car$.getValue().id;
-        const driverStateId =
-            this.statusList$.getValue()[this.statusIndex$.getValue()].id;
+        const driverStateId = this.statusId$.getValue();
 
         const workShift = await this.apiService.setWorkShift({
             userId,
@@ -112,6 +116,16 @@ export class UserInfoService {
             driverStateId,
         });
         this.workShift$.next(workShift.id);
+    }
+
+    public async endWorkShift(): Promise<void> {
+        const userId = this.currentUser.userId;
+        const res = await this.apiService.endWorkShift({ userId });
+
+        this.carNumber$.next(null);
+        this.statusId$.next(null);
+        this.workShift$.next(null);
+        this.endStatistic$.next(res);
     }
 
     private async presentModalPassword() {

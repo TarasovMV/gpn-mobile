@@ -1,0 +1,101 @@
+@import "src/theme/functions";
+* {
+  box-sizing: border-box;
+}
+.container {
+  height: sizeHeight(150);
+  width: sizeHeight(150);
+
+  .timer  {
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    .svg {
+      height: 100%;
+      width: 100%;
+
+      position: absolute;
+
+      .bg-circle {
+        fill: transparent;
+        r: sizeHeight(74);
+        stroke-width: sizeHeight(3);
+      }
+
+      .percent {
+        fill: transparent;
+        r: sizeHeight(74);
+        stroke-width: sizeHeight(3);
+      }
+    }
+
+    &__info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      position: absolute;
+
+      .text-main {
+        font-size: sizeHeight(30);
+
+        color: var(--text-main-color);
+      }
+
+      .text-sub {
+        color: var(--index-fact-color);
+      }
+    }
+
+    &__warning {
+      .text-sub {
+        font-size: sizeHeight(66);
+      }
+
+      .svg {
+        .bg-circle {
+          stroke: var(--chart-segment-color)
+        }
+
+        .percent {
+          stroke: var(--data-c10-color);
+          transform: rotate(-90deg);
+          transform-origin: center center;
+        }
+      }
+    }
+
+    &__danger {
+      .svg {
+        .bg-circle {
+          stroke: var(--index-critical-color)
+        }
+      }
+    }
+
+    &__normal {
+      .text-sub {
+        font-size: sizeHeight(34);
+      }
+
+      .svg {
+        .bg-circle {
+          stroke: var(--chart-segment-color)
+        }
+
+        .percent {
+          stroke: var(--index-fact-color);
+          transform: scale(-1, 1) rotate(-90deg);
+          transform-origin: center center;
+        }
+      }
+    }
+  }
+}

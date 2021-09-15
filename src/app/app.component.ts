@@ -31,7 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.initializeApp();
         this.themeService.setThemeConfiguratorRoot(this.document).then();
 
-        this.subscription = this.userInfo.statusIndex$.subscribe(value => {
+        this.subscription = this.userInfo.statusId$.subscribe(value => {
             const time = 25 * 60000;
             if (value !== 2) {
                 clearTimeout(this.timeOut);

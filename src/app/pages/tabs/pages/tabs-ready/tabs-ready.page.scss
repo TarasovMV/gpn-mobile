@@ -125,16 +125,6 @@
           .btn {
             height: 100%;
             width: 100%;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            background: var(--border-blue-color);
-            border-radius: sizeHeight(8);
-
-            font-size: sizeHeight(40);
-            color: var(--text-alwaysWhite-color);
           }
         }
       }

@@ -4,17 +4,19 @@ import {
     ChangeDetectorRef,
     Component,
     ElementRef,
-    NgZone, OnDestroy,
+    NgZone,
+    OnDestroy,
     OnInit,
-    ViewChild
+    ViewChild,
 } from '@angular/core';
-import {BehaviorSubject, Subject, Subscription} from 'rxjs';
-import {TabsInfoService} from '../../services/tabs/tabs-info.service';
-import {ModalController, NavController} from '@ionic/angular';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { TabsInfoService } from '../../services/tabs/tabs-info.service';
+import { ModalController, NavController } from '@ionic/angular';
 import Hammer from 'hammerjs';
 import * as d3 from 'd3';
-import {ICoord} from '../tabs/pages/tabs-tasks/tabs-tasks.page';
-import {ResolveTaskComponent} from './components/resolve-task/resolve-task.component';
+import { ICoord } from '../tabs/pages/tabs-tasks/tabs-tasks.page';
+import { ResolveTaskComponent } from './components/resolve-task/resolve-task.component';
+import { GeoProjection } from 'as-geo-projection';
 
 interface IMapConfig {
     width: number;
@@ -85,23 +87,26 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
     private svg: any;
 
     private currentRoute: ICoord[] = [];
-    private position$: BehaviorSubject<ICoord> = new BehaviorSubject<ICoord>({x: 0, y: 0});
+    private position$: BehaviorSubject<ICoord> = new BehaviorSubject<ICoord>({
+        x: 0,
+        y: 0,
+    });
 
     constructor(
         public tabsService: TabsInfoService,
         private navCtrl: NavController,
         private zone: NgZone,
         private cdRef: ChangeDetectorRef,
-        public modalController: ModalController,
+        public modalController: ModalController
     ) {}
 
     ngOnDestroy(): void {
-        this.subscriptions.forEach(item => item.unsubscribe());
+        this.subscriptions.forEach((item) => item.unsubscribe());
     }
 
     ngOnInit(): void {
         this.subscriptions.push(
-            this.listener.subscribe(x => {
+            this.listener.subscribe((x) => {
                 this.scaleStyle = this.zoomHandler(x.scale);
                 this.rotationStyle = this.rotationHandler(x.rotation, x);
                 this.cdRef.detectChanges();
@@ -114,7 +119,7 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
         this.height = this.screenRef.nativeElement.offsetHeight;
         this.config = {
             width: this.width,
-            height: 405 / 720 * this.width,
+            height: (405 / 720) * this.width,
             initScale: 10,
         };
         this.mapStyle = 'transform: scale(' + this.config.initScale + ')';
@@ -122,16 +127,30 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
         this.init();
         this.drawSvg();
 
-        const allTimeInterval = setInterval(()=> {
-            if (this.currentTime < this.allTime) {
-                this.currentTime += 50;
+        const geo = new GeoProjection();
+
+        const taskId = this.tabsService.currentTask$.getValue().id;
+        this.currentRoute = this.tabsService
+            .getRoutes(171)
+            .map((item) =>
+                geo.getRelativeByWgs({ latitude: item.y, longitude: item.x })
+            )
+            .map((item) => ({ x: item.x, y: 100 - item.y }));
+
+        this.drawRoute([{ ...this.currentRoute[0] }, ...this.currentRoute]);
+        this.drawNavPoints([this.currentRoute[this.currentRoute.length - 1]]);
+        this.currentRoute.forEach((item, i) => {
+            setTimeout(() => {
+                this.setCameraPosition(item.x, item.y);
+                this.drawCarPoint(item.x, item.y);
+            }, i * 1000);
+
+            if (i === this.currentRoute.length - 1) {
+                setTimeout(() => {
+                    this.openEndTaskModal('endOne').then();
+                }, i * 1000);
             }
-        }, 50);
-
-        setTimeout(()=>{
-            this.openEndTaskModal('endOne').then();
-        }, 5100);
-
+        });
     }
 
     init(): void {
@@ -171,8 +190,10 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
             const prevCenterX = this.width / 2 - cX;
             const prevCenterY = this.height / 2 - cY;
 
-            const nextCenterX = prevCenterX * Math.cos(angle) - prevCenterY * Math.sin(angle);
-            const nextCenterY = prevCenterX * Math.sin(angle) + prevCenterY * Math.cos(angle);
+            const nextCenterX =
+                prevCenterX * Math.cos(angle) - prevCenterY * Math.sin(angle);
+            const nextCenterY =
+                prevCenterX * Math.sin(angle) + prevCenterY * Math.cos(angle);
 
             const dX = nextCenterX - prevCenterX;
             const dY = nextCenterY - prevCenterY;
@@ -183,8 +204,14 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
             const xP = this.width / 2 - xScreen;
             const yP = this.height / 2 - yScreen;
 
-            const testX = this.width / 2 - ((xP) * Math.cos(angle) - (yP) * Math.sin(angle)) + dX;
-            const testY = this.height / 2 - ((xP) * Math.sin(angle) + (yP) * Math.cos(angle)) + dY;
+            const testX =
+                this.width / 2 -
+                (xP * Math.cos(angle) - yP * Math.sin(angle)) +
+                dX;
+            const testY =
+                this.height / 2 -
+                (xP * Math.sin(angle) + yP * Math.cos(angle)) +
+                dY;
 
             this.pointStyle = `left: ${testX}px; top: ${testY}px`;
             this.cdRef.detectChanges();
@@ -209,14 +236,14 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
             this.listener.next(x);
         });
 
-        mc.on('pinchend', ()  => {
-            setTimeout(() => this.isPinch = false, 100);
+        mc.on('pinchend', () => {
+            setTimeout(() => (this.isPinch = false), 100);
             this.rotation = undefined;
             this.zoom = undefined;
             this.cdRef.detectChanges();
         });
 
-        mc.on('pinchstart', (x)  => {
+        mc.on('pinchstart', (x) => {
             this.isPinch = true;
             this.rotation = undefined;
             this.zoom = undefined;
@@ -232,8 +259,10 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
             const prevCenterX = this.width / 2 - cX;
             const prevCenterY = this.height / 2 - cY;
 
-            const nextCenterX = prevCenterX * Math.cos(angle) - prevCenterY * Math.sin(angle);
-            const nextCenterY = prevCenterX * Math.sin(angle) + prevCenterY * Math.cos(angle);
+            const nextCenterX =
+                prevCenterX * Math.cos(angle) - prevCenterY * Math.sin(angle);
+            const nextCenterY =
+                prevCenterX * Math.sin(angle) + prevCenterY * Math.cos(angle);
 
             const dX = nextCenterX - prevCenterX;
             const dY = nextCenterY - prevCenterY;
@@ -244,12 +273,18 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
             const xP = this.width / 2 - xScreen;
             const yP = this.height / 2 - yScreen;
 
-            this.xImageR = this.width / 2 - ((xP) * Math.cos(angle) - (yP) * Math.sin(angle)) + dX;
-            this.yImageR = this.height / 2 - ((xP) * Math.sin(angle) + (yP) * Math.cos(angle)) + dY;
+            this.xImageR =
+                this.width / 2 -
+                (xP * Math.cos(angle) - yP * Math.sin(angle)) +
+                dX;
+            this.yImageR =
+                this.height / 2 -
+                (xP * Math.sin(angle) + yP * Math.cos(angle)) +
+                dY;
 
             this.pointStyle = `left: ${this.xImageR}px; top: ${this.yImageR}px`;
-            this.xNewR += (xScreen - this.xImageR);
-            this.yNewR += (yScreen - this.yImageR);
+            this.xNewR += xScreen - this.xImageR;
+            this.yNewR += yScreen - this.yImageR;
 
             this.xImage += (xScreen - this.xLast) / this.zoomOrigin;
             this.yImage += (yScreen - this.yLast) / this.zoomOrigin;
@@ -306,18 +341,6 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
         this.y = this.yOrigin + dy;
     }
 
-    // TODO: for easy get points on map (delete click event on prod)
-    public trackPosition(ev: any): void {
-        const spotX = ev.offsetX;
-        const spotY = ev.offsetY;
-        this.point = {
-            x: spotX - 1,
-            y: spotY - 1
-        };
-
-        console.log(this.point);
-    }
-
     public redirectToTab(): void {
         this.navCtrl.navigateRoot('/tabs/tabs-tasks').then();
     }
@@ -337,9 +360,9 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
         this.xOrigin = 0;
         this.yOrigin = 0;
 
-        const resX = (this.config.width / 2 - x) * this.config.initScale;
-        const resY = (this.config.height / 2 - y) * this.config.initScale;
-        this.mapStyle = `transform: translate(${resX}px, ${resY}px) scale(${this.config.initScale})`;
+        const resX = (50 - x) * this.config.initScale;
+        const resY = (50 - y) * this.config.initScale;
+        this.mapStyle = `transform: translate(${resX}%, ${resY}%) scale(${this.config.initScale})`;
     }
 
     private drawSvg(): void {
@@ -350,134 +373,81 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
             .attr('viewBox', `0 0 ${this.config.width} ${this.config.height}`);
     }
 
-    private async fakeDriving(): Promise<void> {
-        const dT = 30;
-        const routes = [...this.currentRoute];
-        const position = {
-            x: this.position$.getValue().x,
-            y: this.position$.getValue().y
-        };
-        const distance = this.getDistance([position, ...routes]);
-        const dS = distance / (this.allTime / dT);
-
-        this.tabsService.startMove(); // Метод вызывается в начале движения
-
-        for (const route of routes) {
-            const pos = [this.position$.getValue(), route];
-            const powX = pos[1].x > pos[0].x ? 1 : -1;
-            const powY = pos[1].y > pos[0].y ? 1 : -1;
-            const tg = (pos[1].x - pos[0].x) / (pos[1].y - pos[0].y);
-            const angle = Math.atan(tg);
-            const dx = Math.sin(angle) * dS;
-            const dy = Math.cos(angle) * dS;
-            console.log({
-                route,
-                powX,
-                powY,
-                dx,
-                dy
-            });
-
-            let stopCount = 1000;
-            let flag = true;
-
-            const promiseFn = (): Promise<any> => new Promise((resolve) => {
-                stopCount--;
-                if (stopCount < 0) {
-                    console.error('loop');
-                    flag = false;
-                }
-                this.currentPosition = {
-                    x: this.position$.getValue().x + powX * dx,
-                    y: this.position$.getValue().y + powY * dy,
-                };
-
-                if (powY * (this.currentPosition.y - route.y) > 0 || powX * (this.currentPosition.x - route.x) > 0) {
-                    console.log(route.y);
-                    this.position$.next(route);
-                    flag = false;
-                }
-                this.position$.next(this.currentPosition);
-
-                const time = setTimeout(() => resolve(1), dT);
-            });
-
-            while(flag) {
-                await promiseFn();
-            }
-            this.currentRoute.splice(this.currentRoute.indexOf(route), 1);
-        }
-
-        this.tabsService.endMove(); // Метод вызывается в конце движения
-    }
-
-    private drawRoute(coords: {x: number; y: number}[]): void {
+    private drawRoute(coords: { x: number; y: number }[]): void {
         this.svg.selectAll('.nav-line').remove();
-        coords.map((c, i, arr) => ({
-            x1: c.x,
-            x2: arr[i + 1]?.x,
-            y1: c.y,
-            y2: arr[i + 1]?.y
-        })).filter(x => !!x.x2 && !!x.y2).forEach(l => {
-            this.svg.append('line')
-                .style('stroke', 'white')
-                .style('stroke-width', .2)
-                .style('stroke-dasharray', 1)
-                .attr('class', 'nav-line')
-                .attr('x1', l.x1)
-                .attr('y1', l.y1)
-                .attr('x2', l.x2)
-                .attr('y2', l.y2);
-        });
+        coords
+            .map((c, i, arr) => ({
+                x1: c.x,
+                x2: arr[i + 1]?.x,
+                y1: c.y,
+                y2: arr[i + 1]?.y,
+            }))
+            .filter((x) => !!x.x2 && !!x.y2)
+            .forEach((l) => {
+                this.svg
+                    .append('line')
+                    .style('stroke', 'var(--border-blue-color)')
+                    .style('stroke-width', `0.3%`)
+                    .attr('class', 'nav-line')
+                    .attr('x1', `${l.x1}%`)
+                    .attr('y1', `${l.y1}%`)
+                    .attr('x2', `${l.x2}%`)
+                    .attr('y2', `${l.y2}%`);
+            });
     }
 
-    private drawNavPoints(coords: {x: number; y: number}[]): void {
+    private drawNavPoints(coords: { x: number; y: number }[]): void {
         this.svg.selectAll('.nav-point').remove();
         this.svg.selectAll('.nav-point-inner').remove();
-        coords.forEach(c => {
+        coords.forEach((c) => {
             this.svg
                 .append('circle')
                 .attr('r', 1.4)
                 .attr('stroke-width', 0.1)
-                .attr('cx', c.x)
-                .attr('cy', c.y)
+                .attr('cx', `${c.x}%`)
+                .attr('cy', `${c.y}%`)
                 .attr('class', 'nav-point');
             this.svg
                 .append('circle')
                 .attr('r', 0.7)
-                .attr('cx', c.x)
-                .attr('cy', c.y)
+                .attr('cx', `${c.x}%`)
+                .attr('cy', `${c.y}%`)
                 .attr('class', 'nav-point-inner');
         });
     }
 
     private drawCarPoint(x: number, y: number) {
-        this.drawRoute([{x, y}, ...this.currentRoute]);
-        this.drawNavPoints([this.currentRoute[this.currentRoute.length - 1]]);
         this.svg.select('.car-point').remove();
         this.svg.select('.car-point-back').remove();
-        this.svg.append('circle')
+        this.svg
+            .append('circle')
             .attr('id', 999)
             .attr('r', 1)
-            .attr('cx', x)
-            .attr('cy', y)
+            .attr('cx', `${x}%`)
+            .attr('cy', `${y}%`)
             .attr('class', 'car-point');
-        this.svg.append('circle')
+        this.svg
+            .append('circle')
             .attr('id', 998)
             .attr('r', 3)
-            .attr('cx', x)
-            .attr('cy', y)
+            .attr('cx', `${x}%`)
+            .attr('cy', `${y}%`)
             .attr('class', 'car-point-back');
         this.setCameraPosition(x, y);
     }
 
-    private getDistance(coords: {x: number; y: number}[]): number {
-        return coords.map((c, i, arr) => ({
-            x1: c.x,
-            x2: arr[i + 1]?.x,
-            y1: c.y,
-            y2: arr[i + 1]?.y
-        })).filter(x => !!x.x2 && !!x.y2).map(l => Math.sqrt(Math.pow((l.x1 - l.x2), 2) + Math.pow((l.y1 - l.y2), 2)))
+    private getDistance(coords: { x: number; y: number }[]): number {
+        return coords
+            .map((c, i, arr) => ({
+                x1: c.x,
+                x2: arr[i + 1]?.x,
+                y1: c.y,
+                y2: arr[i + 1]?.y,
+            }))
+            .filter((x) => !!x.x2 && !!x.y2)
+            .map((l) =>
+                Math.sqrt(Math.pow(l.x1 - l.x2, 2) + Math.pow(l.y1 - l.y2, 2))
+            )
             .reduce((acc, next) => acc + next);
     }
 
@@ -487,9 +457,9 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
             cssClass: 'simple-modal',
             componentProps: {
                 type,
-                coord: this.currentPosition
+                coord: this.currentPosition,
             },
-            backdropDismiss: false
+            backdropDismiss: false,
         });
         return await modal.present();
     }

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UserInfoService } from '../../services/user-info.service';
 import { ModalController } from '@ionic/angular';
 import { TabsInfoService } from '../../services/tabs/tabs-info.service';
+import { VerifyModalComponent } from '../../pages/nfc-verify/components/verify-modal/verify-modal.component';
+import { StatisticModalComponent } from '../statistic-modal/statistic-modal.component';
 
 @Component({
     selector: 'app-status-current',
@@ -17,8 +19,23 @@ export class StatusCurrentComponent implements OnInit {
 
     public currentStatusId: number = 1;
 
-    public dismiss(): void {
-        this.modalController.dismiss().then();
+    public async dismiss(): Promise<void> {
+        await this.modalController.dismiss().then();
+    }
+
+    public async endWorkShift(): Promise<void> {
+        await this.dismiss();
+        await this.userInfo.endWorkShift();
+        await this.openStatisticModal();
+    }
+
+    public async openStatisticModal(): Promise<void> {
+        const modal = await this.modalController.create({
+            component: StatisticModalComponent,
+            cssClass: 'choose-task',
+            backdropDismiss: true,
+        });
+        await modal.present();
     }
 
     public changeStatus(id: number): void {

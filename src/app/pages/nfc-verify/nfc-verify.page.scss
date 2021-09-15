@@ -78,20 +78,8 @@ button {
 
       margin-top: sizeHeight(20);
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      background: var(--bg-buttons-color);
-      border-radius: sizeHeight(8);
-
-      font-size: sizeHeight(36);
-      color: var(--text-contrast-color);
-
       &_activateNFC {
         margin-top: auto;
-        background: var(--border-blue-color);
-        color: var(--text-alwaysWhite-color);
       }
     }
   }

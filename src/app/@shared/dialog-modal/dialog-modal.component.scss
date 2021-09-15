@@ -1,0 +1,43 @@
+@import "src/theme/functions";
+* {
+    box-sizing: border-box;
+}
+
+.container {
+    height: 100%;
+    padding: sizeHeight(25) sizeWidth(25) sizeHeight(40);
+
+    display: flex;
+    flex-direction: column;
+
+    background: var(--bg-body-color);
+    border-radius: sizeHeight(8);
+
+    position: relative;
+
+    .message {
+        color: var(--text-contrast-color);
+        font-size: sizeHeight(40);
+    }
+
+    .buttons {
+        padding: 0 sizeWidth(25);
+        margin-top: auto;
+
+        display: flex;
+
+        .btn {
+            color: var(--text-subscript-color);
+            font-size: sizeHeight(30);
+
+            outline: none;
+            border: none;
+            background: transparent;
+
+            &_active {
+                margin-left: auto;
+                color: var(--border-blue-color);
+            }
+        }
+    }
+}

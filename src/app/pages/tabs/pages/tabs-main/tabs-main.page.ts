@@ -13,6 +13,7 @@ import * as d3 from 'd3';
 import {ModalController, NavController} from '@ionic/angular';
 import { TabsInfoService } from '../../../../services/tabs/tabs-info.service';
 import {StatusBeginComponent} from "../../../../@shared/status-begin/status-begin.component";
+import {UserInfoService} from "../../../../services/user-info.service";
 
 export interface IDiagram {
     total: number;
@@ -39,7 +40,8 @@ export class TabsMainPage implements OnInit, IPageTab, AfterViewInit {
     constructor(
         private navCtrl: NavController,
         private tabsService: TabsInfoService,
-        public modalController: ModalController
+        public modalController: ModalController,
+        private userService: UserInfoService
     ) {}
 
     @HostListener('window:resize', ['$event'])
@@ -47,8 +49,7 @@ export class TabsMainPage implements OnInit, IPageTab, AfterViewInit {
         this.drawSvg(this.diagramData$.value);
     }
 
-    async ngOnInit() {
-        await this.presentModalChooseStatus();
+    ngOnInit() {
     }
 
     ngAfterViewInit() {
@@ -152,13 +153,5 @@ export class TabsMainPage implements OnInit, IPageTab, AfterViewInit {
                 .attr('d', arcBg(startPos, endPos))
                 .style('fill', section.color);
         });
-    }
-
-    private async presentModalChooseStatus() {
-        const modal = await this.modalController.create({
-            component: StatusBeginComponent,
-            cssClass: 'choose-status',
-        });
-        return await modal.present();
     }
 }

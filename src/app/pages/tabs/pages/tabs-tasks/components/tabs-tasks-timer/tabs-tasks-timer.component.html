@@ -1,0 +1,58 @@
+<div class="container">
+  <ng-container [ngSwitch]="timerType">
+    <div class="timer timer__normal" *ngSwitchCase="'normal'">
+      <svg class="svg">
+        <circle class="bg-circle" cx="50%" cy="50%" />
+        <circle
+          class="percent"
+          cx="50%"
+          cy="50%"
+          [style.stroke-dasharray]="
+            circleLength * (1 - percent) + ' ' + circleLength * percent
+          "
+        />
+      </svg>
+
+      <div class="timer__info">
+        <span class="text-main">{{ taskPlaneTime | date: "HH:mm" }}</span>
+        <span class="text-sub">{{
+          this.remainingTime?.hours + ":" + this.remainingTime?.min
+        }}</span>
+      </div>
+    </div>
+
+    <div class="timer timer__warning" *ngSwitchCase="'warning'">
+      <svg class="svg">
+        <circle class="bg-circle" cx="50%" cy="50%" />
+        <circle
+          class="percent"
+          cx="50%"
+          cy="50%"
+          [style.stroke-dasharray]="
+            circleLength * (1 - percent) + ' ' + circleLength * percent
+          "
+        />
+      </svg>
+
+      <div class="timer__info">
+        <span class="text-sub">{{ safeIntervalRemaining }}</span>
+      </div>
+    </div>
+
+    <div class="timer timer__danger" *ngSwitchCase="'danger'">
+      <svg class="svg">
+        <circle class="bg-circle" cx="50%" cy="50%" />
+      </svg>
+
+      <div class="timer__info">
+        <svg-icon
+          [svgStyle]="{
+            'height.vh': 4,
+            'width.vh': 4
+          }"
+          src="assets/Icons/tabs/tasks-tab/error.svg"
+        ></svg-icon>
+      </div>
+    </div>
+  </ng-container>
+</div>

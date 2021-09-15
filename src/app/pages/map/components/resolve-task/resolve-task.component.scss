@@ -21,33 +21,10 @@
     color: var(--text-contrast-color);
   }
 
-  button {
-    outline: none;
-    border: none;
-    background: transparent;
-  }
-
   .btn {
     height: sizeHeight(74);
     width: 100%;
     margin-top: auto;
-    padding: 0 sizeWidth(10);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: var(--border-blue-color);
-    border-radius: sizeHeight(8);
-
-    font-size: sizeHeight(30);
-    color: var(--text-alwaysWhite-color);
-    text-align: center;
-
-    svg-icon {
-      display: flex;
-      margin-right: sizeWidth(25);
-    }
   }
 
   .cancel {

@@ -4,6 +4,7 @@ import { ModalController, NavController } from '@ionic/angular';
 import { UserInfoService } from '../../../../services/user-info.service';
 import { IVehicle } from '../../../../@core/model/vehicle.model';
 import { ApiService } from '../../../../@core/services/api/api.service';
+import {StatusBeginComponent} from "../../../../@shared/status-begin/status-begin.component";
 
 @Component({
     selector: 'app-car-popower',
@@ -28,17 +29,28 @@ export class CarPopowerComponent implements OnInit {
     }
 
     public async dismiss(): Promise<void> {
-        await this.modalController.dismiss().then();
+        await this.modalController.dismiss();
+        this.navCtrl.navigateRoot('/login').then();
     }
 
     public async accept() {
         await this.dismiss();
-        this.navCtrl.navigateRoot(this.nextUrl).then();
-        await this.userInfo.setWorkShift();
+        await this.navCtrl.navigateRoot(this.nextUrl);
+        if (this.userInfo.workShift$.getValue() === null) {
+            await this.presentModalChooseStatus();
+        }
     }
 
     async ngOnInit() {
         const cars = await this.apiService.getVehicles();
         this.carList$.next(cars);
+    }
+
+    private async presentModalChooseStatus() {
+        const modal = await this.modalController.create({
+            component: StatusBeginComponent,
+            cssClass: 'choose-status',
+        });
+        return await modal.present();
     }
 }

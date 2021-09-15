@@ -46,7 +46,8 @@ button {
     align-items: center;
     justify-content: center;
 
-    .info-extra, .info-main {
+    .info-extra,
+    .info-main {
       text-align: center;
       font-size: sizeHeight(32);
       color: var(--text-main-color);
@@ -62,24 +63,5 @@ button {
     height: sizeHeight(74);
     width: sizeWidth(400);
     margin-top: auto;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    column-gap: sizeWidth(25);
-    -webkit-column-gap: sizeWidth(25);
-    -moz-column-gap: sizeWidth(25);
-    -o-column-gap: sizeWidth(25);
-
-    background: var(--border-blue-color);
-    border-radius: sizeHeight(8);
-
-    font-size: sizeHeight(30);
-    color: var(--text-alwaysWhite-color);
-
-    svg-icon {
-      display: flex;
-    }
   }
 }

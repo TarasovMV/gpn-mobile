@@ -1,0 +1,83 @@
+@import "src/theme/functions";
+* {
+  box-sizing: border-box;
+}
+svg-icon {
+  display: flex;
+}
+
+button {
+  outline: none;
+  border: none;
+  background: transparent;
+}
+
+.btn {
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  padding: 0 sizeWidth(10);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--bg-buttons-color);
+
+  font-size: sizeHeight(39);
+  color: var(--text-contrast-color);
+
+  overflow: hidden;
+
+  position: relative;
+
+  .icon {
+    margin-right: sizeWidth(15);
+  }
+
+  &_active {
+    background: var(--border-blue-color);
+    color: var(--text-alwaysWhite-color);
+  }
+
+  &_small {
+    font-size: sizeHeight(30);
+  }
+
+  ::ng-deep {
+    .ripple {
+      height: 0;
+      width: 0;
+
+      border-radius: 50%;
+      background: var(--bg-body-color);
+      opacity: 0.4;
+
+      position: absolute;
+
+      transform: translate(-50%, -50%);
+      transition: 1s;
+
+      pointer-events: none;
+
+      &_active {
+        animation: 700ms ripple ease-out;
+      }
+    }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+@keyframes ripple {
+  0% {
+    height: 0;
+    width: 0;
+  }
+  100% {
+    height: 200vw;
+    width: 200vw;
+  }
+}

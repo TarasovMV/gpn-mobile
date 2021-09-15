@@ -56,10 +56,8 @@
       ></svg-icon>
     </div>
 
-    <button class="btn btn_active" (click)="nextTask()">
-      <span>Следующее задание</span>
-    </button>
-    <button class="btn" disabled>Завершить задание</button>
+    <app-button class="btn btn_active" (click)="nextTask()">Следующее задание</app-button>
+    <app-button class="btn" [isActive]="false" [disabled]="true">Завершить задание</app-button>
   </div>
 </div>
 

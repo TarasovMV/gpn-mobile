@@ -14,11 +14,11 @@
     ></svg-icon>
     <div
       class="indicator"
-      [style.background]="userInfo.statusColors[(userInfo.statusIndex$ | async)]?.bgColor"
+      [style.background]="userInfo.statusColors[(userInfo.statusId$ | async)]?.bgColor"
     >
       <div
         class="indicator__inner"
-        [style.background]="userInfo.statusColors[(userInfo.statusIndex$ | async)]?.color"
+        [style.background]="userInfo.statusColors[(userInfo.statusId$ | async)]?.color"
       ></div>
     </div>
   </div>

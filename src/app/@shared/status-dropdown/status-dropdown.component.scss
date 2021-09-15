@@ -18,7 +18,7 @@ input {
   .indicator {
     height: sizeHeight(40);
     width: sizeHeight(40);
-    margin-right: sizeWidth(11);;
+    margin-right: sizeWidth(11);
 
     display: flex;
     align-items: center;
@@ -59,9 +59,12 @@ input {
     max-height: sizeHeight(360);
     width: 100%;
 
+    border: sizeHeight(1) solid var(--border-forms-color);
+    background: var(--bg-dashboard-color);
+
     position: absolute;
     top: sizeHeight(89);
-    border: sizeHeight(1) solid var(--border-forms-color);
+
     overflow-y: auto;
 
     &-item {

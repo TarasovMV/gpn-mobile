@@ -1,20 +1,26 @@
 <div class="container">
-    <span class="user">
-      {{userInfo.currentUser.lastName + ' ' + userInfo.currentUser.firstName + ' ' + userInfo.currentUser.patronymic}}
-    </span>
+  <span class="user">
+    {{
+      userInfo.currentUser.lastName +
+        " " +
+        userInfo.currentUser.firstName +
+        " " +
+        userInfo.currentUser.patronymic
+    }}
+  </span>
   <div class="status" [class.status_active]="isOpened" (click)="openDropdown()">
     <svg-icon
       [svgStyle]="{
-        'height': '3.9vh',
-        'width': '3.9vh'
+        height: '3.9vh',
+        width: '3.9vh'
       }"
       src="assets/Icons/avatar-modal/avatar.svg"
     ></svg-icon>
     <span class="name">Статус</span>
     <div class="dropdown">
       <app-status-dropdown
-        [options]="(userInfo.statusList$ | async)"
-        [currentOptionId]="(userInfo.statusIndex$ | async)"
+        [options]="userInfo.statusList$ | async"
+        [currentOptionId]="userInfo.statusId$ | async"
         (onChanged)="changeStatus($event)"
       ></app-status-dropdown>
     </div>
@@ -22,15 +28,28 @@
   <div class="car">
     <svg-icon
       [svgStyle]="{
-        'height': '3.9vh',
-        'width': '3.9vh'
+        height: '3.9vh',
+        width: '3.9vh'
       }"
       src="assets/Icons/avatar-modal/truck.svg"
     ></svg-icon>
     <span class="name">Автомобиль</span>
-    <span class="number">{{userInfo.carNumber$ | async}}</span>
+    <span class="number">{{ userInfo.carNumber$ | async }}</span>
   </div>
 
-  <button class="btn btn__change-car" (click)="changeCar()">Сменить автомобиль</button>
-  <button class="btn btn__change-user" (click)="changeUser()">Сменить пользователя</button>
+  <app-button
+    class="btn btn__change-car"
+    [isActive]="false"
+    (click)="changeCar()"
+  >
+    Сменить автомобиль
+  </app-button>
+
+  <app-button
+    class="btn btn__change-user"
+    [isActive]="false"
+    (click)="changeUser()"
+  >
+    Сменить пользователя
+  </app-button>
 </div>

@@ -88,9 +88,9 @@ export class TabsReadyPage implements OnInit, IPageTab, AfterViewInit {
             },
             onEnd: (e) => {
                 this.swipeTransition = 0.4;
-                if (e.deltaX > screenWidth / 2) {
+                if (e.deltaX > screenWidth / 3) {
                     this.changeTab(0);
-                } else if (e.deltaX < -screenWidth / 2) {
+                } else if (e.deltaX < -screenWidth / 3) {
                     this.changeTab(1);
                 } else {
                     const tabIdx = this.tabsService.currentTab$.getValue();

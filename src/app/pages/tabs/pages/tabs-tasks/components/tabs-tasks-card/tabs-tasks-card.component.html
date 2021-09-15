@@ -1,41 +1,36 @@
-<div
-  class="item"
-  [class.item_active]="isActive"
->
-  <div class="chart" #chart>
-    <div class="chart__info">
-      <div class="total">14:00</div>
-      <div class="spent">01:23</div>
-    </div>
+<div class="item" [class.item_active]="isActive">
+  <div class="chart">
+    <app-tabs-tasks-timer [data]="data"></app-tabs-tasks-timer>
   </div>
   <div class="description">
-    <span class="title">{{data?.number}},<span class="manufacture">Установка: {{data?.plantName}}</span></span>
+    <span class="title"
+      >{{ data?.number }},<span class="manufacture"
+        >Установка: {{ data?.plantName }}</span
+      ></span
+    >
     <div class="description__item">
       <div class="icon">
         <svg-icon
           [svgStyle]="{
-            'height': '2.5vh',
-            'width': '2.5vh'
+            height: '2.5vh',
+            width: '2.5vh'
           }"
           src="assets/Icons/tabs/tasks-tab/tare.svg"
         ></svg-icon>
       </div>
-      <span class="info">Доставить тару – {{data?.tares.length}} шт</span>
+      <span class="info">Доставить тару – {{ data?.tares.length }} шт</span>
     </div>
     <div class="description__item">
-      <div
-        class="icon"
-        [class.icon_active]="false"
-      >
+      <div class="icon" [class.icon_active]="false">
         <svg-icon
           [svgStyle]="{
-            'height': '2.5vh',
-            'width': '2.5vh'
+            height: '2.5vh',
+            width: '2.5vh'
           }"
           src="assets/Icons/tabs/tasks-tab/test.svg"
         ></svg-icon>
       </div>
-      <span class="info">Получить пробы – {{data?.probes.length}} шт</span>
+      <span class="info">Получить пробы – {{ data?.probes.length }} шт</span>
     </div>
   </div>
 </div>

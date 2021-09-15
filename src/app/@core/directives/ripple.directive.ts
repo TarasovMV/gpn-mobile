@@ -8,8 +8,8 @@ export class RippleDirective {
     constructor(private el: ElementRef, private renderer: Renderer2) {}
 
     @HostListener('click', ['$event']) startRipple(e: any) {
-        const x = e.clientX - e.target.offsetLeft;
-        const y = e.clientY - e.target.offsetTop;
+        const x = e.offsetX;
+        const y = e.offsetY;
 
         this.el.nativeElement.insertAdjacentHTML(
             'afterbegin',

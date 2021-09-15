@@ -1,18 +1,22 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { MAIN_PAGE_DATA } from '../../pages/tabs/pages/tabs-main/mock';
 import { IDiagram } from '../../pages/tabs/pages/tabs-main/tabs-main.page';
 import {
     NEW_TASKS,
     TASKS_IN_PROGRESS,
 } from '../../pages/tabs/pages/tabs-tasks/mock';
-import { ITasksItem } from '../../pages/tabs/pages/tabs-tasks/tabs-tasks.page';
+import {
+    ICoord,
+    ITasksItem,
+} from '../../pages/tabs/pages/tabs-tasks/tabs-tasks.page';
 import { DELIVERED, SELECTED } from '../../pages/tabs/pages/tabs-ready/mock';
 import { IDeliveryItems } from '../../pages/tabs/pages/tabs-ready/tabs-ready.page';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../../@core/services/api/api.service';
 import { UserInfoService } from '../user-info.service';
-import { ITask } from '../../@core/model/task.model';
+import { IRoute, ITask, ITaskData } from '../../@core/model/task.model';
+import { filter } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root',
@@ -45,6 +49,10 @@ export class TabsInfoService {
         ITask[]
     >([]);
 
+    public routes$: BehaviorSubject<IRoute[]> = new BehaviorSubject<IRoute[]>(
+        []
+    );
+
     private readonly restUrl: string =
         'https://tpmobs.koa.gazprom-neft.ru/mobile_web_api';
 
@@ -52,7 +60,13 @@ export class TabsInfoService {
         private http: HttpClient,
         private apiService: ApiService,
         private userInfo: UserInfoService
-    ) {}
+    ) {
+        this.userInfo.workShift$.subscribe((id) => {
+            if (id != null) {
+                this.getTasks().then();
+            }
+        });
+    }
 
     public startMove(): void {
         console.log('Движение началось');
@@ -96,12 +110,25 @@ export class TabsInfoService {
     // }
 
     public async getTasks(): Promise<void> {
-        const tasks = await this.apiService.getTasks(
+        const tasksData: ITaskData = await this.apiService.getTasks(
             this.userInfo.currentUser.userId
         );
-        this.newItems$.next(tasks.filter(item => !item.isFinalized));
-        this.deliveredItems$.next(tasks.filter(item => item.isFinalized));
+
+        const tasks = tasksData?.tasks ?? [];
+        this.newItems$.next(tasks.filter((item) => !item.isFinalized));
+        this.deliveredItems$.next(tasks.filter((item) => item.isFinalized));
+        this.routes$.next(tasksData.route);
 
         this.pushInfo.next(this.newItems$.getValue().length);
+    }
+
+    public getRoutes(taskId: number): ICoord[] {
+        const route = this.routes$
+            .getValue()
+            .filter((item) => item.taskId === taskId).map((item) => ({
+                x: item.point.y,
+                y: item.point.x
+            }));
+        return route;
     }
 }

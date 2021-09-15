@@ -1,4 +1,4 @@
-export interface IWorkShift{
+export interface IWorkShift {
     id: number;
     isActive: boolean;
     userId: number;
@@ -26,3 +26,8 @@ export interface ISetWorkShift {
     driverStateId: number;
 }
 
+export interface IWorkShiftEnd {
+    duration: number;
+    numberOfProbes: number;
+    numberOfProdObjects: number;
+}

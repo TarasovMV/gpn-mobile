@@ -43,9 +43,7 @@ export class TabsPage implements OnInit {
 
     constructor(private navCtrl: NavController, private userService: UserInfoService, private taskService: TabsInfoService) {}
 
-    ngOnInit() {
-        this.taskService.getTasks();
-    }
+    ngOnInit() {}
 
     public selectTab(tab: IPageTab): void {
         this.navCtrl.navigateRoot(this.tabsRouting[tab.route] ?? this.tabsRouting[this.currentTab$.value]).then();

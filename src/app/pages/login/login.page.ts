@@ -55,36 +55,39 @@ export class LoginPage implements OnInit, OnDestroy {
 
     public async submit(e: Event): Promise<void> {
         // Временная логика
-        await this.userService.auth(this.loginForm.value);
-        await this.userService.getStatus();
-        this.userService.statusIndex$.next(1);
+        try {
+            await this.userService.auth(this.loginForm.value);
+        } catch (err) {
+            this.presentModalPassword().then();
+        }
+
         if (this.userService.currentUser) {
+            await this.userService.getStatus();
             try {
                 await this.userService.getWorkShift();
                 this.navCtrl.navigateRoot('/tabs/tabs-main').then();
             } catch (err) {
                 this.presentModalCar().then();
+            } finally {
+                this.taskService.pushInfo.subscribe(async (value) => {
+                    if (value !== null) {
+                        await SsPush.resetBadgeCount();
+                        await SsPush.showDriverTasksNotification({
+                            countOfTasks: value,
+                            sound: true,
+                            vibration: true,
+                            statusBarIcon: true,
+                            vibrationLength: 300,
+                        });
+                        await SsPush.showDriverBannerNotification({
+                            sound: false,
+                            vibration: false,
+                            statusBarIcon: true,
+                            vibrationLength: 300,
+                        });
+                    }
+                });
             }
-            this.taskService.pushInfo.subscribe(async (value) => {
-                if (value !== null) {
-                    await SsPush.resetBadgeCount();
-                    await SsPush.showTasksNotification({
-                        countOfTasks: value,
-                        sound: true,
-                        vibration: true,
-                        statusBarIcon: true,
-                        vibrationLength: 300,
-                    });
-                    await SsPush.showBannerNotification({
-                        sound: false,
-                        vibration: false,
-                        statusBarIcon: true,
-                        vibrationLength: 300,
-                    });
-                }
-            });
-        } else {
-            this.presentModalPassword().then();
         }
     }
     private async presentModalCar() {

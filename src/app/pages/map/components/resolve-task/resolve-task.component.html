@@ -1,7 +1,9 @@
 <div class="container">
   <ng-container *ngIf="type === 'endOne'">
     <span class="info">Вы на месте</span>
-    <span class="info">Установка {{(tabsService.currentTask$ | async)?.plantName}}</span>
+    <span class="info"
+      >Установка {{ (tabsService.currentTask$ | async)?.plantName }}</span
+    >
   </ng-container>
   <ng-container *ngIf="type === 'new'">
     <span class="info">Новое задание по пути</span>
@@ -10,24 +12,11 @@
     <span class="info">Вы на месте</span>
     <span class="info">ЕЛК</span>
   </ng-container>
-  <div
-    class="btn"
-    (click)="accept()"
-  >
-    <svg-icon
-      src="assets/Icons/map-modal/ok.svg"
-      [svgStyle]="{
-        'width.vh': 3.9,
-        'height.vh': 3.9
-      }"
-    ></svg-icon>
-    {{type === 'endAll' ? 'Завершить все задания' : 'Выполнить задание'}}
-  </div>
+  <app-button class="btn" (click)="accept()" icon="ok" size="small">
+    {{ type === "endAll" ? "Завершить все задания" : "Выполнить задание" }}
+  </app-button>
 
-  <div
-    class="cancel"
-    (click)="dismiss()"
-  >
+  <div class="cancel" (click)="dismiss()">
     <svg-icon
       src="assets/Icons/tabs/cancel.svg"
       [svgStyle]="{

@@ -64,6 +64,7 @@ button {
       ion-checkbox {
         height: sizeHeight(40);
         width: sizeHeight(40);
+        min-width: sizeWidth(40);
       }
     }
   }

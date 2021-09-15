@@ -15,9 +15,10 @@ export class StatusBeginComponent implements OnInit {
 
     public currentStatusId: number = 3;
 
-    public dismiss(): void {
-        this.modalController.dismiss().then();
-        this.userInfo.statusIndex$.next(this.currentStatusId);
+    public async dismiss(): Promise<void> {
+        this.userInfo.statusId$.next(this.currentStatusId);
+        await this.userInfo.setWorkShift();
+        await this.modalController.dismiss();
     }
 
     public changeStatus(id: number): void {
