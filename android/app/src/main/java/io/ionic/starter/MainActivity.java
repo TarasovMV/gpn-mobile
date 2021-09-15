@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package io.gpn.driver;
 
 import com.getcapacitor.BridgeActivity;
 
