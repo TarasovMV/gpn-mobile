@@ -4,6 +4,7 @@
   --bg-body-color: #1c1f2b; /*Тело виджета*/
   --bg-header-color: #272A38; /*Хедер виджета*/
   --bg-buttons-color: #303549; /*Кнопки*/
+  --bg-modal-color: #1c1f2b; /*Модальный окна*/
   --bg-dropdown-item: rgba(39, 42, 56, 0.5); /*Выпадающие меню*/
   --indicators-bg: #303549;
   --header-logo-bg: #ffffff;
@@ -61,6 +62,10 @@
   --filter-shadow: rgba(0, 137, 255, 0.5);
   --datepicker-selected: rgba(63, 169, 245, 0.25);
 
+  /*карта*/
+  --map-river-color: #4B5169;
+  --map-bg-sub-color: #1c1f2b;
+
   /*Визуализация*/
   --data-c1-color: #D4BBFF;
   --data-c2-color: #9362D0;
@@ -77,4 +82,8 @@
   /*Тень*/
   --gradient-main-color-1: rgba(0, 0, 0, 0.25);
   --gradient-main-color-2: rgba(25, 28, 44, 0);
+
+  --modal-shadow-color-1: rgba(0, 0, 0, 0.12);
+  --modal-shadow-color-2: rgba(0, 0, 0, 0.14);
+  --modal-shadow-color-3: rgba(0, 0, 0, 0.2);
 }

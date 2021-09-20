@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="header">
+    <span class="info">Выберете действие для текущего статуса</span>
+  </div>
+  <div class="content">
+    <div class="content__item">
+      <span class="name">Статус</span>
+      <div class="dropdown-container">
+        <app-status-dropdown
+          [options]="userInfo.statusList$ | async"
+          [currentOptionId]="currentStatusId"
+          (onChanged)="changeStatus($event)"
+        ></app-status-dropdown>
+      </div>
+    </div>
+  </div>
+  <div
+    class="buttons"
+    [ngClass]="{ buttons_active: !(taskInfo.newItems$ | async).length }"
+  >
+    <button
+      class="btn"
+      (click)="endWorkShift()"
+      [ngClass]="{
+        btn_active: !(taskInfo.newItems$ | async).length,
+        btn_disabled: !!(taskInfo.newItems$ | async).length
+      }"
+      [disabled]="!!(taskInfo.newItems$ | async).length"
+    >
+      завершить
+    </button>
+    <button
+      class="btn btn_active"
+      (click)="dismiss()"
+      [ngClass]="{
+        btn_active: !!(taskInfo.newItems$ | async).length,
+        btn_disabled: !(taskInfo.newItems$ | async).length
+      }"
+    >
+      перерыв
+    </button>
+  </div>
+</div>

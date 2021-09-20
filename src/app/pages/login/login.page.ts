@@ -15,7 +15,7 @@ import { KeyboardService } from '../../@core/services/platform/keyboard.service'
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CarPopowerComponent } from './components/car-popower/car-popower.component';
-import { SimpleModalComponent } from '../../@shared/simple-modal/simple-modal.component';
+import { SimpleModalComponent } from '../../@shared/modals/simple-modal/simple-modal.component';
 import { TabsInfoService } from '../../services/tabs/tabs-info.service';
 import { SsPush } from 'plugin-sspush';
 import { UserInfoService } from '../../services/user-info.service';
@@ -101,7 +101,7 @@ export class LoginPage implements OnInit, OnDestroy {
     private async presentModalPassword() {
         const modal = await this.modalController.create({
             component: SimpleModalComponent,
-            cssClass: 'simple-modal',
+            cssClass: 'custom-modal resolve-modal',
             componentProps: {
                 message: 'Неверный пароль',
             },

@@ -1,22 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { MAIN_PAGE_DATA } from '../../pages/tabs/pages/tabs-main/mock';
 import { IDiagram } from '../../pages/tabs/pages/tabs-main/tabs-main.page';
-import {
-    NEW_TASKS,
-    TASKS_IN_PROGRESS,
-} from '../../pages/tabs/pages/tabs-tasks/mock';
-import {
-    ICoord,
-    ITasksItem,
-} from '../../pages/tabs/pages/tabs-tasks/tabs-tasks.page';
-import { DELIVERED, SELECTED } from '../../pages/tabs/pages/tabs-ready/mock';
-import { IDeliveryItems } from '../../pages/tabs/pages/tabs-ready/tabs-ready.page';
+import { ICoord } from '../../pages/tabs/pages/tabs-tasks/tabs-tasks.page';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../../@core/services/api/api.service';
 import { UserInfoService } from '../user-info.service';
 import { IRoute, ITask, ITaskData } from '../../@core/model/task.model';
-import { filter } from 'rxjs/operators';
+import { TasksApiService } from './tasks-api.service';
 
 @Injectable({
     providedIn: 'root',
@@ -28,24 +18,19 @@ export class TabsInfoService {
         0
     );
 
-    public currentTask$: BehaviorSubject<ITask> = new BehaviorSubject<ITask>(
-        null
-    );
+    public currentTask$: BehaviorSubject<ITask | { id: number }> =
+        new BehaviorSubject<ITask | { id: number }>(null);
     public pushInfo: BehaviorSubject<number> = new BehaviorSubject<number>(
         null
     );
 
-    public inProgressItems$: BehaviorSubject<ITask[]> = new BehaviorSubject<
-        ITask[]
-    >([]);
     public newItems$: BehaviorSubject<ITask[]> = new BehaviorSubject<ITask[]>(
         []
     );
-
     public selectedItems$: BehaviorSubject<ITask[]> = new BehaviorSubject<
         ITask[]
     >([]);
-    public deliveredItems$: BehaviorSubject<ITask[]> = new BehaviorSubject<
+    public finalizesItems$: BehaviorSubject<ITask[]> = new BehaviorSubject<
         ITask[]
     >([]);
 
@@ -53,12 +38,17 @@ export class TabsInfoService {
         []
     );
 
-    private readonly restUrl: string =
-        'https://tpmobs.koa.gazprom-neft.ru/mobile_web_api';
+    public readonly elkTask: { id: number; plantName: string } = {
+        id: null,
+        plantName: 'ЕЛК',
+    };
+
+    private taskDataCopy: ITaskData = null;
 
     constructor(
         private http: HttpClient,
         private apiService: ApiService,
+        private tasksApi: TasksApiService,
         private userInfo: UserInfoService
     ) {
         this.userInfo.workShift$.subscribe((id) => {
@@ -70,65 +60,113 @@ export class TabsInfoService {
 
     public startMove(): void {
         console.log('Движение началось');
-        // this.startMoveRequest().then();
     }
 
     public endMove(): void {
         console.log('Движение закончилось');
-        // this.endMoveRequest().then();
     }
 
     public cancelData(): void {
         console.log('Приложение запустилось что-то сбросилось');
-        // this.cancelDataRequest().then();
     }
-
-    public async startMoveRequest(): Promise<void> {
-        try {
-            await this.http
-                .post(`${this.restUrl}/setStartMove`, {})
-                .toPromise();
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
-    // public async endMoveRequest(): Promise<void> {
-    //     try {
-    //         await this.http.post(`${this.restUrl}/setStopMove`, {}).toPromise();
-    //     } catch(e) {
-    //         console.error(e);
-    //     }
-    // }
-    //
-    // public async cancelDataRequest(): Promise<void> {
-    //     try {
-    //         await this.http.post(`${this.restUrl}/setResetRoute`, {}).toPromise();
-    //     } catch(e) {
-    //         console.error(e);
-    //     }
-    // }
 
     public async getTasks(): Promise<void> {
-        const tasksData: ITaskData = await this.apiService.getTasks(
+        const tasksData: ITaskData = await this.tasksApi.getTasks(
             this.userInfo.currentUser.userId
         );
-
         const tasks = tasksData?.tasks ?? [];
-        this.newItems$.next(tasks.filter((item) => !item.isFinalized));
-        this.deliveredItems$.next(tasks.filter((item) => item.isFinalized));
-        this.routes$.next(tasksData.route);
 
-        this.pushInfo.next(this.newItems$.getValue().length);
+        this.checkPushNotification(this.taskDataCopy?.tasks, tasks);
+
+        this.taskDataCopy = {
+            ...tasksData,
+            tasks: [...tasksData.tasks],
+            route: [...tasksData.route],
+        };
+
+        this.newItems$.next(tasks.filter((item) => !item.isFinalized));
+        this.finalizesItems$.next(tasks.filter((item) => item.isFinalized));
+        this.routes$.next(tasksData.route);
     }
 
     public getRoutes(taskId: number): ICoord[] {
         const route = this.routes$
             .getValue()
-            .filter((item) => item.taskId === taskId).map((item) => ({
+            .filter((item) => item.taskId === taskId)
+            .map((item) => ({
                 x: item.point.y,
-                y: item.point.x
+                y: item.point.x,
             }));
         return route;
+    }
+
+    public async goToNextTask(): Promise<void> {
+        const newTasks = this.newItems$.getValue();
+        const selectedTasks = this.selectedItems$.getValue();
+        const currentTaskId = this.currentTask$.getValue().id;
+
+        const res = await this.tasksApi.finalizeTask(currentTaskId, {});
+        if (res) {
+            this.newItems$.next(
+                newTasks.filter((item) => item.id !== currentTaskId)
+            );
+
+            this.selectedItems$.next([
+                ...selectedTasks,
+                ...newTasks.filter((item) => item.id === currentTaskId),
+            ]);
+
+            if (this.newItems$.getValue().length === 0) {
+                this.currentTask$.next(this.elkTask);
+            }
+            // await this.getTasks();
+        }
+    }
+
+    public async endTasks(): Promise<void> {
+        const selectedTasks = this.selectedItems$.getValue();
+        const finalizedTasks = this.finalizesItems$.getValue();
+        const userId = this.userInfo.currentUser.userId;
+
+        const res = await this.tasksApi.finalizeAllTasks({ userId });
+        const resNumbers = res.map((item) => item.taskNumber);
+        if (res.length > 0) {
+            this.selectedItems$.next(
+                selectedTasks.filter(
+                    (item) => !resNumbers.includes(+item.number)
+                )
+            );
+
+            this.finalizesItems$.next([
+                ...finalizedTasks,
+                ...selectedTasks.filter(
+                    (item) => !!resNumbers.includes(+item.number)
+                ),
+            ]);
+            await this.getTasks();
+        }
+    }
+
+    private checkPushNotification(
+        previous: ITask[],
+        current: ITask[]
+    ): boolean {
+        // Список id задач до и после запроса
+        const previousId = (previous ?? []).map((x) => x.id);
+        const currentId = current.map((x) => x.id);
+
+        let newTasksCount = 0;
+        currentId.forEach((item) => {
+            if (!previousId.includes(item)) {
+                newTasksCount++;
+            }
+        });
+
+        if (newTasksCount > 0) {
+            console.log('Новых задач: ' + newTasksCount);
+            this.pushInfo.next(newTasksCount);
+            return true;
+        }
+        return false;
     }
 }

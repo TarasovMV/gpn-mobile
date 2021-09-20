@@ -1,8 +1,8 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { UserInfoService } from '../../../../services/user-info.service';
-import { StatusBeginComponent } from '../../../status-begin/status-begin.component';
-import {StatusCurrentComponent} from "../../../status-current/status-current.component";
+import { StatusBeginComponent } from '../../../modals/status-begin/status-begin.component';
+import {StatusCurrentComponent} from "../../../modals/status-current/status-current.component";
 
 @Component({
     selector: 'app-user-info',
@@ -43,7 +43,7 @@ export class UserInfoComponent implements OnInit {
     private async presentModalChooseStatus() {
         const modal = await this.modalController.create({
             component: StatusCurrentComponent,
-            cssClass: 'current-status',
+            cssClass: 'custom-modal choose-status current-status',
         });
         return await modal.present();
     }

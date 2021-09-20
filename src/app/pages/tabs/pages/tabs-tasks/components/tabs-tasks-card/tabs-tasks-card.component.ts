@@ -7,8 +7,6 @@ import {
     OnInit,
     ViewChild,
 } from '@angular/core';
-import { ITasksItem } from '../../tabs-tasks.page';
-import * as d3 from 'd3';
 import { BehaviorSubject } from 'rxjs';
 import { ITask } from '../../../../../../@core/model/task.model';
 

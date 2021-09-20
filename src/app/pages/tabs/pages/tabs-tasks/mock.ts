@@ -1,6 +1,4 @@
-import {ITasksItem} from './tabs-tasks.page';
-
-export const TASKS_IN_PROGRESS: ITasksItem[] = [];
+export const TASKS_IN_PROGRESS: any[] = [];
 //     {
 //         num: '№113444',
 //         manufacture: 'АТ-5',
@@ -15,7 +13,7 @@ export const TASKS_IN_PROGRESS: ITasksItem[] = [];
 //     }
 // ];
 
-export const NEW_TASKS: ITasksItem[] = [
+export const NEW_TASKS: any[] = [
     {
         num: '№115623',
         manufacture: 'КЦА',

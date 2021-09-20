@@ -16,7 +16,6 @@
       <div [style]="scaleStyle" class="entry-box">
         <div (click)="trackPosition($event)" class="entry-box entry-box__map" [style]="mapStyle">
           <img src="assets/Icons/map/map.svg"/>
-<!--          <div class="point" [style.left]="point.x + 'px'" [style.top]="point.y + 'px'"></div>-->
           <div #svg class="svg"></div>
         </div>
       </div>
@@ -25,7 +24,7 @@
   <div class="progress">
     <app-map-progress
       [percent]="currentTime / allTime * 100"
-      [name]="((tabsService?.inProgressItems$ | async) || [null])[0]?.plantName"
+      [name]="((tabsService?.currentTask$ | async) || [null])[0]?.plantName"
     ></app-map-progress>
   </div>
 

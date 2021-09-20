@@ -52,30 +52,6 @@ export class AppComponent implements OnInit, OnDestroy {
                 }
             }
         });
-
-        const lt = toFlat({
-            latitude: 55.0982678796,
-            longitude: 73.1202739448,
-        });
-        const rb = toFlat({
-            latitude: 55.0643063117,
-            longitude: 73.2950520486,
-        });
-        const geo = new GeoProjection();
-        geo.setBorders({
-            wgs: {
-                lt: { latitude: 55.0982678796, longitude: 73.1202739448 },
-                rb: { latitude: 55.0643063117, longitude: 73.2950520486 },
-            },
-            flat: {
-                lt: { x: 8139711.6621998055, y: 7380961.309697426 },
-                rb: { x: 8159167.871716635, y: 7374356.672722412 },
-            },
-        });
-        const res = geo.getRelativeByWgs({
-            latitude: 55.0982678796,
-            longitude: 73.2202739448,
-        });
     }
 
     public ngOnDestroy(): void {

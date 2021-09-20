@@ -4,7 +4,8 @@ import { ModalController, NavController } from '@ionic/angular';
 import { NfcService } from '../../../../@core/services/platform/nfc.service';
 import { take } from 'rxjs/operators';
 import { TabsInfoService } from '../../../../services/tabs/tabs-info.service';
-import { DialogModalComponent } from '../../../../@shared/dialog-modal/dialog-modal.component';
+import { DialogModalComponent } from '../../../../@shared/modals/dialog-modal/dialog-modal.component';
+import {AcceptModalComponent} from "../../../../@shared/modals/accept-modal/accept-modal.component";
 
 @Component({
     selector: 'app-nfc-timer-modal',
@@ -38,9 +39,13 @@ export class NfcTimerModalComponent implements OnInit {
         if (this.isNfcAccepted) {
             this.tasksToReady();
             await this.modalCtrl.dismiss();
-        } else {
+        } else if (this.tabsService.newItems$.getValue().length !== 0) {
             await this.modalCtrl.dismiss();
             await this.presentModalDialog();
+        }
+        else {
+            await this.modalCtrl.dismiss();
+            await this.presentModalAccept();
         }
     }
 
@@ -57,26 +62,7 @@ export class NfcTimerModalComponent implements OnInit {
     }
 
     private tasksToReady(): void {
-        const newTasks = this.tabsService.newItems$.value;
-        const selected = this.tabsService.selectedItems$.value;
 
-        if (newTasks.length === 0) {
-            selected.push(newTasks[0]);
-            this.tabsService.selectedItems$.next(selected);
-            newTasks.shift();
-            this.tabsService.newItems$.next(newTasks);
-            this.tabsService.currentTab$.next(0);
-
-            this.tabsService.deliveredItems$.next(
-                selected.filter((item) => !!item)
-            );
-            this.tabsService.selectedItems$.next([]);
-            this.tabsService.currentTab$.next(1);
-
-            this.navCtrl.navigateRoot('/tabs/tabs-ready').then();
-        } else {
-            this.navCtrl.navigateRoot('/end-task');
-        }
     }
 
     private initTimer(): void {
@@ -98,10 +84,18 @@ export class NfcTimerModalComponent implements OnInit {
     private async presentModalDialog() {
         const modal = await this.modalCtrl.create({
             component: DialogModalComponent,
-            cssClass: 'simple-modal',
+            cssClass: 'custom-modal resolve-modal',
             componentProps: {
                 message: 'Метка не отсканирована, подтвердите точку отбора',
             },
+        });
+        return await modal.present();
+    }
+
+    private async presentModalAccept() {
+        const modal = await this.modalCtrl.create({
+            component: AcceptModalComponent,
+            cssClass: 'custom-modal choose-status ',
         });
         return await modal.present();
     }

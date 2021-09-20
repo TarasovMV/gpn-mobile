@@ -40,7 +40,9 @@ export class TabsReadyPage implements OnInit, IPageTab, AfterViewInit {
         private cdRef: ChangeDetectorRef
     ) {}
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.calculateFinalTransform();
+    }
 
     ngAfterViewInit() {
         this.useTinderSwipe(this.containerElement);

@@ -5,7 +5,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { AvatarModalComponent } from './avatar-modal/avatar-modal.component';
 import { StepProgressBarComponent } from './step-progress-bar/step-progress-bar.component';
 import { IonicModule } from '@ionic/angular';
-import { SimpleModalComponent } from './simple-modal/simple-modal.component';
+import { SimpleModalComponent } from './modals/simple-modal/simple-modal.component';
 import { ActivityModalComponent } from './activity-modal/activity-modal.component';
 import { MapModalComponent } from './map-modal/map-modal.component';
 import { UserInfoComponent } from './avatar-modal/components/user-info/user-info.component';
@@ -13,14 +13,15 @@ import { TeachingComponent } from './avatar-modal/components/teaching/teaching.c
 import { SupportComponent } from './avatar-modal/components/support/support.component';
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { StatusDropdownComponent } from './status-dropdown/status-dropdown.component';
-import { StatusBeginComponent } from './status-begin/status-begin.component';
-import { StatusFilterPipe } from './status-begin/pipe/status-filter.pipe';
-import { StatusCurrentComponent } from './status-current/status-current.component';
+import { StatusBeginComponent } from './modals/status-begin/status-begin.component';
+import { StatusFilterPipe } from './modals/status-begin/pipe/status-filter.pipe';
+import { StatusCurrentComponent } from './modals/status-current/status-current.component';
 import { RippleDirective } from '../@core/directives/ripple.directive';
 import { ButtonComponent } from './button/button.component';
-import { DialogModalComponent } from './dialog-modal/dialog-modal.component';
-import { StatisticModalComponent } from './statistic-modal/statistic-modal.component';
+import { DialogModalComponent } from './modals/dialog-modal/dialog-modal.component';
+import { StatisticModalComponent } from './modals/statistic-modal/statistic-modal.component';
 import {NfcTimerModalComponent} from "../pages/nfc-verify/components/nfc-timer-modal/nfc-timer-modal.component";
+import {AcceptModalComponent} from "./modals/accept-modal/accept-modal.component";
 
 @NgModule({
     declarations: [
@@ -42,7 +43,8 @@ import {NfcTimerModalComponent} from "../pages/nfc-verify/components/nfc-timer-m
         ButtonComponent,
         DialogModalComponent,
         StatisticModalComponent,
-        NfcTimerModalComponent
+        NfcTimerModalComponent,
+        AcceptModalComponent
     ],
     exports: [
         HeaderComponent,
@@ -56,7 +58,8 @@ import {NfcTimerModalComponent} from "../pages/nfc-verify/components/nfc-timer-m
         ButtonComponent,
         DialogModalComponent,
         StatisticModalComponent,
-        NfcTimerModalComponent
+        NfcTimerModalComponent,
+        AcceptModalComponent
     ],
     imports: [CommonModule, AngularSvgIconModule, IonicModule],
 })

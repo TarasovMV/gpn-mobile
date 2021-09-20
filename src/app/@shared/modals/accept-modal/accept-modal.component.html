@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="header">
+    <span class="info">Подтвердите выполнение</span>
+  </div>
+  <div class="content">
+    <span
+  class="info-block-item"
+  *ngFor="let task of tabsService.selectedItems$ | async; let i = index"
+>
+        {{ i + 1 }}. Установка {{ task?.plantName }}, №{{ task?.number }}
+      </span>
+  </div>
+  <div class="buttons">
+    <button class="btn" (click)="close()">отменить</button>
+    <button class="btn btn_active" (click)="redirectToReadyTub()">
+      подтвердить
+    </button>
+  </div>
+</div>

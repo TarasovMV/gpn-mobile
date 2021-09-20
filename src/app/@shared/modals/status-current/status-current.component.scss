@@ -1,6 +1,10 @@
-@import "../../../../../theme/functions";
+@import "../../../../theme/functions";
 * {
   box-sizing: border-box;
+}
+
+:host {
+  overflow: visible;
 }
 
 button {
@@ -20,8 +24,6 @@ button {
   background: var(--bg-modal-color);
 
   .header {
-    display: flex;
-    flex-direction: column;
     padding: sizeHeight(10) 0;
 
     .info {
@@ -30,8 +32,34 @@ button {
     }
   }
 
+  .content {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    align-items: center;
+
+    &__item {
+      width: 100%;
+      margin: sizeHeight(10) 0 sizeHeight(70);
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .name {
+        margin-right: sizeWidth(40);
+        font-size: sizeHeight(34);
+        color: var(--text-contrast-color);
+      }
+
+      .dropdown-container {
+        height: sizeHeight(90);
+        flex: 1;
+      }
+    }
+  }
+
   .buttons {
-    margin-top: auto;
     display: flex;
 
     .btn {
@@ -40,14 +68,18 @@ button {
 
       text-transform: uppercase;
 
-      &_active {
+      &_active{
         color: var(--border-blue-color);
       }
 
-      &:first-child {
+      &_disabled {
         margin-left: sizeWidth(10);
         margin-right: auto;
       }
+    }
+
+    &_active {
+      flex-direction: row-reverse;
     }
   }
 }

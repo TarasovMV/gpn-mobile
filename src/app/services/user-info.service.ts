@@ -10,6 +10,7 @@ import { IUser, IUserCredentials } from '../@core/model/user.model';
 import { ApiService } from '../@core/services/api/api.service';
 import { IVehicle } from '../@core/model/vehicle.model';
 import { IWorkShiftEnd } from '../@core/model/workshift.model';
+import { SimpleModalComponent } from '../@shared/modals/simple-modal/simple-modal.component';
 
 @Injectable({
     providedIn: 'root',
@@ -130,8 +131,12 @@ export class UserInfoService {
 
     private async presentModalPassword() {
         const modal = await this.modalController.create({
-            component: ActivityModalComponent,
-            cssClass: 'activity-modal',
+            componentProps: {
+                message:
+                    'Вы неактивны более 15 минут, если статус не будет изменен, задачи будут переназначены',
+            },
+            component: SimpleModalComponent,
+            cssClass: 'custom-modal activity-modal',
         });
         return await modal.present();
     }

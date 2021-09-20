@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="header">
+    <span class="info">Выберите ваш статус для начала смены</span>
+  </div>
+  <div class="content">
+    <div class="content__item">
+      <span class="name">Статус</span>
+      <div class="dropdown-container">
+        <app-status-dropdown
+          [options]="userInfo.statusList$ | async | statusFilter: 1"
+          [currentOptionId]="currentStatusId"
+          (onChanged)="changeStatus($event)"
+        ></app-status-dropdown>
+      </div>
+    </div>
+  </div>
+  <div class="buttons">
+    <button class="btn" (click)="dismiss()">отменить</button>
+    <button class="btn btn_active" (click)="dismiss()">подтвердить</button>
+  </div>
+</div>

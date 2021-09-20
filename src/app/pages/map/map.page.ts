@@ -130,8 +130,9 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
         const geo = new GeoProjection();
 
         const taskId = this.tabsService.currentTask$.getValue().id;
+
         this.currentRoute = this.tabsService
-            .getRoutes(171)
+            .getRoutes(taskId === null ? taskId : this.tabsService.routes$.getValue()[0].taskId)
             .map((item) =>
                 geo.getRelativeByWgs({ latitude: item.y, longitude: item.x })
             )
@@ -140,14 +141,16 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
         this.drawRoute([{ ...this.currentRoute[0] }, ...this.currentRoute]);
         this.drawNavPoints([this.currentRoute[this.currentRoute.length - 1]]);
         this.currentRoute.forEach((item, i) => {
+            this.allTime = (this.currentRoute.length - 1) * 1000;
             setTimeout(() => {
                 this.setCameraPosition(item.x, item.y);
                 this.drawCarPoint(item.x, item.y);
+                this.currentTime = i * 1000;
             }, i * 1000);
 
             if (i === this.currentRoute.length - 1) {
                 setTimeout(() => {
-                    this.openEndTaskModal('endOne').then();
+                    this.openEndTaskModal(taskId === null ? 'endAll' : 'endOne').then();
                 }, i * 1000);
             }
         });
@@ -370,7 +373,6 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
         this.svg
             .attr('width', '100%')
             .attr('height', '100%')
-            .attr('viewBox', `0 0 ${this.config.width} ${this.config.height}`);
     }
 
     private drawRoute(coords: { x: number; y: number }[]): void {
@@ -454,7 +456,7 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
     private async openEndTaskModal(type: string = 'endOne'): Promise<void> {
         const modal = await this.modalController.create({
             component: ResolveTaskComponent,
-            cssClass: 'simple-modal',
+            cssClass: 'custom-modal resolve-modal',
             componentProps: {
                 type,
                 coord: this.currentPosition,

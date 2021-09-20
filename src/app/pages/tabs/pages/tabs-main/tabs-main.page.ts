@@ -12,7 +12,7 @@ import { MAIN_PAGE_DATA } from './mock';
 import * as d3 from 'd3';
 import {ModalController, NavController} from '@ionic/angular';
 import { TabsInfoService } from '../../../../services/tabs/tabs-info.service';
-import {StatusBeginComponent} from "../../../../@shared/status-begin/status-begin.component";
+import {StatusBeginComponent} from "../../../../@shared/modals/status-begin/status-begin.component";
 import {UserInfoService} from "../../../../services/user-info.service";
 
 export interface IDiagram {
@@ -56,7 +56,7 @@ export class TabsMainPage implements OnInit, IPageTab, AfterViewInit {
         combineLatest(
             this.tabsService.newItems$,
             this.tabsService.selectedItems$,
-            this.tabsService.deliveredItems$
+            this.tabsService.finalizesItems$
         ).subscribe((tasks) => {
             const newItems = tasks[0];
             const selected = tasks[1];

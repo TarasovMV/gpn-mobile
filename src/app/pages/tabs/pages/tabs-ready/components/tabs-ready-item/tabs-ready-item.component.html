@@ -1,0 +1,21 @@
+<div class="container">
+  <svg-icon
+    class="bottle-icon"
+    [class.bottle-icon_ended]="type === 'ended'"
+    src="assets/Icons/tabs/ready-tab/bottle.svg"
+    [svgStyle]="{
+      height: '11.7vh',
+      width: '11.7vh'
+    }"
+  ></svg-icon>
+  <div class="description">
+    <span class="title">№{{ data?.number }}</span>
+    <span class="description__item">
+      Установка: <span class="value">{{ data?.plantName }}</span>
+    </span>
+    <span class="description__item">
+      Количество проб:
+      <span class="value">{{ data?.probes.length }}</span>
+    </span>
+  </div>
+</div>

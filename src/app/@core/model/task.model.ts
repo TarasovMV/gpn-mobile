@@ -1,4 +1,4 @@
-import {ICoord} from "../../pages/tabs/pages/tabs-tasks/tabs-tasks.page";
+import { ICoord } from '../../pages/tabs/pages/tabs-tasks/tabs-tasks.page';
 
 export interface ITaskData {
     tasks: ITask[];

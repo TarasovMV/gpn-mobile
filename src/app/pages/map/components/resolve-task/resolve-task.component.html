@@ -1,28 +1,22 @@
 <div class="container">
-  <ng-container *ngIf="type === 'endOne'">
-    <span class="info">Вы на месте</span>
-    <span class="info"
-      >Установка {{ (tabsService.currentTask$ | async)?.plantName }}</span
-    >
-  </ng-container>
-  <ng-container *ngIf="type === 'new'">
-    <span class="info">Новое задание по пути</span>
-  </ng-container>
-  <ng-container *ngIf="type === 'endAll'">
-    <span class="info">Вы на месте</span>
-    <span class="info">ЕЛК</span>
-  </ng-container>
-  <app-button class="btn" (click)="accept()" icon="ok" size="small">
-    {{ type === "endAll" ? "Завершить все задания" : "Выполнить задание" }}
-  </app-button>
-
-  <div class="cancel" (click)="dismiss()">
-    <svg-icon
-      src="assets/Icons/tabs/cancel.svg"
-      [svgStyle]="{
-        'width.vh': 2.2,
-        'height.vh': 2.2
-      }"
-    ></svg-icon>
+  <div class="header">
+    <ng-container *ngIf="type === 'endOne'">
+      <span class="info">Вы на месте</span>
+      <span class="info">
+        Установка {{ (tabsService.currentTask$ | async)?.plantName }}
+      </span>
+    </ng-container>
+    <ng-container *ngIf="type === 'new'">
+      <span class="info">Новое задание по пути</span>
+    </ng-container>
+    <ng-container *ngIf="type === 'endAll'">
+      <span class="info">Вы на месте, ЕЛК</span>
+    </ng-container>
+  </div>
+  <div class="buttons">
+    <button class="btn" (click)="dismiss()">закрыть</button>
+    <button class="btn btn_active" (click)="accept()">
+      {{ type === "endAll" ? "Завершить всё" : "Выполнить" }}
+    </button>
   </div>
 </div>

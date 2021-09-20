@@ -4,7 +4,7 @@ import { ModalController, NavController } from '@ionic/angular';
 import { UserInfoService } from '../../../../services/user-info.service';
 import { IVehicle } from '../../../../@core/model/vehicle.model';
 import { ApiService } from '../../../../@core/services/api/api.service';
-import {StatusBeginComponent} from "../../../../@shared/status-begin/status-begin.component";
+import {StatusBeginComponent} from "../../../../@shared/modals/status-begin/status-begin.component";
 
 @Component({
     selector: 'app-car-popower',
@@ -49,7 +49,7 @@ export class CarPopowerComponent implements OnInit {
     private async presentModalChooseStatus() {
         const modal = await this.modalController.create({
             component: StatusBeginComponent,
-            cssClass: 'choose-status',
+            cssClass: 'custom-modal choose-status',
         });
         return await modal.present();
     }

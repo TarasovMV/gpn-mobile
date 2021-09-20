@@ -31,10 +31,6 @@ export class ApiService {
         return await this.http.post<IUser>(`${this.restUrl}/api/auth`, cred).toPromise();
     }
 
-    public async getTasks(userId: number): Promise<ITaskData> {
-        return await this.http.get<ITaskData>(`${this.restUrl}/api/Task/driver/${userId}`).toPromise();
-    }
-
     public async getVehicles(): Promise<IVehicle[]> {
         return await this.http.get<IVehicle[]>(`${this.restUrl}/api/Vehicle/free`).toPromise();
     }

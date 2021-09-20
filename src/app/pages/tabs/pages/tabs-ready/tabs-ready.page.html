@@ -38,69 +38,31 @@
         >
           <span class="msg">Нет задач в машине</span>
         </div>
-        <div
-          class="item"
+        <app-tabs-ready-item
           *ngFor="let selected of (tabsService.selectedItems$ | async)"
-        >
-          <svg-icon
-            class="bottle-icon"
-            src="assets/Icons/tabs/ready-tab/bottle.svg"
-            [svgStyle]="{
-              'height': '11.7vh',
-              'width': '11.7vh'
-            }"
-          ></svg-icon>
-          <div class="description">
-            <span class="title">{{selected?.number}}</span>
-            <span class="manufacture"
-              >Установка:
-              <span class="manufacture__name"
-                >{{selected?.plantName}}</span
-              ></span
-            >
-            <span class="manufacture"
-              >Количество проб:
-              <span class="manufacture__name"
-                >{{selected?.probes.length}}</span
-              ></span
-            >
-          </div>
-        </div>
+          [data]="selected"
+          type="taken"
+        ></app-tabs-ready-item>
 
         <div class="nfc-btn">
-          <app-button (click)="toNfc()" class="btn">Отсканировать NFC-метку</app-button>
+          <app-button (click)="toNfc()" class="btn"
+            >Отсканировать NFC-метку</app-button
+          >
         </div>
       </div>
 
       <div class="tab__item">
         <div
           class="no-task-msg"
-          *ngIf="!(tabsService.deliveredItems$ | async).length"
+          *ngIf="!(tabsService.finalizesItems$ | async).length"
         >
           <span class="msg">Нет завершенных задач</span>
         </div>
-        <div
-          class="item"
-          *ngFor="let delivered of (tabsService.deliveredItems$ | async)"
-        >
-          <svg-icon
-            class="bottle-icon bottle-icon_delivered"
-            src="assets/Icons/tabs/ready-tab/bottle.svg"
-            [svgStyle]="{
-              'height': '11.7vh',
-              'width': '11.7vh'
-            }"
-          ></svg-icon>
-          <div class="description">
-            <span class="title">{{delivered?.number}}</span>
-            <span class="manufacture"
-              >Установка:
-              <span class="manufacture__name"
-                >{{delivered?.plantName}}</span
-              ></span
-            >
-          </div>
-        </div>
+        <app-tabs-ready-item
+          *ngFor="let delivered of (tabsService.finalizesItems$ | async)"
+          [data]="delivered"
+          type="ended"
+        ></app-tabs-ready-item>
       </div>
     </div>
   </div>

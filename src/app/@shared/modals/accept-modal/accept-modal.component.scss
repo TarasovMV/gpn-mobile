@@ -1,4 +1,5 @@
-@import "../../../../../theme/functions";
+@import "src/theme/functions.scss";
+
 * {
   box-sizing: border-box;
 }
@@ -12,17 +13,18 @@ button {
 .container {
   height: 100%;
   width: 100%;
-  padding: sizeHeight(30) sizeWidth(30);
-
   display: flex;
   flex-direction: column;
 
   background: var(--bg-modal-color);
 
   .header {
+    height: sizeHeight(100);
+    min-height: sizeHeight(100);
+    padding: sizeHeight(10) sizeWidth(30);
+
     display: flex;
-    flex-direction: column;
-    padding: sizeHeight(10) 0;
+    align-items: center;
 
     .info {
       color: var(--text-contrast-color);
@@ -30,9 +32,31 @@ button {
     }
   }
 
-  .buttons {
-    margin-top: auto;
+  .content {
+    padding: sizeHeight(10) sizeWidth(30);
+    flex: 1;
+
     display: flex;
+    flex-direction: column;
+
+    overflow-y: auto;
+
+    .info-block-item {
+      margin-top: sizeHeight(8);
+      margin-bottom: sizeHeight(8);
+
+      font-size: sizeHeight(34);
+      color: var(--text-main-color);
+    }
+  }
+
+  .buttons {
+    height: sizeHeight(100);
+    min-height: sizeHeight(100);
+    padding: sizeHeight(10) sizeWidth(30);
+
+    display: flex;
+    align-items: center;
 
     .btn {
       font-size: sizeHeight(34);

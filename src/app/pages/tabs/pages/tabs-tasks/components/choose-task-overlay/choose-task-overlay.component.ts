@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {ModalController, NavController} from '@ionic/angular';
-import {TabsInfoService} from '../../../../../../services/tabs/tabs-info.service';
-import {BehaviorSubject, Subscription} from 'rxjs';
-import {ITasksItem} from '../../tabs-tasks.page';
-import {ITask} from "../../../../../../@core/model/task.model";
+import { ModalController, NavController } from '@ionic/angular';
+import { TabsInfoService } from '../../../../../../services/tabs/tabs-info.service';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { ITask } from '../../../../../../@core/model/task.model';
 
 @Component({
-  selector: 'app-choose-task-overlay',
-  templateUrl: './choose-task-overlay.component.html',
-  styleUrls: ['./choose-task-overlay.component.scss'],
+    selector: 'app-choose-task-overlay',
+    templateUrl: './choose-task-overlay.component.html',
+    styleUrls: ['./choose-task-overlay.component.scss'],
 })
 export class ChooseTaskOverlayComponent implements OnInit {
     taskList$: BehaviorSubject<ITask[]> = new BehaviorSubject<ITask[]>([]);
@@ -17,13 +16,13 @@ export class ChooseTaskOverlayComponent implements OnInit {
     constructor(
         public modalController: ModalController,
         public tabsService: TabsInfoService,
-        private navCtrl: NavController,
-    ) { }
+        private navCtrl: NavController
+    ) {}
 
     ngOnInit() {
-        this.subscription = this.tabsService.newItems$.subscribe(val => {
+        this.subscription = this.tabsService.newItems$.subscribe((val) => {
             const arr: ITask[] = [];
-            val.forEach(item => {
+            val.forEach((item) => {
                 item.checked = true;
                 arr.push(item);
             });
@@ -36,12 +35,8 @@ export class ChooseTaskOverlayComponent implements OnInit {
         this.subscription.unsubscribe();
     }
 
-    public accept(): void {
-        this.dismiss();
-        const newTasks = this.taskList$.getValue().filter(item => !item.checked);
-        const inProgressTasks = this.taskList$.getValue().filter(item => item.checked);
-        this.tabsService.newItems$.next(newTasks);
-        this.tabsService.inProgressItems$.next([...inProgressTasks, ...this.tabsService.inProgressItems$.getValue()]);
-        this.navCtrl.navigateRoot('/nfc').then();
+    public async accept(): Promise<void> {
+        await this.navCtrl.navigateRoot('/nfc').then();
+        await this.dismiss();
     }
 }

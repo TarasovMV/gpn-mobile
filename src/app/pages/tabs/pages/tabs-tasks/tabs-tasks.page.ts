@@ -5,20 +5,6 @@ import {NEW_TASKS, TASKS_IN_PROGRESS} from './mock';
 import {TabsInfoService} from '../../../../services/tabs/tabs-info.service';
 import {ModalController, NavController} from '@ionic/angular';
 import {ChooseTaskOverlayComponent} from './components/choose-task-overlay/choose-task-overlay.component';
-import {TasksService} from '../../../../services/tasks.service';
-
-export interface ITasksItem {
-    num: string;
-    manufacture: string;
-    tare: number;
-    test: number;
-    checked?: boolean;
-    startPoint?: ICoord;
-    endPoint?: ICoord;
-    routes?: ICoord[];
-    specialProps?: string[]; // Временно для мультика
-    testList?: {name: string; val: number}[];
-}
 
 export interface ICoord {
     x: number;
@@ -47,7 +33,7 @@ export class TabsTasksPage implements OnInit, IPageTab {
     }
 
     public openMap(): void {
-        const newTasksList = this.tabsService.newItems$.value;
+        const newTasksList = this.tabsService.newItems$.getValue();
 
         if(newTasksList.length !== 0) {
             this.tabsService.currentTask$.next(newTasksList[0]);
@@ -58,7 +44,7 @@ export class TabsTasksPage implements OnInit, IPageTab {
     private async presentModal(): Promise<HTMLIonModalElement> {
         const modal = await this.modalController.create({
             component: ChooseTaskOverlayComponent,
-            cssClass: 'choose-task'
+            cssClass: 'custom-modal'
         });
         await modal.present();
         return modal;
