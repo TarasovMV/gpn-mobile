@@ -1,7 +1,7 @@
 <div class="container">
   <ng-container [ngSwitch]="timerType">
     <div class="timer timer__normal" *ngSwitchCase="'normal'">
-      <svg class="svg">
+      <svg #svg class="svg">
         <circle class="bg-circle" cx="50%" cy="50%" />
         <circle
           class="percent"
