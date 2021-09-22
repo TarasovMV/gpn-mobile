@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { TabsInfoService } from '../../services/tabs/tabs-info.service';
 import { VerifyModalComponent } from './components/verify-modal/verify-modal.component';
+import {CancelTaskComponent} from "../../@shared/cancel-task/cancel-task.component";
 
 @Component({
     selector: 'app-nfc-verify.page',
@@ -32,5 +33,18 @@ export class NfcVerifyPage implements OnInit {
 
     public back(): void {
         this.navCtrl.back();
+    }
+
+    public async cancel(): Promise<void> {
+        await this.presentModal();
+    }
+
+    private async presentModal() {
+        const modal = await this.modalCtrl.create({
+            component: CancelTaskComponent,
+            cssClass: 'avatar-modal',
+            showBackdrop: false,
+        });
+        return await modal.present();
     }
 }

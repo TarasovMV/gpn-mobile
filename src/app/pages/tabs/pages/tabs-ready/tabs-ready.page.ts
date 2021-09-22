@@ -1,4 +1,11 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    OnInit,
+    ViewChild,
+} from '@angular/core';
 import { IPageTab, PageTabType } from '../../tabs.page';
 import { BehaviorSubject } from 'rxjs';
 import { DELIVERED, SELECTED } from './mock';
@@ -41,7 +48,9 @@ export class TabsReadyPage implements OnInit, IPageTab, AfterViewInit {
     ) {}
 
     ngOnInit() {
-        this.calculateFinalTransform();
+        this.tabsService.currentTab$.subscribe(id => {
+            this.calculateFinalTransform();
+        });
     }
 
     ngAfterViewInit() {

@@ -1,0 +1,70 @@
+<div class="container">
+  <app-header withThemeSwitch="false">
+    <div class="arrow" (click)="dismiss()">
+      <svg-icon
+        src="/assets/Icons/tabs/arrowLeft.svg"
+        [svgStyle]="{
+          'height.vh': 3.9,
+          'width.vh': 3.9
+        }"
+      ></svg-icon>
+    </div>
+    <div class="title">№ {{ (tabsService.currentTask$ | async)?.number }}</div>
+  </app-header>
+
+  <div class="content">
+    <div class="task-info-block">
+      <div class="info-card">
+        <div class="description">
+          <div class="description__item">
+            <span class="name">Установка: </span>
+            <span class="value">{{
+              (tabsService.currentTask$ | async)?.plantName
+            }}</span>
+          </div>
+
+          <div class="description__item">
+            <span class="name">
+              Отсканируйте NFC метку для подтверждения выгрузки
+              <span class="light-text">
+                пустой тары ({{
+                (tabsService.currentTask$ | async)?.tares.length
+                }}
+                шт)
+              </span>
+              и загрузки
+              <span class="light-text">
+                проб ({{ (tabsService.currentTask$ | async)?.probes.length }})
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <span class="instruction">Причина завершения задания:</span>
+    </div>
+
+    <div class="dropdown-block">
+      <app-select
+        [options]="tabsService.reasonsList$ | async"
+        [value]="(tabsService.reasonsList$ | async)[0]"
+        (onSelectValue)="changeDropdownValue($event)"
+      ></app-select>
+
+      <textarea
+        *ngIf="chosenReasonId === 5"
+        class="textarea"
+        placeholder="Напишите причину"
+        [(ngModel)]="comment"
+      ></textarea>
+    </div>
+
+    <app-button class="btn btn_active" (click)="cancelTask()">
+      Завершить задание
+    </app-button>
+
+    <app-button class="btn" (click)="dismiss()" [isActive]="false">
+      Отменить
+    </app-button>
+  </div>
+</div>

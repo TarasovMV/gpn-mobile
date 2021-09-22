@@ -12,9 +12,10 @@ export interface ITask {
     plantName: string;
     order: number;
     lockerId: number;
-    isAccepted: true;
-    isFinalized: true;
-    isFailed: true;
+    isAccepted: boolean;
+    isFinalized: boolean;
+    isFailed: boolean;
+    inCar: boolean;
     dateTimeStart: Date;
     dateTimeEnd: Date;
     availableTimeToExceed: number;

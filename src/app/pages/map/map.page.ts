@@ -17,6 +17,7 @@ import * as d3 from 'd3';
 import { ICoord } from '../tabs/pages/tabs-tasks/tabs-tasks.page';
 import { ResolveTaskComponent } from './components/resolve-task/resolve-task.component';
 import { GeoProjection } from 'as-geo-projection';
+import {ThemeService} from "../../services/theme.service";
 
 interface IMapConfig {
     width: number;
@@ -97,7 +98,8 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
         private navCtrl: NavController,
         private zone: NgZone,
         private cdRef: ChangeDetectorRef,
-        public modalController: ModalController
+        public modalController: ModalController,
+        public theme: ThemeService
     ) {}
 
     ngOnDestroy(): void {
@@ -132,7 +134,7 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
         const taskId = this.tabsService.currentTask$.getValue().id;
 
         this.currentRoute = this.tabsService
-            .getRoutes(taskId === null ? taskId : this.tabsService.routes$.getValue()[0].taskId)
+            .getRoutes(taskId)
             .map((item) =>
                 geo.getRelativeByWgs({ latitude: item.y, longitude: item.x })
             )

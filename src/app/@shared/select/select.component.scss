@@ -1,0 +1,39 @@
+@import "src/theme/functions";
+
+.select {
+  width: 100%;
+
+  &__status {
+    z-index: 3;
+    left: sizeWidth(40);
+  }
+
+  &__field {
+    width: 100%;
+    position: relative;
+    padding: sizeWidth(25) sizeWidth(35) sizeWidth(25) sizeWidth(35);
+    font-size: sizeHeight(34);
+    text-align: left;
+    background: var(--bg-dashboard-color);
+    border-radius: sizeWidth(8);
+    color: var(--text-accent-color);
+    border: thin solid var(--border-forms-color);
+
+    &::before {
+      position: absolute;
+      content: '';
+      width: 0;
+      height: 0;
+      right: sizeWidth(35);
+      top: 50%;
+      transform: translateY(-50%);
+      border-left: sizeWidth(9) solid transparent;
+      border-right: sizeWidth(9) solid transparent;
+      border-top: sizeWidth(14) solid var(--border-icon-color);
+    }
+
+    &_active::before {
+      transform: translateY(-50%) rotate(180deg);;
+    }
+  }
+}

@@ -32,7 +32,7 @@ export class StatusCurrentComponent implements OnInit {
     public async openStatisticModal(): Promise<void> {
         const modal = await this.modalController.create({
             component: StatisticModalComponent,
-            cssClass: 'custom-modal choose-task',
+            cssClass: 'custom-modal choose-status',
             backdropDismiss: true,
         });
         await modal.present();

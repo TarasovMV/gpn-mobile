@@ -1,0 +1,12 @@
+<ion-content class="popover">
+  <ul class="popover__list select-list">
+    <ng-container *ngFor="let option of options">
+      <li class="select-list__item"
+          [class.select-list__item_selected]="selectedOption.value === option.value"
+          (click)="emitValue(option)">
+        <span [class]="'status '"></span>
+        <ion-label>{{option.value}}</ion-label>
+      </li>
+    </ng-container>
+  </ul>
+</ion-content>

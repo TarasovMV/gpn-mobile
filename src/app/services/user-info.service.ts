@@ -80,7 +80,7 @@ export class UserInfoService {
     }
 
     public async openActivityModal(): Promise<void> {
-        this.presentModalPassword().then();
+        this.presentModalActivity().then();
     }
 
     public async auth(cred: IUserCredentials): Promise<IUser> {
@@ -129,7 +129,7 @@ export class UserInfoService {
         this.endStatistic$.next(res);
     }
 
-    private async presentModalPassword() {
+    private async presentModalActivity() {
         const modal = await this.modalController.create({
             componentProps: {
                 message:

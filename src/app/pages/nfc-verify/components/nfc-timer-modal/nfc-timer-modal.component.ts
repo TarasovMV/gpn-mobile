@@ -37,8 +37,7 @@ export class NfcTimerModalComponent implements OnInit {
     public async close(): Promise<void> {
         this.stopTimeouts();
         if (this.isNfcAccepted) {
-            this.tasksToReady();
-            await this.modalCtrl.dismiss();
+            await this.tasksToReady();
         } else if (this.tabsService.newItems$.getValue().length !== 0) {
             await this.modalCtrl.dismiss();
             await this.presentModalDialog();
@@ -55,14 +54,15 @@ export class NfcTimerModalComponent implements OnInit {
             this.changeDetectorRef.detectChanges();
             this.successTimeOut = window.setTimeout(async () => {
                 this.stopTimeouts();
-                this.tasksToReady();
+                await this.tasksToReady();
                 await this.modalCtrl.dismiss();
             }, 3000);
         });
     }
 
-    private tasksToReady(): void {
-
+    private async tasksToReady(): Promise<void> {
+        await this.navCtrl.navigateRoot('/end-task');
+        await this.modalCtrl.dismiss();
     }
 
     private initTimer(): void {

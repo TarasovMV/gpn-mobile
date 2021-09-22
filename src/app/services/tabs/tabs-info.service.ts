@@ -7,6 +7,7 @@ import { ApiService } from '../../@core/services/api/api.service';
 import { UserInfoService } from '../user-info.service';
 import { IRoute, ITask, ITaskData } from '../../@core/model/task.model';
 import { TasksApiService } from './tasks-api.service';
+import { ISelectOption } from '../../@shared/select/select.interfaces';
 
 @Injectable({
     providedIn: 'root',
@@ -37,6 +38,10 @@ export class TabsInfoService {
     public routes$: BehaviorSubject<IRoute[]> = new BehaviorSubject<IRoute[]>(
         []
     );
+
+    public reasonsList$: BehaviorSubject<ISelectOption[]> = new BehaviorSubject<
+        ISelectOption[]
+    >([]); // Причины завершения задания
 
     public readonly elkTask: { id: number; plantName: string } = {
         id: null,
@@ -84,8 +89,15 @@ export class TabsInfoService {
             route: [...tasksData.route],
         };
 
-        this.newItems$.next(tasks.filter((item) => !item.isFinalized));
-        this.finalizesItems$.next(tasks.filter((item) => item.isFinalized));
+        this.newItems$.next(
+            tasks.filter((item) => !item.isFinalized && !item.inCar)
+        );
+        this.finalizesItems$.next(
+            tasks.filter((item) => item.isFinalized && !item.inCar)
+        );
+        this.selectedItems$.next(
+            tasks.filter((item) => item.inCar && !item.isFinalized)
+        );
         this.routes$.next(tasksData.route);
     }
 
@@ -119,7 +131,7 @@ export class TabsInfoService {
             if (this.newItems$.getValue().length === 0) {
                 this.currentTask$.next(this.elkTask);
             }
-            // await this.getTasks();
+            await this.getTasks();
         }
     }
 
@@ -129,7 +141,7 @@ export class TabsInfoService {
         const userId = this.userInfo.currentUser.userId;
 
         const res = await this.tasksApi.finalizeAllTasks({ userId });
-        const resNumbers = res.map((item) => item.taskNumber);
+        const resNumbers = (res ?? []).map((item) => item.taskNumber);
         if (res.length > 0) {
             this.selectedItems$.next(
                 selectedTasks.filter(
@@ -144,6 +156,25 @@ export class TabsInfoService {
                 ),
             ]);
             await this.getTasks();
+        }
+    }
+
+    public async declineTask(id: number, reasonId: number): Promise<void> {
+        const body = { taskDeclineReasonId: reasonId };
+        await this.tasksApi.declineTask(id, body);
+        await this.getTasks();
+    }
+
+    public async getReasons(): Promise<void> {
+        try {
+            const res = await this.tasksApi.getReasonsList();
+            const resMap = res.map((item) => ({
+                id: item.id,
+                value: item.reasonDescription,
+            }));
+            this.reasonsList$.next([...resMap]);
+        } catch (e) {
+            console.error(e);
         }
     }
 

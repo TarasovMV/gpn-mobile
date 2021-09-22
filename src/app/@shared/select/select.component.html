@@ -1,0 +1,10 @@
+<div class="select">
+  <span [class]="'select__status status '"></span>
+  <button class="select__field"
+          [class.select__field_active]="isPopoverOpened$ | async"
+          (click)="openPopover($event)">
+    {{value?.value}}
+  </button>
+</div>
+
+

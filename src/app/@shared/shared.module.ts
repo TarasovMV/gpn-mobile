@@ -22,6 +22,9 @@ import { DialogModalComponent } from './modals/dialog-modal/dialog-modal.compone
 import { StatisticModalComponent } from './modals/statistic-modal/statistic-modal.component';
 import {NfcTimerModalComponent} from "../pages/nfc-verify/components/nfc-timer-modal/nfc-timer-modal.component";
 import {AcceptModalComponent} from "./modals/accept-modal/accept-modal.component";
+import {CancelTaskComponent} from "./cancel-task/cancel-task.component";
+import {PopoverComponent} from "./select/popover/popover.component";
+import {SelectComponent} from "./select/select.component";
 
 @NgModule({
     declarations: [
@@ -44,7 +47,10 @@ import {AcceptModalComponent} from "./modals/accept-modal/accept-modal.component
         DialogModalComponent,
         StatisticModalComponent,
         NfcTimerModalComponent,
-        AcceptModalComponent
+        AcceptModalComponent,
+        CancelTaskComponent,
+        PopoverComponent,
+        SelectComponent
     ],
     exports: [
         HeaderComponent,
@@ -59,7 +65,9 @@ import {AcceptModalComponent} from "./modals/accept-modal/accept-modal.component
         DialogModalComponent,
         StatisticModalComponent,
         NfcTimerModalComponent,
-        AcceptModalComponent
+        AcceptModalComponent,
+        CancelTaskComponent,
+        PopoverComponent
     ],
     imports: [CommonModule, AngularSvgIconModule, IonicModule],
 })

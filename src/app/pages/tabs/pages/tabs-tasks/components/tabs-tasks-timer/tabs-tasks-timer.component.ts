@@ -17,6 +17,9 @@ export class TabsTasksTimerComponent implements OnInit {
         this.taskCreatedTime = new Date(task.dateTimeStart);
         this.taskPlaneTime = new Date(task.dateTimeEnd);
 
+        // this.taskCreatedTime = new Date(2021, 8, 22);
+        // this.taskPlaneTime = new Date(2021, 8, 22, 15 , 38);
+
         this.checkType();
         this.calculatePercent();
     }
@@ -36,8 +39,9 @@ export class TabsTasksTimerComponent implements OnInit {
 
     ngOnInit() {
         setInterval(() => {
+            this.checkType();
             this.calculatePercent();
-        }, 60000);
+        }, 20000);
     }
 
     public get percent(): number {
@@ -93,7 +97,7 @@ export class TabsTasksTimerComponent implements OnInit {
         this.timerType =
             dataDiff > this.safeInterval
                 ? 'danger'
-                : dataDiff > 0
+                : dataDiff >= 0
                 ? 'warning'
                 : 'normal';
     }

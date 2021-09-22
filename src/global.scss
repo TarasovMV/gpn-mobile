@@ -99,7 +99,34 @@ body,
 
 .avatar-modal {
   .modal-wrapper {
-    height: sizeHeight(340);
-    width: sizeWidth(560);
+    height: 100vh;
+    width: 100vw;
+  }
+}
+
+.select-popover {
+  .popover-content.sc-ion-popover-md {
+    width: sizeWidth(640);
+    background-color: var(--bg-dashboard-color);
+  }
+
+  ion-backdrop {
+    --backdrop-opacity: 0;
+  }
+}
+
+.select-list {
+  list-style: none;
+  width: 100%;
+  font-size: sizeHeight(34);
+
+  &__item {
+    position: relative;
+    padding: sizeWidth(25) sizeWidth(35) sizeWidth(25) sizeWidth(95);
+    color: var(--text-contrast-color);
+
+    &_selected {
+      background-color: var(--bg-body-color);
+    }
   }
 }

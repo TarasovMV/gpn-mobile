@@ -3,6 +3,11 @@ import { ITaskData } from '../../@core/model/task.model';
 import { HttpClient } from '@angular/common/http';
 import { AppConfigService } from '../../@core/services/platform/app-config.service';
 
+export interface IReason {
+    id: number;
+    reasonDescription: string;
+}
+
 @Injectable({
     providedIn: 'root',
 })
@@ -64,10 +69,7 @@ export class TasksApiService {
     }
 
     // Завершить задачу
-    public async finalizeTask(
-        taskId: number,
-        body: object
-    ): Promise<boolean> {
+    public async finalizeTask(taskId: number, body: object): Promise<boolean> {
         try {
             await this.http
                 .put<void>(`${this.restUrl}/api/Task/${taskId}/finalize`, body)
@@ -106,6 +108,17 @@ export class TasksApiService {
             return true;
         } catch (e) {
             return false;
+        }
+    }
+
+    // Получить причины завершение
+    public async getReasonsList(): Promise<IReason[]> {
+        try {
+            return await this.http
+                .get<IReason[]>(`${this.restUrl}/api/DriverDeclineReason`)
+                .toPromise();
+        } catch (e) {
+            console.error(e);
         }
     }
 }

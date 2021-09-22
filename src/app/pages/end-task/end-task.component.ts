@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { TabsInfoService } from '../../services/tabs/tabs-info.service';
+import { CancelTaskComponent } from '../../@shared/cancel-task/cancel-task.component';
 
 @Component({
     selector: 'app-end-task',
@@ -28,5 +29,18 @@ export class EndTaskComponent implements OnInit {
         } else {
             await this.navCtrl.navigateRoot('/map');
         }
+    }
+
+    public async cancel(): Promise<void> {
+        await this.presentModal();
+    }
+
+    private async presentModal() {
+        const modal = await this.modalCtrl.create({
+            component: CancelTaskComponent,
+            cssClass: 'avatar-modal',
+            showBackdrop: false,
+        });
+        return await modal.present();
     }
 }
