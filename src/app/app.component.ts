@@ -59,6 +59,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     private initializeApp(): void {
+        this.nfcService.initNfc();
         this.platform.ready().then(() => {
             setTimeout(() =>
                 this.keyboardService
@@ -67,6 +68,5 @@ export class AppComponent implements OnInit, OnDestroy {
             );
             setTimeout(() => this.tasksService.cancelData(), 1000);
         });
-        this.nfcService.initNfc();
     }
 }
