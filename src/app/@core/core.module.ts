@@ -1,6 +1,6 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { AuthenticationInterceptor } from './interceptors/authentication.interceptor';
 import {
@@ -8,11 +8,17 @@ import {
     AppConfigService,
 } from './services/platform/app-config.service';
 import { Ndef, NFC } from '@ionic-native/nfc/ngx';
+import {HTTP_GLOBAL} from "./tokens";
 
 @NgModule({
     declarations: [],
     imports: [CommonModule, HttpClientModule],
     providers: [
+        {
+            provide: HTTP_GLOBAL,
+            useExisting: HttpClient,
+            deps: [HttpClientModule],
+        },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         {
             provide: HTTP_INTERCEPTORS,
