@@ -1,13 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {
-    trigger,
-    state,
-    style,
-    transition,
-    animate,
-} from '@angular/animations';
 import { UserInfoService } from '../../services/user-info.service';
-import {expandAnimation} from "../animations/expand.animation";
+import {expandAnimation} from '../animations/expand.animation';
 
 @Component({
     selector: 'app-dropdown',

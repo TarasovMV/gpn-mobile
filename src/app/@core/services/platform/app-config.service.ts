@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 
 export interface IAppConfig {
     restUrl: string;
+    supportUrl: string;
 }
 
 @Injectable({

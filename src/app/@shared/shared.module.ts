@@ -25,6 +25,7 @@ import {AcceptModalComponent} from "./modals/accept-modal/accept-modal.component
 import {CancelTaskComponent} from "./cancel-task/cancel-task.component";
 import {PopoverComponent} from "./select/popover/popover.component";
 import {SelectComponent} from "./select/select.component";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
     declarations: [
@@ -69,6 +70,6 @@ import {SelectComponent} from "./select/select.component";
         CancelTaskComponent,
         PopoverComponent
     ],
-    imports: [CommonModule, AngularSvgIconModule, IonicModule],
+    imports: [CommonModule, AngularSvgIconModule, IonicModule, FormsModule],
 })
 export class SharedModule {}
