@@ -48,7 +48,7 @@ export class TabsTasksTimerComponent implements OnInit, AfterViewInit {
         setInterval(() => {
             this.checkType();
             this.calculatePercent();
-        }, 60000);
+        }, 500);
     }
 
     public get percent(): number {
@@ -60,8 +60,10 @@ export class TabsTasksTimerComponent implements OnInit, AfterViewInit {
     }
 
     private calculatePercent(): void {
+        if (!this.svg) {
+            return;
+        }
         this.circleLength = Math.PI * this.svg?.nativeElement.clientHeight ?? 0;
-        console.log(this.svg);
         const now = new Date();
         const diffNowCreated = +now - +this.taskCreatedTime;
         const diffNowPlan = +now - +this.taskPlaneTime;
