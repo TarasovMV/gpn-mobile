@@ -17,9 +17,6 @@ export class TabsTasksTimerComponent implements OnInit {
         this.taskCreatedTime = new Date(task.dateTimeStart);
         this.taskPlaneTime = new Date(task.dateTimeEnd);
 
-        // this.taskCreatedTime = new Date(2021, 8, 22);
-        // this.taskPlaneTime = new Date(2021, 8, 22, 15 , 38);
-
         this.checkType();
         this.calculatePercent();
     }
@@ -92,6 +89,9 @@ export class TabsTasksTimerComponent implements OnInit {
 
     private checkType(): void {
         const now = new Date();
+        console.log(+now);
+        console.log(+this.taskPlaneTime);
+
         const dataDiff = +now - +this.taskPlaneTime;
 
         this.timerType =

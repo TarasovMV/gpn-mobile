@@ -64,6 +64,11 @@ button {
         display: flex;
         align-items: center;
         color: var(--text-subscript-color);
+
+        .light-text {
+          margin: 0 sizeWidth(10);
+          word-break: break-word;
+        }
       }
 
       &:first-child {
