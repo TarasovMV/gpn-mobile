@@ -1,4 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    Input,
+    OnInit,
+    ViewChild,
+} from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ITask } from '../../../../../../@core/model/task.model';
 
@@ -12,17 +19,15 @@ export interface IRemainingTime {
     templateUrl: './tabs-tasks-timer.component.html',
     styleUrls: ['./tabs-tasks-timer.component.scss'],
 })
-export class TabsTasksTimerComponent implements OnInit {
+export class TabsTasksTimerComponent implements OnInit, AfterViewInit {
+    @ViewChild('svg') private svg: ElementRef;
     @Input() set data(task: ITask) {
         this.taskCreatedTime = new Date(task.dateTimeStart);
         this.taskPlaneTime = new Date(task.dateTimeEnd);
-
-        this.checkType();
-        this.calculatePercent();
     }
 
     public remainingTime: IRemainingTime = null;
-    public circleLength: number = Math.PI * 148;
+    public circleLength: number = 0;
     public safeInterval: number = 30 * 60 * 1000;
     public safeIntervalRemaining: string = '';
 
@@ -34,11 +39,16 @@ export class TabsTasksTimerComponent implements OnInit {
 
     constructor() {}
 
-    ngOnInit() {
+    ngOnInit() {}
+
+    ngAfterViewInit() {
+        this.checkType();
+        this.calculatePercent();
+
         setInterval(() => {
             this.checkType();
             this.calculatePercent();
-        }, 20000);
+        }, 60000);
     }
 
     public get percent(): number {
@@ -50,6 +60,8 @@ export class TabsTasksTimerComponent implements OnInit {
     }
 
     private calculatePercent(): void {
+        this.circleLength = Math.PI * this.svg?.nativeElement.clientHeight ?? 0;
+        console.log(this.svg);
         const now = new Date();
         const diffNowCreated = +now - +this.taskCreatedTime;
         const diffNowPlan = +now - +this.taskPlaneTime;
@@ -58,6 +70,7 @@ export class TabsTasksTimerComponent implements OnInit {
         switch (this.timerType) {
             case 'normal':
                 this.percent = Math.abs(diffNowCreated / allInterval);
+                console.log('Процент: ' + this.percent);
 
                 const remainingTime = {
                     hours:
@@ -80,6 +93,7 @@ export class TabsTasksTimerComponent implements OnInit {
                 break;
             case 'warning':
                 this.percent = Math.abs(diffNowPlan / +this.safeInterval);
+                console.log('Процент: ' + this.percent);
                 this.safeIntervalRemaining =
                     '' + Math.ceil(diffNowPlan / 1000 / 60);
                 break;
