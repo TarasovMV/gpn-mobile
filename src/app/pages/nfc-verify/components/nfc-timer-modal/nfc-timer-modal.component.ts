@@ -1,11 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Ndef, NFC } from '@ionic-native/nfc/ngx';
 import { ModalController, NavController } from '@ionic/angular';
 import { NfcService } from '../../../../@core/services/platform/nfc.service';
 import { take } from 'rxjs/operators';
 import { TabsInfoService } from '../../../../services/tabs/tabs-info.service';
 import { DialogModalComponent } from '../../../../@shared/modals/dialog-modal/dialog-modal.component';
-import {AcceptModalComponent} from "../../../../@shared/modals/accept-modal/accept-modal.component";
+import {AcceptModalComponent} from '../../../../@shared/modals/accept-modal/accept-modal.component';
 
 @Component({
     selector: 'app-nfc-timer-modal',
@@ -37,7 +36,12 @@ export class NfcTimerModalComponent implements OnInit {
     public async close(): Promise<void> {
         this.stopTimeouts();
         if (this.isNfcAccepted) {
-            await this.tasksToReady();
+            await this.modalCtrl.dismiss();
+            if (this.tabsService.newItems$.getValue().length !== 0) {
+                await this.tasksToReady();
+            } else {
+                await this.presentModalAccept();
+            }
         } else if (this.tabsService.newItems$.getValue().length !== 0) {
             await this.modalCtrl.dismiss();
             await this.presentModalDialog();
@@ -61,7 +65,6 @@ export class NfcTimerModalComponent implements OnInit {
 
     private async tasksToReady(): Promise<void> {
         await this.navCtrl.navigateRoot('/end-task');
-        await this.modalCtrl.dismiss();
     }
 
     private initTimer(): void {
