@@ -37,10 +37,13 @@ ion-backdrop {
 }
 
 html,
-body,
 .ion-app,
 .ion-content {
   background: transparent !important;
+}
+
+body {
+  background: var(--bg-body-color);;
 }
 
 // scroll hide

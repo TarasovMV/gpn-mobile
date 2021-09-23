@@ -21,13 +21,22 @@ export interface IRemainingTime {
     templateUrl: './tabs-tasks-timer.component.html',
     styleUrls: ['./tabs-tasks-timer.component.scss'],
 })
-export class TabsTasksTimerComponent
-    implements OnInit, AfterViewInit, OnDestroy
+export class TabsTasksTimerComponent implements OnDestroy
 {
     @ViewChild('svg') private svg: ElementRef;
     @Input() set data(task: ITask) {
         this.taskCreatedTime = new Date(task.dateTimeStart);
         this.taskPlaneTime = new Date(task.dateTimeEnd);
+        /**
+         * @description test area
+         * this.taskCreatedTime = new Date(new Date().getTime() - 1000 * 60 * 3);
+         * this.taskPlaneTime = new Date(new Date().getTime() + 1000 * 60 * 3);
+         */
+        this.circleLength = Math.PI * window.innerHeight * 150 / 1280;
+        this.interval = setInterval(() => {
+            this.checkType();
+            this.calculatePercent();
+        }, 1000);
     }
 
     public remainingTime: IRemainingTime = null;
@@ -44,18 +53,6 @@ export class TabsTasksTimerComponent
 
     constructor(private cdRef: ChangeDetectorRef) {}
 
-    ngOnInit() {}
-
-    ngAfterViewInit() {
-        this.checkType();
-        this.calculatePercent();
-
-        this.interval = setInterval(() => {
-            this.checkType();
-            this.calculatePercent();
-        }, 200);
-    }
-
     public ngOnDestroy(): void {
         clearInterval(this.interval);
     }
@@ -65,7 +62,6 @@ export class TabsTasksTimerComponent
             return;
         }
 
-        this.circleLength = Math.PI * this.svg?.nativeElement.clientHeight ?? 0;
         const now = new Date();
         const diffNowCreated = +now - +this.taskCreatedTime;
         const diffNowPlan = +now - +this.taskPlaneTime;
