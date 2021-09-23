@@ -24,9 +24,14 @@ export class StatusCurrentComponent implements OnInit {
     }
 
     public async endWorkShift(): Promise<void> {
-        await this.dismiss();
-        await this.userInfo.endWorkShift();
-        await this.openStatisticModal();
+       if (!this.taskInfo.newItems$.getValue().length ) {
+           await this.dismiss();
+           await this.userInfo.endWorkShift();
+           await this.openStatisticModal();
+       }
+       else {
+           await this.taskInfo.disabledBtn('Вы выполнили не все задачи');
+       }
     }
 
     public async openStatisticModal(): Promise<void> {

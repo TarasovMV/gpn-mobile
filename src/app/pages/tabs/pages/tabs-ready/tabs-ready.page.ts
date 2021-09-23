@@ -75,6 +75,9 @@ export class TabsReadyPage implements OnInit, IPageTab, AfterViewInit {
         if (!this.tabsService.newItems$.value.length) {
             await this.openModal();
         }
+        else {
+            await this.tabsService.disabledBtn('Вы выполнили не все задачи');
+        }
     }
 
     private useTinderSwipe(card: ElementRef): void {

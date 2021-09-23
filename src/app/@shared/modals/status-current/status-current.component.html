@@ -25,7 +25,6 @@
         btn_active: !(taskInfo.newItems$ | async).length,
         btn_disabled: !!(taskInfo.newItems$ | async).length
       }"
-      [disabled]="!!(taskInfo.newItems$ | async).length"
     >
       завершить
     </button>

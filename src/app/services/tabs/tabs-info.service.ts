@@ -8,6 +8,8 @@ import { UserInfoService } from '../user-info.service';
 import { IRoute, ITask, ITaskData } from '../../@core/model/task.model';
 import { TasksApiService } from './tasks-api.service';
 import { ISelectOption } from '../../@shared/select/select.interfaces';
+import { SimpleModalComponent } from '../../@shared/modals/simple-modal/simple-modal.component';
+import { ModalController } from '@ionic/angular';
 
 @Injectable({
     providedIn: 'root',
@@ -54,7 +56,8 @@ export class TabsInfoService {
         private http: HttpClient,
         private apiService: ApiService,
         private tasksApi: TasksApiService,
-        private userInfo: UserInfoService
+        private userInfo: UserInfoService,
+        private modalController: ModalController
     ) {
         this.userInfo.workShift$.subscribe((id) => {
             if (id != null) {
@@ -176,6 +179,17 @@ export class TabsInfoService {
         } catch (e) {
             console.error(e);
         }
+    }
+
+    public async disabledBtn(msg: string) {
+        const modal = await this.modalController.create({
+            componentProps: {
+                message: msg,
+            },
+            component: SimpleModalComponent,
+            cssClass: 'custom-modal resolve-modal',
+        });
+        return await modal.present();
     }
 
     private checkPushNotification(

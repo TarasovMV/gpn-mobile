@@ -23,7 +23,7 @@ export class TabsTasksTimerComponent implements OnInit, AfterViewInit {
     @ViewChild('svg') private svg: ElementRef;
     @Input() set data(task: ITask) {
         this.taskCreatedTime = new Date(task.dateTimeStart);
-        this.taskPlaneTime = new Date(task.dateTimeEnd);
+        this.taskPlaneTime = new Date (+new Date(task.dateTimeEnd) + 2.2 * 4 * 60 *60 * 1000);
     }
 
     public remainingTime: IRemainingTime = null;
@@ -71,7 +71,6 @@ export class TabsTasksTimerComponent implements OnInit, AfterViewInit {
         switch (this.timerType) {
             case 'normal':
                 this.percent = Math.abs(diffNowCreated / allInterval);
-
                 const remainingTime = {
                     hours:
                         '' + Math.floor(Math.abs(diffNowPlan) / 1000 / 60 / 60),
@@ -94,8 +93,7 @@ export class TabsTasksTimerComponent implements OnInit, AfterViewInit {
             case 'warning':
                 this.percent = Math.abs(diffNowPlan / +this.safeInterval);
                 this.safeIntervalRemaining =
-                    '' + Math.ceil(diffNowPlan / 1000 / 60);
-                console.log(this.safeIntervalRemaining);
+                    '' + (30 - Math.ceil(diffNowPlan / 1000 / 60));
                 break;
         }
         this.checkType();

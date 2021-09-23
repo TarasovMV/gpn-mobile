@@ -100,6 +100,9 @@
         }
 
         .extra-info {
+          padding: 0 sizeWidth(30);
+          margin: sizeHeight(10) 0;
+
           font-size: sizeHeight(30);
           color: var(--text-subscript-color);
         }

@@ -19,12 +19,20 @@
 
     &_top {
       top: 10vh;
-      background: linear-gradient(180deg, var(--gradient-main-color-1) -0.04%, var(--gradient-main-color-2) 99.96%);
+      background: linear-gradient(
+        180deg,
+        var(--gradient-main-color-1) -0.04%,
+        var(--gradient-main-color-2) 99.96%
+      );
     }
 
-    &_bottom{
+    &_bottom {
       bottom: 0;
-      background: linear-gradient(0deg, var(--gradient-main-color-1) -0.04%, var(--gradient-main-color-2) 99.96%);
+      background: linear-gradient(
+        0deg,
+        var(--gradient-main-color-1) -0.04%,
+        var(--gradient-main-color-2) 99.96%
+      );
     }
   }
 

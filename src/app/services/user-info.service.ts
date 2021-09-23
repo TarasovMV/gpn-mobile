@@ -136,7 +136,7 @@ export class UserInfoService {
                     'Вы неактивны более 15 минут, если статус не будет изменен, задачи будут переназначены',
             },
             component: SimpleModalComponent,
-            cssClass: 'custom-modal activity-modal',
+            cssClass: 'custom-modal resolve-modal',
         });
         return await modal.present();
     }
