@@ -68,11 +68,9 @@ export class TabsTasksTimerComponent implements OnInit, AfterViewInit {
         const diffNowCreated = +now - +this.taskCreatedTime;
         const diffNowPlan = +now - +this.taskPlaneTime;
         const allInterval = +this.taskPlaneTime - +this.taskCreatedTime;
-
         switch (this.timerType) {
             case 'normal':
                 this.percent = Math.abs(diffNowCreated / allInterval);
-                console.log('Процент: ' + this.percent);
 
                 const remainingTime = {
                     hours:
@@ -95,9 +93,9 @@ export class TabsTasksTimerComponent implements OnInit, AfterViewInit {
                 break;
             case 'warning':
                 this.percent = Math.abs(diffNowPlan / +this.safeInterval);
-                console.log('Процент: ' + this.percent);
                 this.safeIntervalRemaining =
                     '' + Math.ceil(diffNowPlan / 1000 / 60);
+                console.log(this.safeIntervalRemaining);
                 break;
         }
         this.checkType();
@@ -105,8 +103,6 @@ export class TabsTasksTimerComponent implements OnInit, AfterViewInit {
 
     private checkType(): void {
         const now = new Date();
-        console.log(+now);
-        console.log(+this.taskPlaneTime);
 
         const dataDiff = +now - +this.taskPlaneTime;
 

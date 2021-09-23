@@ -36,7 +36,14 @@ export class CancelTaskComponent implements OnInit {
             taskId,
             this.chosenReasonId
         );
-        await this.dismiss();
-        await this.navCtrl.navigateRoot('tabs/tabs-tasks');
+
+        if (this.tabsService.newItems$.getValue().length === 0) {
+            this.tabsService.currentTask$.next(this.tabsService.elkTask);
+            await this.dismiss();
+            await this.navCtrl.navigateRoot('map');
+        } else {
+            await this.dismiss();
+            await this.navCtrl.navigateRoot('tabs/tabs-tasks');
+        }
     }
 }

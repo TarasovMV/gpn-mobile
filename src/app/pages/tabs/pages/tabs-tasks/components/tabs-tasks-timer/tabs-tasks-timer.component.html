@@ -22,7 +22,7 @@
     </div>
 
     <div class="timer timer__warning" *ngSwitchCase="'warning'">
-      <svg class="svg">
+      <svg class="svg" #svg>
         <circle class="bg-circle" cx="50%" cy="50%" />
         <circle
           class="percent"
@@ -40,7 +40,7 @@
     </div>
 
     <div class="timer timer__danger" *ngSwitchCase="'danger'">
-      <svg class="svg">
+      <svg class="svg" #svg>
         <circle class="bg-circle" cx="50%" cy="50%" />
       </svg>
 
