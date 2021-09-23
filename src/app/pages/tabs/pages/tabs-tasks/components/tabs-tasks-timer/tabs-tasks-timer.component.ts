@@ -1,8 +1,10 @@
 import {
     AfterViewInit,
+    ChangeDetectorRef,
     Component,
     ElementRef,
     Input,
+    OnDestroy,
     OnInit,
     ViewChild,
 } from '@angular/core';
@@ -19,7 +21,9 @@ export interface IRemainingTime {
     templateUrl: './tabs-tasks-timer.component.html',
     styleUrls: ['./tabs-tasks-timer.component.scss'],
 })
-export class TabsTasksTimerComponent implements OnInit, AfterViewInit {
+export class TabsTasksTimerComponent
+    implements OnInit, AfterViewInit, OnDestroy
+{
     @ViewChild('svg') private svg: ElementRef;
     @Input() set data(task: ITask) {
         this.taskCreatedTime = new Date(task.dateTimeStart);
@@ -35,9 +39,10 @@ export class TabsTasksTimerComponent implements OnInit, AfterViewInit {
     public taskPlaneTime: Date;
 
     private taskCreatedTime: Date;
-    private percent$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+    public percent: number = 0;
+    private interval: any;
 
-    constructor() {}
+    constructor(private cdRef: ChangeDetectorRef) {}
 
     ngOnInit() {}
 
@@ -45,29 +50,27 @@ export class TabsTasksTimerComponent implements OnInit, AfterViewInit {
         this.checkType();
         this.calculatePercent();
 
-        setInterval(() => {
+        this.interval = setInterval(() => {
             this.checkType();
             this.calculatePercent();
-        }, 500);
+        }, 200);
     }
 
-    public get percent(): number {
-        return this.percent$.getValue();
-    }
-
-    public set percent(value: number) {
-        this.percent$.next(value);
+    public ngOnDestroy(): void {
+        clearInterval(this.interval);
     }
 
     private calculatePercent(): void {
         if (!this.svg) {
             return;
         }
+
         this.circleLength = Math.PI * this.svg?.nativeElement.clientHeight ?? 0;
         const now = new Date();
         const diffNowCreated = +now - +this.taskCreatedTime;
         const diffNowPlan = +now - +this.taskPlaneTime;
         const allInterval = +this.taskPlaneTime - +this.taskCreatedTime;
+
         switch (this.timerType) {
             case 'normal':
                 this.percent = Math.abs(diffNowCreated / allInterval);
@@ -95,8 +98,12 @@ export class TabsTasksTimerComponent implements OnInit, AfterViewInit {
                 this.safeIntervalRemaining =
                     '' + (30 - Math.ceil(diffNowPlan / 1000 / 60));
                 break;
+            case 'danger':
+                clearInterval(this.interval);
         }
         this.checkType();
+
+        this.cdRef.detectChanges();
     }
 
     private checkType(): void {

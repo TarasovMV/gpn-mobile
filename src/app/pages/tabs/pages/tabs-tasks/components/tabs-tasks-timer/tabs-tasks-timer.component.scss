@@ -5,7 +5,6 @@
 .container {
   height: sizeHeight(150);
   width: sizeHeight(150);
-
   .timer  {
     height: 100%;
     width: 100%;
@@ -17,20 +16,20 @@
     position: relative;
 
     .svg {
-      height: 100%;
-      width: 100%;
+      height: sizeHeight(150);
+      width: sizeHeight(150);
 
       position: absolute;
 
       .bg-circle {
         fill: transparent;
-        r: sizeHeight(74);
+        r:50%;
         stroke-width: sizeHeight(3);
       }
 
       .percent {
         fill: transparent;
-        r: sizeHeight(74);
+        r: 50%;
         stroke-width: sizeHeight(3);
       }
     }

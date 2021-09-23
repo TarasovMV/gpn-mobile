@@ -4,7 +4,7 @@ import { NfcService } from '../../../../@core/services/platform/nfc.service';
 import { take } from 'rxjs/operators';
 import { TabsInfoService } from '../../../../services/tabs/tabs-info.service';
 import { DialogModalComponent } from '../../../../@shared/modals/dialog-modal/dialog-modal.component';
-import {AcceptModalComponent} from '../../../../@shared/modals/accept-modal/accept-modal.component';
+import { AcceptModalComponent } from '../../../../@shared/modals/accept-modal/accept-modal.component';
 
 @Component({
     selector: 'app-nfc-timer-modal',
@@ -37,16 +37,10 @@ export class NfcTimerModalComponent implements OnInit {
         this.stopTimeouts();
         if (this.isNfcAccepted) {
             await this.modalCtrl.dismiss();
-            if (this.tabsService.newItems$.getValue().length !== 0) {
-                await this.tasksToReady();
-            } else {
-                await this.presentModalAccept();
-            }
         } else if (this.tabsService.newItems$.getValue().length !== 0) {
             await this.modalCtrl.dismiss();
             await this.presentModalDialog();
-        }
-        else {
+        } else {
             await this.modalCtrl.dismiss();
             await this.presentModalAccept();
         }
@@ -59,6 +53,11 @@ export class NfcTimerModalComponent implements OnInit {
             this.successTimeOut = window.setTimeout(async () => {
                 this.stopTimeouts();
                 await this.modalCtrl.dismiss();
+                if (this.tabsService.newItems$.getValue().length !== 0) {
+                    await this.tasksToReady();
+                } else {
+                    await this.presentModalAccept();
+                }
             }, 3000);
         });
     }
