@@ -1,8 +1,8 @@
 <div class="container">
+  <div class="header">
+    <span class="info">Подтвердите выполнение</span>
+  </div>
   <div class="content">
-    <div class="header-block">
-      <span class="header">Подтвердите выполнение</span>
-    </div>
     <div class="statistic-item">
       <span class="title">1. Пройдено, <span class="unit"> км</span></span>
       <span class="value">239</span>
@@ -12,35 +12,30 @@
       <span class="title">2. Пробы, <span class="unit"> шт</span></span>
       <span class="value">{{
         (userInfo.endStatistic$ | async)?.numberOfProbes
-      }}</span>
+        }}</span>
     </div>
 
     <div class="statistic-item">
       <span class="title">3. Установки, <span class="unit"> км</span></span>
       <span class="value">{{
         (userInfo.endStatistic$ | async)?.numberOfProdObjects
-      }}</span>
+        }}</span>
     </div>
 
     <div class="statistic-item">
       <span class="title"
-        >4. Время на линии, <span class="unit"> часы</span></span
+      >4. Время на линии, <span class="unit"> часы</span></span
       >
       <span class="value">{{
         (userInfo.endStatistic$ | async)?.duration
-      }}</span>
+        }}</span>
     </div>
   </div>
-  <app-button (click)="close()" class="accept-button"> Подтверждаю </app-button>
-  <div (click)="close()" class="close-button">
-    <svg-icon
-      [svgStyle]="{
-        width: '2.2vh',
-        height: '2.2vh'
-      }"
-      class="close-button__icon"
-      src="assets/Icons/shared/close_icon.svg"
-    >
-    </svg-icon>
+  <div class="buttons">
+    <button class="btn" (click)="close()">отменить</button>
+    <button class="btn btn_active" (click)="close()">
+      подтвердить
+    </button>
   </div>
 </div>
+

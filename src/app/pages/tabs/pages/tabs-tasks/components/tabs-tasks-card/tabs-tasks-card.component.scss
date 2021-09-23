@@ -46,12 +46,12 @@ span {
 
     .title {
       margin-bottom: sizeHeight(10);
-      font-size: sizeHeight(34);
+      font-size: sizeHeight(30);
       color: var(--text-main-color);
 
       .manufacture {
         margin-left: sizeWidth(10);
-        font-size: sizeHeight(34);
+        font-size: sizeHeight(30);
         color: var(--text-main-color);
       }
     }
@@ -76,7 +76,7 @@ span {
 
         &_active {
           background: var(--border-blue-color);
-          color: var(--text-alwaysWhite-color)
+          color: var(--text-alwaysWhite-color);
         }
       }
 
