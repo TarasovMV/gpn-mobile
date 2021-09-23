@@ -23,7 +23,7 @@ export class TabsTasksTimerComponent implements OnInit, AfterViewInit {
     @ViewChild('svg') private svg: ElementRef;
     @Input() set data(task: ITask) {
         this.taskCreatedTime = new Date(task.dateTimeStart);
-        this.taskPlaneTime = new Date (+new Date(task.dateTimeEnd) + 2.2 * 4 * 60 *60 * 1000);
+        this.taskPlaneTime = new Date(task.dateTimeEnd);
     }
 
     public remainingTime: IRemainingTime = null;
