@@ -21,7 +21,7 @@ export class TabsInfoService {
         0
     );
 
-    public currentTask$: BehaviorSubject<ITask | { id: number }> =
+    public currentTask$: BehaviorSubject<ITask> =
         new BehaviorSubject<ITask | { id: number }>(null);
     public pushInfo: BehaviorSubject<number> = new BehaviorSubject<number>(
         null

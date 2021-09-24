@@ -8,24 +8,24 @@ export interface ITaskData {
 
 export interface ITask {
     id: number;
-    number: string;
-    plantName: string;
-    order: number;
-    lockerId: number;
-    isAccepted: boolean;
-    isFinalized: boolean;
-    isFailed: boolean;
-    inCar: boolean;
-    dateTimeStart: Date;
-    dateTimeEnd: Date;
-    availableTimeToExceed: number;
-    nfc: string;
+    number?: string;
+    plantName?: string;
+    order?: number;
+    lockerId?: number;
+    isAccepted?: boolean;
+    isFinalized?: boolean;
+    isFailed?: boolean;
+    inCar?: boolean;
+    dateTimeStart?: Date;
+    dateTimeEnd?: Date;
+    availableTimeToExceed?: number;
+    nfc?: string;
     checked?: boolean;
-    probes: {
+    probes?: {
         name: string;
         count: number;
     }[];
-    tares: {
+    tares?: {
         name: string;
         count: number;
     }[];
