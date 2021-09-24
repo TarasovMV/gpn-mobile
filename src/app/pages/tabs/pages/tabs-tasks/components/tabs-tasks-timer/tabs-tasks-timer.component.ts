@@ -25,23 +25,21 @@ export class TabsTasksTimerComponent implements OnDestroy {
     @ViewChild('svg') private svg: ElementRef;
     @Input() set data(task: ITask) {
         const now = new Date();
-        this.taskCreatedTime = new Date(
-            +new Date(task.dateTimeStart)
-        );
+        this.taskCreatedTime = new Date(+new Date(task.dateTimeStart));
         this.taskCreatedTime =
             +now - +this.taskCreatedTime < 0 ? now : this.taskCreatedTime;
-        this.taskPlaneTime = new Date(
-            +new Date(task.dateTimeEnd)
-        );
+        this.taskPlaneTime = new Date(+new Date(task.dateTimeEnd));
         /**
          * @description test area
          * this.taskCreatedTime = new Date(new Date().getTime() - 1000 * 60 * 3);
          * this.taskPlaneTime = new Date(new Date().getTime() + 1000 * 60 * 3);
          */
+
+        this.circleLength = (Math.PI * window.innerHeight * 150) / 1280;
+
         this.checkType();
         this.calculatePercent();
 
-        this.circleLength = (Math.PI * window.innerHeight * 150) / 1280;
         this.interval = interval(2000).subscribe((item) => {
             this.checkType();
             this.calculatePercent();
