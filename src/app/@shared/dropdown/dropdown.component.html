@@ -7,31 +7,12 @@
     class="dropdown__current"
   />
   <div class="dropdown__current dropdown__current_event">
-    <ng-container *ngIf="!isStatusDropdown">
+    <ng-container>
       {{ data[currentItemIdx] }}
-    </ng-container>
-
-    <ng-container *ngIf="!!isStatusDropdown">
-      <div
-        class="indicator"
-        [style.background]="
-          (userInfo.statusList$ | async)[currentStatusIdx].bgColor
-        "
-      >
-        <div
-          class="indicator__inner"
-          [style.background]="
-            (userInfo.statusList$ | async)[currentStatusIdx].color
-          "
-        ></div>
-      </div>
-      <span>{{
-        (userInfo.statusList$ | async)[currentStatusIdx].state
-      }}</span>
     </ng-container>
   </div>
   <div class="dropdown__menu">
-    <ng-container *ngIf="!isStatusDropdown">
+    <ng-container>
       <div
         *ngFor="let item of data; let i = index"
         class="dropdown__menu-item"
@@ -39,19 +20,6 @@
         [@expandedPanel]="dropdownExpand ? 'expanded' : 'initial'"
       >
         {{ item }}
-      </div>
-    </ng-container>
-    <ng-container *ngIf="!!isStatusDropdown">
-      <div
-        class="dropdown__menu-item"
-        [@expandedPanel]="dropdownExpand ? 'expanded' : 'initial'"
-        (click)="chooseStatus(i)"
-        *ngFor="let item of userInfo.statusList$ | async; let i = index"
-      >
-        <div class="indicator" [style.background]="item.bgColor">
-          <div class="indicator__inner" [style.background]="item.color"></div>
-        </div>
-        <span class="status-name">{{ item.state }}</span>
       </div>
     </ng-container>
   </div>
