@@ -329,8 +329,12 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
             return this.scaleStyle;
         } else {
             const delta = x - this.zoom;
-            this.zoomOrigin += delta * this.zoomOrigin;
-            this.zoom = x;
+            if (this.zoomOrigin + delta * this.zoomOrigin < 2) {
+                this.zoomOrigin = 2;
+            } else {
+                this.zoomOrigin += delta * this.zoomOrigin;
+                this.zoom = x;
+            }
 
             return `
                 transform:
