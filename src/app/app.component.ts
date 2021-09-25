@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 import { NfcService } from './@core/services/platform/nfc.service';
 import { TabsInfoService } from './services/tabs/tabs-info.service';
 import { GeoProjection, toFlat, toWGS } from 'as-geo-projection';
+import {SplashScreen} from "@capacitor/splash-screen";
 
 @Component({
     selector: 'app-root',
@@ -67,6 +68,7 @@ export class AppComponent implements OnInit, OnDestroy {
                     .then()
             );
             setTimeout(() => this.tasksService.cancelData(), 1000);
+            setTimeout(() => SplashScreen.hide(), 300);
         });
     }
 }
