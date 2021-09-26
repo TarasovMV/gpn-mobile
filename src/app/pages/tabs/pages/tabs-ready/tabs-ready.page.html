@@ -17,6 +17,10 @@
     </div>
   </app-header>
   <div class="shadow shadow_top"></div>
+  <div
+    class="shadow shadow_bottom"
+    *ngIf="(tabsService.currentTab$ | async) === 1"
+  ></div>
 
   <div class="content" #content>
     <div

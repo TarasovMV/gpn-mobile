@@ -22,6 +22,12 @@ export class CancelTaskComponent implements OnInit {
         this.chosenReasonId = this.tabsService.reasonsList$.getValue()[0].id;
     }
 
+    public get isDisableSend(): boolean {
+        return !(
+            this.chosenReasonId !== 5 || !!this.comment.trim()
+        );
+    }
+
     public changeDropdownValue(option: ISelectOption) {
         this.chosenReasonId = option?.id;
     }

@@ -9,9 +9,9 @@
     <div
       class="car-list__item"
       [class.car-list__item_active]="
-        (userInfo.carNumber$ | async) === car.regNum
+        (userInfo.car$ | async)?.regNum === car.regNum
       "
-      *ngFor="let car of carList$ | async; let i = index"
+      *ngFor="let car of userInfo.carList$ | async; let i = index"
       (click)="chooseCar(i)"
     >
       {{ car.regNum }}
@@ -22,8 +22,8 @@
     <div class="btn">
       <app-button
         (click)="accept()"
-        [isActive]="!!(userInfo.carNumber$ | async)"
-        [disabled]="!(userInfo.carNumber$ | async)"
+        [isActive]="!!(userInfo.car$ | async)"
+        [disabled]="!(userInfo.car$ | async)"
       >
         Далее
       </app-button>

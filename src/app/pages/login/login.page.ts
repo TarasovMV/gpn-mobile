@@ -19,6 +19,7 @@ import { SimpleModalComponent } from '../../@shared/modals/simple-modal/simple-m
 import { TabsInfoService } from '../../services/tabs/tabs-info.service';
 import { SsPush } from 'plugin-sspush';
 import { UserInfoService } from '../../services/user-info.service';
+import {ApiService} from "../../@core/services/api/api.service";
 
 @Component({
     selector: 'app-login',
@@ -39,7 +40,8 @@ export class LoginPage implements OnInit, OnDestroy {
         private navCtrl: NavController,
         private keyboardService: KeyboardService,
         private taskService: TabsInfoService,
-        private userService: UserInfoService
+        private userService: UserInfoService,
+        public apiService: ApiService
     ) {}
 
     ngOnInit(): void {
@@ -64,11 +66,19 @@ export class LoginPage implements OnInit, OnDestroy {
         if (this.userService.currentUser) {
             await this.userService.getStatus();
             try {
+                const cars = await this.apiService.getVehicles();
+                this.userService.carList$.next(cars);
                 await this.userService.getWorkShift();
                 this.navCtrl.navigateRoot('/tabs/tabs-main').then();
             } catch (err) {
                 this.presentModalCar().then();
             } finally {
+                await SsPush.showDriverBannerNotification({
+                    sound: false,
+                    vibration: false,
+                    statusBarIcon: true,
+                    vibrationLength: 300,
+                });
                 this.taskService.pushInfo.subscribe(async (value) => {
                     if (value !== null) {
                         await SsPush.resetBadgeCount();
@@ -76,12 +86,6 @@ export class LoginPage implements OnInit, OnDestroy {
                             countOfTasks: value,
                             sound: true,
                             vibration: true,
-                            statusBarIcon: true,
-                            vibrationLength: 300,
-                        });
-                        await SsPush.showDriverBannerNotification({
-                            sound: false,
-                            vibration: false,
                             statusBarIcon: true,
                             vibrationLength: 300,
                         });

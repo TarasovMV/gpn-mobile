@@ -34,10 +34,50 @@
       font-size: sizeHeight(24);
       border-bottom: sizeHeight(6) solid transparent;
 
+      position: relative;
+      overflow: hidden;
+
       &_active {
         color: var(--border-blue-color);
         border-color: var(--border-blue-color);
       }
+
+      svg-icon, span {
+        pointer-events: none;
+      }
+    }
+  }
+
+  ::ng-deep {
+    .ripple {
+      height: 0;
+      width: 0;
+
+      background: var(--border-blue-color);
+      border-radius: 50%;
+      opacity: 0.1;
+
+      position: absolute;
+
+      transform: translate(-50%, -50%);
+      transition: 1s;
+
+      pointer-events: none;
+
+      &_active {
+        animation: 300ms ripple linear;
+      }
+    }
+  }
+
+  @keyframes ripple {
+    0% {
+      height: 0;
+      width: 0;
+    }
+    100% {
+      height: 66vw;
+      width: 66vw;
     }
   }
 }

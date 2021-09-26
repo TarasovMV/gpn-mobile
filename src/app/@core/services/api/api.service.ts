@@ -35,6 +35,10 @@ export class ApiService {
         return await this.http.get<IVehicle[]>(`${this.restUrl}/api/Vehicle/free`).toPromise();
     }
 
+    public async getVehicleById(id: number): Promise<IVehicle> {
+        return await this.http.get<IVehicle>(`${this.restUrl}/api/Vehicle/${id}`).toPromise();
+    }
+
     public async getWorkShift(userId: number): Promise<IWorkShift> {
         return await this.http
             .get<IWorkShift>(`${this.restUrl}/api/WorkShift/user/${userId}`)

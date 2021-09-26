@@ -4,7 +4,7 @@ import { ModalController, NavController } from '@ionic/angular';
 import { UserInfoService } from '../../../../services/user-info.service';
 import { IVehicle } from '../../../../@core/model/vehicle.model';
 import { ApiService } from '../../../../@core/services/api/api.service';
-import {StatusBeginComponent} from "../../../../@shared/modals/status-begin/status-begin.component";
+import { StatusBeginComponent } from '../../../../@shared/modals/status-begin/status-begin.component';
 
 @Component({
     selector: 'app-car-popower',
@@ -13,7 +13,6 @@ import {StatusBeginComponent} from "../../../../@shared/modals/status-begin/stat
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CarPopowerComponent implements OnInit {
-    public carList$: BehaviorSubject<IVehicle[]> = new BehaviorSubject([]);
     private readonly nextUrl: string = 'tabs';
 
     constructor(
@@ -24,8 +23,7 @@ export class CarPopowerComponent implements OnInit {
     ) {}
 
     public chooseCar(i: number): void {
-        this.userInfo.carNumber$.next(this.carList$.getValue()[i].regNum);
-        this.userInfo.car$.next(this.carList$.getValue()[i]);
+        this.userInfo.car$.next(this.userInfo.carList$.getValue()[i]);
     }
 
     public async dismiss(): Promise<void> {
@@ -38,17 +36,19 @@ export class CarPopowerComponent implements OnInit {
         await this.navCtrl.navigateRoot(this.nextUrl);
         if (this.userInfo.workShift$.getValue() === null) {
             await this.presentModalChooseStatus();
+        } else {
+            const workShiftId = this.userInfo.workShift$.getValue();
+            const vehicleId = this.userInfo.car$.getValue().id;
+            await this.apiService.changeVehicle({ workShiftId, vehicleId });
         }
     }
 
-    async ngOnInit() {
-        const cars = await this.apiService.getVehicles();
-        this.carList$.next(cars);
-    }
+   ngOnInit() {}
 
     private async presentModalChooseStatus() {
         const modal = await this.modalController.create({
             component: StatusBeginComponent,
+            backdropDismiss: false,
             cssClass: 'custom-modal choose-status',
         });
         return await modal.present();

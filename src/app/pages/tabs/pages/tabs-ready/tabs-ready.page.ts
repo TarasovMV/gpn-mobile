@@ -32,7 +32,7 @@ export class TabsReadyPage implements OnInit, IPageTab, AfterViewInit {
 
     public transformPage: number;
     public transformPageList: number[] = [0, 100];
-    public swipeTransition: number = 0.5;
+    public swipeTransition: number = 0.25;
 
     public route: PageTabType = 'ready';
     public tabs$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([
@@ -101,7 +101,7 @@ export class TabsReadyPage implements OnInit, IPageTab, AfterViewInit {
                 this.cdRef.detectChanges();
             },
             onEnd: (e) => {
-                this.swipeTransition = 0.4;
+                this.swipeTransition = 0.2;
                 if (e.deltaX > screenWidth / 5) {
                     this.changeTab(0);
                 } else if (e.deltaX < -screenWidth / 5) {
@@ -111,7 +111,7 @@ export class TabsReadyPage implements OnInit, IPageTab, AfterViewInit {
                     this.changeTab(tabIdx);
                 }
                 this.cdRef.detectChanges();
-                this.swipeTransition = 0.5;
+                this.swipeTransition = 0.25;
             },
         });
         gesture.enable(true);

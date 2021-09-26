@@ -15,7 +15,13 @@
   ></textarea>
 
   <div class="btns">
-    <app-button class="btn" (click)="sendSupport()" [disabled]="isDisableSend" [isActive]="false">Отправить обращение</app-button>
+    <app-button
+      class="btn"
+      (click)="sendSupport()"
+      [disabled]="isDisableSend"
+      [isActive]="false"
+      >Отправить обращение</app-button
+    >
     <app-button class="btn" [isActive]="false">Позвонить оператору</app-button>
   </div>
 </div>

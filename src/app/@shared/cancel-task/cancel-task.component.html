@@ -59,7 +59,7 @@
       ></textarea>
     </div>
 
-    <app-button class="btn btn_active" (click)="cancelTask()">
+    <app-button class="btn btn_active" [disabled]="isDisableSend" (click)="cancelTask()">
       Завершить задание
     </app-button>
 

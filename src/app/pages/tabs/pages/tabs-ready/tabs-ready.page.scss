@@ -19,7 +19,20 @@
 
     &_top {
       top: 10vh;
-      background: linear-gradient(180deg, var(--gradient-main-color-1) -0.04%, var(--gradient-main-color-2) 99.96%);
+      background: linear-gradient(
+        180deg,
+        var(--gradient-main-color-1) -0.04%,
+        var(--gradient-main-color-2) 99.96%
+      );
+    }
+
+    &_bottom {
+      bottom: 0;
+      background: linear-gradient(
+        0deg,
+        var(--gradient-main-color-1) -0.04%,
+        var(--gradient-main-color-2) 99.96%
+      );
     }
   }
 
@@ -125,7 +138,8 @@
           left: sizeHeight(0);
           bottom: sizeHeight(0);
 
-          box-shadow: 0px (- sizeHeight(8)) sizeHeight(8) var(--gradient-main-color-1);
+          box-shadow: 0px (- sizeHeight(8)) sizeHeight(8)
+            var(--gradient-main-color-1);
 
           .btn {
             height: 100%;

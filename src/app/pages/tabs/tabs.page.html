@@ -1,15 +1,17 @@
 <div class="container">
-  <ion-router-outlet  (activate)="routing($event)" class="page-wrapper">
+  <ion-router-outlet (activate)="routing($event)" class="page-wrapper">
   </ion-router-outlet>
   <div class="footer">
-    <div *ngFor="let tab of tabs"
+    <div
+      appRipple
+      *ngFor="let tab of tabs"
       class="tab-icon"
       [class.tab-icon_active]="tab.route === (currentTab$ | async)"
       (click)="selectTab(tab)"
     >
       <svg-icon
-          src="assets/Icons/tabs/{{tab.route}}.svg"
-          [svgStyle]="{
+        src="assets/Icons/tabs/{{tab.route}}.svg"
+        [svgStyle]="{
             'height': '3.4vh',
             'width': 'auto'
           }"

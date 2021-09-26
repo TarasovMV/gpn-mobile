@@ -197,8 +197,8 @@ export class TabsInfoService {
         current: ITask[]
     ): boolean {
         // Список id задач до и после запроса
-        const previousId = (previous ?? []).map((x) => x.id);
-        const currentId = current.map((x) => x.id);
+        const previousId = (previous ?? []).filter((item) => !item.isFinalized && !item.inCar).map((x) => x.id);
+        const currentId = current.filter((item) => !item.isFinalized && !item.inCar).map((x) => x.id);
 
         let newTasksCount = 0;
         currentId.forEach((item) => {

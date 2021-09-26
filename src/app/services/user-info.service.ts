@@ -26,9 +26,8 @@ export class UserInfoService {
     public car$: BehaviorSubject<IVehicle> = new BehaviorSubject<IVehicle>(
         null
     );
-    public carNumber$: BehaviorSubject<string> = new BehaviorSubject<string>(
-        ''
-    );
+    public carList$: BehaviorSubject<IVehicle[]> = new BehaviorSubject([]);
+
     public statusList$: BehaviorSubject<IStatusInfo[]> = new BehaviorSubject<
         IStatusInfo[]
     >([]);
@@ -102,8 +101,10 @@ export class UserInfoService {
         const workShift = await this.apiService.getWorkShift(
             this.currentUser.userId
         );
+        const car = await this.apiService.getVehicleById(workShift.vehicleId);
         this.workShift$.next(workShift.id);
         this.statusId$.next(workShift.driverStateId);
+        this.car$.next(car);
     }
 
     public async setWorkShift(): Promise<void> {
@@ -123,7 +124,7 @@ export class UserInfoService {
         const userId = this.currentUser.userId;
         const res = await this.apiService.endWorkShift({ userId });
 
-        this.carNumber$.next(null);
+        this.car$.next(null);
         this.statusId$.next(null);
         this.workShift$.next(null);
         this.endStatistic$.next(res);

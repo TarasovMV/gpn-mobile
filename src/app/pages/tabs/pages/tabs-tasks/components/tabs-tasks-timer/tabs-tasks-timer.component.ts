@@ -24,18 +24,17 @@ export interface IRemainingTime {
 export class TabsTasksTimerComponent implements OnDestroy {
     @ViewChild('svg') private svg: ElementRef;
     @Input() set data(task: ITask) {
+        this.circleLength = (Math.PI * window.innerHeight * 150) / 1280;
         const now = new Date();
-        this.taskCreatedTime = new Date(+new Date(task.dateTimeStart));
+        this.taskCreatedTime = new Date(task.dateTimeStart);
         this.taskCreatedTime =
             +now - +this.taskCreatedTime < 0 ? now : this.taskCreatedTime;
-        this.taskPlaneTime = new Date(+new Date(task.dateTimeEnd));
+        this.taskPlaneTime = new Date(task.dateTimeEnd);
         /**
          * @description test area
          * this.taskCreatedTime = new Date(new Date().getTime() - 1000 * 60 * 3);
          * this.taskPlaneTime = new Date(new Date().getTime() + 1000 * 60 * 3);
          */
-
-        this.circleLength = (Math.PI * window.innerHeight * 150) / 1280;
 
         this.checkType();
         this.calculatePercent();
@@ -56,7 +55,7 @@ export class TabsTasksTimerComponent implements OnDestroy {
 
     private taskCreatedTime: Date;
     public percent: number = 100;
-    private interval: Subscription;
+    private interval: Subscription = new Subscription();
 
     constructor(private cdRef: ChangeDetectorRef) {}
 
@@ -65,11 +64,6 @@ export class TabsTasksTimerComponent implements OnDestroy {
     }
 
     private calculatePercent(): void {
-        if (!this.svg) {
-            return;
-        }
-        //console.log(this.percent);
-
         const now = new Date();
         const diffNowCreated = +now - +this.taskCreatedTime;
         const diffNowPlan = +now - +this.taskPlaneTime;

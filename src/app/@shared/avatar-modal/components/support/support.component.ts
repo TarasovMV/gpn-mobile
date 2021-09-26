@@ -1,8 +1,8 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {HTTP_GLOBAL} from "../../../../@core/tokens";
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {UserInfoService} from "../../../../services/user-info.service";
-import {AppConfigService} from "../../../../@core/services/platform/app-config.service";
+import { Component, Inject, OnInit } from '@angular/core';
+import { HTTP_GLOBAL } from '../../../../@core/tokens';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { UserInfoService } from '../../../../services/user-info.service';
+import { AppConfigService } from '../../../../@core/services/platform/app-config.service';
 
 interface ISelectOption {
     id: number;
@@ -21,7 +21,9 @@ export class SupportComponent implements OnInit {
     public textValueId: number;
     public message: string = '';
     public get isDisableSend(): boolean {
-        return !(this.currentValueId !== this.textValueId || !!this.message);
+        return !(
+            this.currentValueId !== this.textValueId || !!this.message.trim()
+        );
     }
 
     private readonly restUrl: string;
@@ -29,7 +31,7 @@ export class SupportComponent implements OnInit {
     constructor(
         @Inject(HTTP_GLOBAL) private http: HttpClient,
         private userInfo: UserInfoService,
-        appConfig: AppConfigService,
+        appConfig: AppConfigService
     ) {
         this.restUrl = appConfig.getAttribute('supportUrl');
     }
@@ -40,16 +42,20 @@ export class SupportComponent implements OnInit {
 
     async ngOnInit(): Promise<void> {
         const reasons = await this.getTechReasons();
-        this.dropdownList = reasons.map(x => x.value);
+        this.dropdownList = reasons.map((x) => x.value);
         this.data = reasons;
     }
 
     public async getTechReasons(): Promise<ISelectOption[]> {
-        const reasons = await this.http.get<{id: number; name: string}[]>(
-            `${this.restUrl}/mobile_v1/TechSupport/get_tech_support_message`
-        ).toPromise();
-        this.textValueId = reasons.find(x => x.name.toLowerCase() === 'другое').id;
-        return reasons.map(x => ({id: x.id, value: x.name}));
+        const reasons = await this.http
+            .get<{ id: number; name: string }[]>(
+                `${this.restUrl}/mobile_v1/TechSupport/get_tech_support_message`
+            )
+            .toPromise();
+        this.textValueId = reasons.find(
+            (x) => x.name.toLowerCase() === 'другое'
+        ).id;
+        return reasons.map((x) => ({ id: x.id, value: x.name }));
     }
 
     public async sendSupport(): Promise<void> {
@@ -63,7 +69,7 @@ export class SupportComponent implements OnInit {
             .post(
                 `${this.restUrl}/mobile_v1/TechSupport/set_oper_techsupport_message`,
                 {},
-                {params}
+                { params }
             )
             .toPromise();
         this.message = '';

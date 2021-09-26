@@ -34,7 +34,7 @@
       src="assets/Icons/avatar-modal/truck.svg"
     ></svg-icon>
     <span class="name">Автомобиль</span>
-    <span class="number">{{ userInfo.carNumber$ | async }}</span>
+    <span class="number">{{ (userInfo.car$ | async)?.regNum }}</span>
   </div>
 
   <app-button
