@@ -5,7 +5,7 @@
 	"bundledWebRuntime": false,
 	"plugins": {
 		"SplashScreen": {
-			"launchShowDuration": 500,
+			"launchShowDuration": 3000,
 			"androidScaleType": "CENTER_CROP"
 		}
 	},
