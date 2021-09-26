@@ -24,7 +24,7 @@ export class CancelTaskComponent implements OnInit {
 
     public get isDisableSend(): boolean {
         return !(
-            this.chosenReasonId !== 5 || !!this.comment.trim()
+            this.chosenReasonId !== 6 || !!this.comment.trim()
         );
     }
 
@@ -38,9 +38,10 @@ export class CancelTaskComponent implements OnInit {
 
     public async cancelTask(): Promise<void> {
         const taskId = this.tabsService.currentTask$.getValue().id;
-        const res = await this.tabsService.declineTask(
+        const res = await this.tabsService.failTask(
             taskId,
-            this.chosenReasonId
+            this.chosenReasonId,
+            this.comment
         );
 
         if (this.tabsService.newItems$.getValue().length === 0) {

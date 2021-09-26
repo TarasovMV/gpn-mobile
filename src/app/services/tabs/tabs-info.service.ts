@@ -21,8 +21,9 @@ export class TabsInfoService {
         0
     );
 
-    public currentTask$: BehaviorSubject<ITask> =
-        new BehaviorSubject<ITask | { id: number }>(null);
+    public currentTask$: BehaviorSubject<ITask> = new BehaviorSubject<
+        ITask | { id: number }
+    >(null);
     public pushInfo: BehaviorSubject<number> = new BehaviorSubject<number>(
         null
     );
@@ -168,12 +169,22 @@ export class TabsInfoService {
         await this.getTasks();
     }
 
+    public async failTask(
+        id: number,
+        reasonId: number,
+        comment
+    ): Promise<void> {
+        const body = { taskDeclineReasonId: reasonId, comment };
+        await this.tasksApi.failTask(id, body);
+        await this.getTasks();
+    }
+
     public async getReasons(): Promise<void> {
         try {
             const res = await this.tasksApi.getReasonsList();
             const resMap = res.map((item) => ({
                 id: item.id,
-                value: item.reasonDescription,
+                value: item.name,
             }));
             this.reasonsList$.next([...resMap]);
         } catch (e) {
@@ -197,8 +208,12 @@ export class TabsInfoService {
         current: ITask[]
     ): boolean {
         // Список id задач до и после запроса
-        const previousId = (previous ?? []).filter((item) => !item.isFinalized && !item.inCar).map((x) => x.id);
-        const currentId = current.filter((item) => !item.isFinalized && !item.inCar).map((x) => x.id);
+        const previousId = (previous ?? [])
+            .filter((item) => !item.isFinalized && !item.inCar)
+            .map((x) => x.id);
+        const currentId = current
+            .filter((item) => !item.isFinalized && !item.inCar)
+            .map((x) => x.id);
 
         let newTasksCount = 0;
         currentId.forEach((item) => {

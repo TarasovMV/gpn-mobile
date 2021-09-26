@@ -16,7 +16,7 @@ export interface IWorkShiftStatus {
 }
 
 export interface IWorkShiftVehicle {
-    workShiftId: number;
+    userId: number;
     vehicleId: number;
 }
 

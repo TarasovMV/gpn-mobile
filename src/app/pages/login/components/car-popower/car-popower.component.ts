@@ -37,9 +37,9 @@ export class CarPopowerComponent implements OnInit {
         if (this.userInfo.workShift$.getValue() === null) {
             await this.presentModalChooseStatus();
         } else {
-            const workShiftId = this.userInfo.workShift$.getValue();
+            const userId = this.userInfo.currentUser.userId;
             const vehicleId = this.userInfo.car$.getValue().id;
-            await this.apiService.changeVehicle({ workShiftId, vehicleId });
+            await this.apiService.changeVehicle({ userId, vehicleId });
         }
     }
 

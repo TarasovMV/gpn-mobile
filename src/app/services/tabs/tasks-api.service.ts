@@ -5,7 +5,7 @@ import { AppConfigService } from '../../@core/services/platform/app-config.servi
 
 export interface IReason {
     id: number;
-    reasonDescription: string;
+    name: string;
 }
 
 @Injectable({
@@ -38,7 +38,8 @@ export class TasksApiService {
     public async failTask(
         taskId: number,
         body: {
-            taskFailReasonId: number;
+            taskDeclineReasonId: number;
+            comment: string;
         }
     ): Promise<boolean> {
         try {
