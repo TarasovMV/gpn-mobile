@@ -8,7 +8,7 @@ const config: CapacitorConfig = {
   plugins: {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     SplashScreen: {
-      launchShowDuration: 500,
+      launchShowDuration: 3000,
       androidScaleType: 'CENTER_CROP'
     }
   },

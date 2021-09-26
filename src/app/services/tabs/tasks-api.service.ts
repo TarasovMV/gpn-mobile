@@ -115,7 +115,7 @@ export class TasksApiService {
     public async getReasonsList(): Promise<IReason[]> {
         try {
             return await this.http
-                .get<IReason[]>(`${this.restUrl}/api/DriverDeclineReason`)
+                .get<IReason[]>(`${this.restUrl}/api/TaskFailReason`)
                 .toPromise();
         } catch (e) {
             console.error(e);
