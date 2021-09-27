@@ -3,6 +3,8 @@ import { ModalController, NavController } from '@ionic/angular';
 import { TabsInfoService } from '../../services/tabs/tabs-info.service';
 import { VerifyModalComponent } from './components/verify-modal/verify-modal.component';
 import {CancelTaskComponent} from "../../@shared/cancel-task/cancel-task.component";
+import {Observable} from "rxjs";
+import {map} from "rxjs/operators";
 
 @Component({
     selector: 'app-nfc-verify.page',
@@ -10,6 +12,13 @@ import {CancelTaskComponent} from "../../@shared/cancel-task/cancel-task.compone
     styleUrls: ['./nfc-verify.page.scss'],
 })
 export class NfcVerifyPage implements OnInit {
+    public taresCount$: Observable<number> = this.tabsService.currentTask$.pipe(
+        map(x => x.tares.map(t => t.count).reduce((acc, next) => acc + next, 0)),
+    );
+    public probesCount$: Observable<number> = this.tabsService.currentTask$.pipe(
+        map(x => x.probes.map(t => t.count).reduce((acc, next) => acc + next, 0)),
+    );
+
     constructor(
         private navCtrl: NavController,
         private modalCtrl: ModalController,

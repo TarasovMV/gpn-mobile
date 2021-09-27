@@ -3,6 +3,8 @@ import { ModalController, NavController } from '@ionic/angular';
 import { NfcTimerModalComponent } from '../nfc-timer-modal/nfc-timer-modal.component';
 import { TasksService } from '../../../../services/tasks.service';
 import { TabsInfoService } from '../../../../services/tabs/tabs-info.service';
+import {Observable} from "rxjs";
+import {map} from "rxjs/operators";
 
 @Component({
     selector: 'app-verify-modal',
@@ -11,6 +13,13 @@ import { TabsInfoService } from '../../../../services/tabs/tabs-info.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VerifyModalComponent {
+    public taresCount$: Observable<number> = this.tabsService.currentTask$.pipe(
+        map(x => x.tares.map(t => t.count).reduce((acc, next) => acc + next, 0)),
+    );
+    public probesCount$: Observable<number> = this.tabsService.currentTask$.pipe(
+        map(x => x.probes.map(t => t.count).reduce((acc, next) => acc + next, 0)),
+    );
+
     constructor(
         public modalCtrl: ModalController,
         public tabsService: TabsInfoService

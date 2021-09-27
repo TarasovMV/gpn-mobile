@@ -6,7 +6,7 @@
     <div class="info-block">
       <span class="info-block-header">
         Выгружены пустые тары ({{
-          (tabsService.currentTask$ | async)?.tares.length
+          taresCount$ | async
         }})
       </span>
       <div
@@ -21,7 +21,7 @@
     <div class="info-block">
       <span class="info-block-header">
         Загружены пробы ({{
-          (tabsService.currentTask$ | async)?.probes.length
+        probesCount$ | async
         }})
       </span>
       <div
