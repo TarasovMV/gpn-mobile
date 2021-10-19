@@ -4,7 +4,7 @@ import { IDiagram } from '../../pages/tabs/pages/tabs-main/tabs-main.page';
 import { ICoord } from '../../pages/tabs/pages/tabs-tasks/tabs-tasks.page';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../../@core/services/api/api.service';
-import { UserInfoService } from '../user-info.service';
+import {EStatus, UserInfoService} from '../user-info.service';
 import { IRoute, ITask, ITaskData } from '../../@core/model/task.model';
 import { TasksApiService } from './tasks-api.service';
 import { ISelectOption } from '../../@shared/select/select.interfaces';
@@ -85,6 +85,11 @@ export class TabsInfoService {
         );
         const tasks = tasksData?.tasks ?? [];
 
+        tasks.forEach((item, i) => {
+            tasks[i].probes = tasks[i].probes.map(probe => ({...probe, checked: false}));
+            tasks[i].tares = tasks[i].tares.map(probe => ({...probe, checked: false}));
+        });
+
         this.checkPushNotification(this.taskDataCopy?.tasks, tasks);
 
         this.taskDataCopy = {
@@ -134,6 +139,7 @@ export class TabsInfoService {
 
             if (this.newItems$.getValue().length === 0) {
                 this.currentTask$.next(this.elkTask);
+                this.userInfo.statusId$.next(EStatus.busy);
             }
             await this.getTasks();
         }

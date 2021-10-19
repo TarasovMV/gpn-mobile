@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { TabsInfoService } from '../../services/tabs/tabs-info.service';
 import { ISelectOption } from '../select/select.interfaces';
+import {EStatus, UserInfoService} from "../../services/user-info.service";
 
 @Component({
     selector: 'app-cancel-task',
@@ -13,6 +14,7 @@ export class CancelTaskComponent implements OnInit {
     public comment: string = '';
     constructor(
         public tabsService: TabsInfoService,
+        private userInfo: UserInfoService,
         public modalController: ModalController,
         public navCtrl: NavController
     ) {}
@@ -46,6 +48,7 @@ export class CancelTaskComponent implements OnInit {
 
         if (this.tabsService.newItems$.getValue().length === 0) {
             this.tabsService.currentTask$.next(this.tabsService.elkTask);
+            this.userInfo.statusId$.next(EStatus.busy);
             await this.dismiss();
             await this.navCtrl.navigateRoot('map');
         } else {

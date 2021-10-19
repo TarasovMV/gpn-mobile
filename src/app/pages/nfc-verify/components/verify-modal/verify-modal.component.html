@@ -4,31 +4,30 @@
   </div>
   <div class="content">
     <div class="info-block">
-      <span class="info-block-header">
-        Выгружены пустые тары ({{
-          taresCount$ | async
-        }})
-      </span>
+          <span class="info-block-header">
+            Выгружены пустые тары ({{ taresCount$ | async }})
+          </span>
       <div
         class="info-block-item"
-        *ngFor="let tare of (tabsService.currentTask$ | async)?.tares"
+        *ngFor="let tare of (tabsService.currentTask$ | async)?.tares; let i = index"
       >
-        <ion-checkbox checked></ion-checkbox>
+        <ion-checkbox  [(ngModel)]="tare.checked" (click)="check(tare.checked, i, 'tare')"></ion-checkbox>
         <span class="light-text">{{ tare?.name }}</span>
         <span class="gray-text">{{ tare?.count }} шт</span>
       </div>
     </div>
     <div class="info-block">
-      <span class="info-block-header">
-        Загружены пробы ({{
-        probesCount$ | async
-        }})
-      </span>
+          <span class="info-block-header">
+            Загружены пробы ({{ probesCount$ | async }})
+          </span>
       <div
         class="info-block-item"
-        *ngFor="let probe of (tabsService.currentTask$ | async)?.probes"
+        *ngFor="let probe of (tabsService.currentTask$ | async)?.probes; let i = index"
       >
-        <ion-checkbox checked></ion-checkbox>
+        <ion-checkbox
+          [(ngModel)]="probe.checked"
+          (click)="check(probe.checked, i, 'probe')"
+        ></ion-checkbox>
         <span class="light-text">{{ probe?.name }}</span>
         <span class="gray-text">{{ probe?.count }} шт</span>
       </div>
@@ -36,7 +35,11 @@
   </div>
   <div class="buttons">
     <button class="btn" (click)="close()">отменить</button>
-    <button class="btn btn_active" (click)="presentNfcTimerModal()">
+    <button
+      class="btn btn_active"
+      (click)="presentNfcTimerModal()"
+      [disabled]="!isValid"
+    >
       подтвердить
     </button>
   </div>

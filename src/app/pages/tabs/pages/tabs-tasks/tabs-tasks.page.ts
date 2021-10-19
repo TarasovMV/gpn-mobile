@@ -5,6 +5,7 @@ import {NEW_TASKS, TASKS_IN_PROGRESS} from './mock';
 import {TabsInfoService} from '../../../../services/tabs/tabs-info.service';
 import {ModalController, NavController} from '@ionic/angular';
 import {ChooseTaskOverlayComponent} from './components/choose-task-overlay/choose-task-overlay.component';
+import {EStatus, UserInfoService} from "../../../../services/user-info.service";
 
 export interface ICoord {
     x: number;
@@ -21,6 +22,7 @@ export class TabsTasksPage implements OnInit, IPageTab {
 
     constructor(
         public tabsService: TabsInfoService,
+        private userInfo: UserInfoService,
         public modalController: ModalController,
         private navCtrl: NavController
     ) {}
@@ -37,6 +39,7 @@ export class TabsTasksPage implements OnInit, IPageTab {
 
         if(newTasksList.length !== 0) {
             this.tabsService.currentTask$.next(newTasksList[0]);
+            this.userInfo.statusId$.next(EStatus.busy);
             this.navCtrl.navigateRoot('/map').then();
         }
     }

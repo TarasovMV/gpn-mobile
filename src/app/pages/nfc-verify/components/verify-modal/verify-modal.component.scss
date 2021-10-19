@@ -102,6 +102,10 @@ button {
         margin-left: sizeWidth(10);
         margin-right: auto;
       }
+
+      &:disabled {
+        color: var(--text-subscript-color);
+      }
     }
   }
 }

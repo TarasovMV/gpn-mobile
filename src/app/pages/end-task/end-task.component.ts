@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { TabsInfoService } from '../../services/tabs/tabs-info.service';
 import { CancelTaskComponent } from '../../@shared/cancel-task/cancel-task.component';
+import {EStatus, UserInfoService} from "../../services/user-info.service";
 
 @Component({
     selector: 'app-end-task',
@@ -12,7 +13,8 @@ export class EndTaskComponent implements OnInit {
     constructor(
         private navCtrl: NavController,
         private modalCtrl: ModalController,
-        public tabsService: TabsInfoService
+        public tabsService: TabsInfoService,
+        private userInfo: UserInfoService,
     ) {}
 
     public ngOnInit(): void {}
@@ -26,6 +28,7 @@ export class EndTaskComponent implements OnInit {
 
         if (!!this.tabsService.newItems$.getValue().length) {
             await this.navCtrl.navigateRoot('/tabs/tabs-tasks');
+            this.userInfo.statusId$.next(EStatus.free);
         } else {
             await this.navCtrl.navigateRoot('/map');
         }

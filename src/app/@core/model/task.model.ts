@@ -24,10 +24,12 @@ export interface ITask {
     probes?: {
         name: string;
         count: number;
+        checked: boolean;
     }[];
     tares?: {
         name: string;
         count: number;
+        checked: boolean;
     }[];
 }
 

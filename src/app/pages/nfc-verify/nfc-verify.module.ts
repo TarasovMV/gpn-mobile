@@ -7,15 +7,18 @@ import { SharedModule } from '../../@shared/shared.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { SplitNumberSignPipe } from './pipes/split-number-sign.pipe';
 import { VerifyModalComponent } from './components/verify-modal/verify-modal.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
     declarations: [NfcVerifyPage, SplitNumberSignPipe, VerifyModalComponent],
     imports: [
         CommonModule,
         IonicModule,
-        RouterModule.forChild([{ path: '', component: NfcVerifyPage }]),
+        RouterModule.forChild([{path: '', component: NfcVerifyPage}]),
         SharedModule,
         AngularSvgIconModule,
+        FormsModule,
+        ReactiveFormsModule,
     ],
 })
 export class NfcVerifyModule {}

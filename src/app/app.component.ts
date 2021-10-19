@@ -15,7 +15,8 @@ import { Subscription } from 'rxjs';
 import { NfcService } from './@core/services/platform/nfc.service';
 import { TabsInfoService } from './services/tabs/tabs-info.service';
 import { GeoProjection, toFlat, toWGS } from 'as-geo-projection';
-import {SplashScreen} from "@capacitor/splash-screen";
+import { SplashScreen } from '@capacitor/splash-screen';
+import { PreloaderService } from './@core/services/platform/preloader.service';
 
 @Component({
     selector: 'app-root',
@@ -33,7 +34,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private themeService: ThemeService,
         private nfcService: NfcService,
         private userInfo: UserInfoService,
-        private tasksService: TabsInfoService
+        private tasksService: TabsInfoService,
     ) {}
 
     public ngOnInit(): void {

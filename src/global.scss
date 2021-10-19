@@ -133,3 +133,21 @@ body {
     }
   }
 }
+
+.custom-loading {
+  --max-height: 100vh;
+  --max-width: 100vw;
+
+  .loading-wrapper {
+    height: 100vh;
+    width: 100vw;
+    background: transparent;
+
+    ion-spinner {
+      height: 25vw;
+      width: 25vw;
+
+      color: var(--border-blue-color);
+    }
+  }
+}

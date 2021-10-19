@@ -13,6 +13,7 @@ import {
 } from "../../model/workshift.model";
 import {IStatusInfo} from "../../../@shared/avatar-modal/avatar-modal.component";
 import {UserInfoService} from "../../../services/user-info.service";
+import {PreloaderService} from "../platform/preloader.service";
 
 @Injectable({
     providedIn: 'root'
@@ -22,7 +23,8 @@ export class ApiService {
 
     constructor(
         private http: HttpClient,
-        appConfigService: AppConfigService,
+        private appConfigService: AppConfigService,
+        private preloader: PreloaderService,
     ) {
         this.restUrl = appConfigService.getAttribute('restUrl');
     }
@@ -46,7 +48,10 @@ export class ApiService {
     }
 
     public async setWorkShift(params: ISetWorkShift): Promise<IWorkShift> {
-        return await this.http.post<IWorkShift>(`${this.restUrl}/api/WorkShift`, params).toPromise();
+        await this.preloader.activate();
+        const res = await this.http.post<IWorkShift>(`${this.restUrl}/api/WorkShift`, params).toPromise();
+        await this.preloader.disable();
+        return res;
     }
     public async endWorkShift(params: {userId: number}): Promise<IWorkShiftEnd> {
         return await this.http.post<IWorkShiftEnd>(`${this.restUrl}/api/WorkShift/finish`, params).toPromise();

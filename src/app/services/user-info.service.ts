@@ -12,9 +12,16 @@ import { IVehicle } from '../@core/model/vehicle.model';
 import { IWorkShiftEnd } from '../@core/model/workshift.model';
 import { SimpleModalComponent } from '../@shared/modals/simple-modal/simple-modal.component';
 
+export enum EStatus {
+    notActive = 1,
+    busy = 2,
+    free = 3
+}
+
 @Injectable({
     providedIn: 'root',
 })
+
 export class UserInfoService {
     public currentUser: IUser = null;
     public statusId$: BehaviorSubject<number> = new BehaviorSubject<number>(
@@ -66,16 +73,16 @@ export class UserInfoService {
         public modalController: ModalController,
         private apiService: ApiService
     ) {
-        // this.statusId$.subscribe(async (item) => {
-        //     const workShiftId = this.workShift$.getValue();
-        //     const driverStateId = this.statusId$.getValue();
-        //     if (item >= 0 && workShiftId && driverStateId) {
-        //         await this.apiService.changeStatus({
-        //             workShiftId,
-        //             driverStateId,
-        //         });
-        //     }
-        // });
+        this.statusId$.subscribe((item) => {
+            // const workShiftId = this.workShift$.getValue();
+            // const driverStateId = this.statusId$.getValue();
+            // if (item >= 0 && workShiftId && driverStateId) {
+            //     await this.apiService.changeStatus({
+            //         workShiftId,
+            //         driverStateId,
+            //     });
+            // }
+        });
     }
 
     public async openActivityModal(): Promise<void> {

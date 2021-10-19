@@ -4,6 +4,7 @@ import { NavController } from '@ionic/angular';
 import { UserInfoService } from '../../services/user-info.service';
 import { TasksService } from '../../services/tasks.service';
 import { TabsInfoService } from '../../services/tabs/tabs-info.service';
+import {PreloaderService} from "../../@core/services/platform/preloader.service";
 
 export interface IPageTab {
     readonly route: PageTabType;
@@ -44,11 +45,11 @@ export class TabsPage implements OnInit {
 
     constructor(
         private navCtrl: NavController,
-        private userService: UserInfoService,
-        private taskService: TabsInfoService
+        private preloader: PreloaderService
     ) {}
 
-    ngOnInit() {}
+    async ngOnInit() {
+    }
 
     public selectTab(tab: IPageTab): void {
         this.navCtrl
