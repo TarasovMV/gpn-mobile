@@ -15,13 +15,12 @@ import { SimpleModalComponent } from '../@shared/modals/simple-modal/simple-moda
 export enum EStatus {
     notActive = 1,
     busy = 2,
-    free = 3
+    free = 3,
 }
 
 @Injectable({
     providedIn: 'root',
 })
-
 export class UserInfoService {
     public currentUser: IUser = null;
     public statusId$: BehaviorSubject<number> = new BehaviorSubject<number>(
@@ -74,14 +73,15 @@ export class UserInfoService {
         private apiService: ApiService
     ) {
         this.statusId$.subscribe((item) => {
-            // const workShiftId = this.workShift$.getValue();
-            // const driverStateId = this.statusId$.getValue();
-            // if (item >= 0 && workShiftId && driverStateId) {
-            //     await this.apiService.changeStatus({
-            //         workShiftId,
-            //         driverStateId,
-            //     });
-            // }
+            const userId = this.currentUser?.userId;
+            const driverStateId = this.statusId$.getValue();
+            const statusList = this.statusList$.getValue();
+            const state = statusList.find(
+                (status) => status?.id === driverStateId
+            );
+            if (state && driverStateId) {
+                console.log('смена статуса');
+            }
         });
     }
 
