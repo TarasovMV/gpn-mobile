@@ -116,6 +116,13 @@
       -webkit-backface-visibility: hidden;
     }
 
+    svg-icon {
+      width: 100%;
+      margin: auto;
+      will-change: transform;
+      -webkit-backface-visibility: hidden;
+    }
+
     .point {
       position: absolute;
       width: 2px;

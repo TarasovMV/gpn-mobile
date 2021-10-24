@@ -25,6 +25,8 @@ interface IMapConfig {
     initScale: number;
 }
 
+type MapDetail = 'min' | 'medium' | 'max';
+
 @Component({
     selector: 'app-map',
     templateUrl: './map.page.html',
@@ -41,6 +43,8 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
     height;
 
     public config: IMapConfig = null;
+
+    mapDetail$: BehaviorSubject<MapDetail> = new BehaviorSubject<MapDetail>('medium');
 
     listener: Subject<any> = new Subject<any>();
     array = [];
@@ -122,7 +126,7 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
         this.config = {
             width: this.width,
             height: (405 / 720) * this.width,
-            initScale: 10,
+            initScale: 4,
         };
         this.mapStyle = 'transform: scale(' + this.config.initScale + ')';
         this.subscriptions.push();
@@ -329,11 +333,19 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
             return this.scaleStyle;
         } else {
             const delta = x - this.zoom;
-            if (this.zoomOrigin + delta * this.zoomOrigin < 2) {
-                this.zoomOrigin = 2;
+            if (this.zoomOrigin + delta * this.zoomOrigin < .7) {
+                this.zoomOrigin = .7;
             } else {
                 this.zoomOrigin += delta * this.zoomOrigin;
-                this.zoom = x;
+            }
+            this.zoom = x;
+
+            if (this.zoomOrigin > 2) {
+                this.mapDetail$.next('max');
+            } else if (this.zoomOrigin > 1.2) {
+                this.mapDetail$.next('medium');
+            } else {
+                this.mapDetail$.next('min');
             }
 
             return `
