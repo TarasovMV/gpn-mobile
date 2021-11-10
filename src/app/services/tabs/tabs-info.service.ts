@@ -52,6 +52,7 @@ export class TabsInfoService {
     };
 
     private taskDataCopy: ITaskData = null;
+    public fakeModalTaskId: number = -1;
 
     constructor(
         private http: HttpClient,
@@ -230,6 +231,7 @@ export class TabsInfoService {
 
         if (newTasksCount > 0) {
             console.log('Новых задач: ' + newTasksCount);
+            this.fakeModalTaskId = currentId?.[1] ?? -1;
             this.pushInfo.next(newTasksCount);
             return true;
         }

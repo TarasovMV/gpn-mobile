@@ -5,6 +5,8 @@ import { VerifyModalComponent } from './components/verify-modal/verify-modal.com
 import {CancelTaskComponent} from "../../@shared/cancel-task/cancel-task.component";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
+import {SimpleModalComponent} from "../../@shared/modals/simple-modal/simple-modal.component";
+import {SimpleDialogModalComponent} from "../../@shared/modals/simple-dialog-modal/simple-dialog-modal.component";
 
 @Component({
     selector: 'app-nfc-verify.page',
@@ -25,7 +27,9 @@ export class NfcVerifyPage implements OnInit {
         public tabsService: TabsInfoService
     ) {}
 
-    public ngOnInit(): void {}
+    public ngOnInit(): void {
+        this.fakeModal();
+    }
 
     public async openModal(): Promise<void> {
         const modal = await this.modalCtrl.create({
@@ -55,5 +59,27 @@ export class NfcVerifyPage implements OnInit {
             showBackdrop: false,
         });
         return await modal.present();
+    }
+
+    private async presentFakeModal() {
+        const modal = await this.modalCtrl.create({
+            componentProps: {
+                message: 'Закончить забор проб и выгрузку тары?',
+            },
+            component: SimpleDialogModalComponent,
+            cssClass: 'custom-modal resolve-modal',
+        });
+        return await modal.present();
+    }
+
+    private fakeModal(): void{
+        const currantTaskId = this.tabsService.currentTask$.getValue().id;
+        const secondTaskId = this.tabsService.fakeModalTaskId;
+
+        if(currantTaskId === secondTaskId) {
+            setTimeout(()=>{
+               this.presentFakeModal().then();
+            }, 300);
+        }
     }
 }

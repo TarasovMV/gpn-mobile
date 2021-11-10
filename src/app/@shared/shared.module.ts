@@ -26,6 +26,7 @@ import {CancelTaskComponent} from "./cancel-task/cancel-task.component";
 import {PopoverComponent} from "./select/popover/popover.component";
 import {SelectComponent} from "./select/select.component";
 import {FormsModule} from "@angular/forms";
+import {SimpleDialogModalComponent} from "./modals/simple-dialog-modal/simple-dialog-modal.component";
 
 @NgModule({
     declarations: [
@@ -51,7 +52,8 @@ import {FormsModule} from "@angular/forms";
         AcceptModalComponent,
         CancelTaskComponent,
         PopoverComponent,
-        SelectComponent
+        SelectComponent,
+        SimpleDialogModalComponent
     ],
     exports: [
         HeaderComponent,
@@ -68,7 +70,8 @@ import {FormsModule} from "@angular/forms";
         NfcTimerModalComponent,
         AcceptModalComponent,
         CancelTaskComponent,
-        PopoverComponent
+        PopoverComponent,
+        SimpleDialogModalComponent
     ],
     imports: [CommonModule, AngularSvgIconModule, IonicModule, FormsModule],
 })
