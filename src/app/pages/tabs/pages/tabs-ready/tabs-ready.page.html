@@ -28,13 +28,12 @@
       [style.transform]="'translateX(' + -transformPage + 'vw)'"
       [style.transition.s]="swipeTransition"
     >
-      <div class="tab__item">
+      <div class="tab__item tab__item_margin">
         <span
           *ngIf="!!(tabsService.selectedItems$ | async).length"
           class="extra-info"
           >Для завершения задания выгрузите пробы в ЕЛК и поднесите телефон к
-          NFC метке</span
-        >
+          NFC метке</span>
 
         <div
           class="no-task-msg"

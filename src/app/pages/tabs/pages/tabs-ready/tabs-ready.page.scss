@@ -99,6 +99,10 @@
 
         overflow-y: scroll;
 
+        &_margin {
+          margin-bottom: sizeHeight(144);
+        }
+
         .no-task-msg {
           height: 100%;
 
