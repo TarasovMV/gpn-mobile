@@ -48,7 +48,6 @@ export class CancelTaskComponent implements OnInit {
 
         if (this.tabsService.newItems$.getValue().length === 0) {
             this.tabsService.currentTask$.next(this.tabsService.elkTask);
-            this.userInfo.statusId$.next(EStatus.busy);
             await this.dismiss();
             await this.navCtrl.navigateRoot('map');
         } else {

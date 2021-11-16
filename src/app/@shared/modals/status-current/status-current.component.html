@@ -7,7 +7,7 @@
       <span class="name">Статус</span>
       <div class="dropdown-container">
         <app-status-dropdown
-          [options]="userInfo.statusList$ | async"
+          [options]="userInfo.statusList$ | async | statusFilter: [5]"
           [currentOptionId]="currentStatusId"
           (onChanged)="changeStatus($event)"
         ></app-status-dropdown>

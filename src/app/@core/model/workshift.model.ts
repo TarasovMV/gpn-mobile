@@ -11,8 +11,9 @@ export interface IWorkShift {
 }
 
 export interface IWorkShiftStatus {
-    workShiftId: number;
-    driverStateId: number;
+    userId: number;
+    stateId: number;
+    isMobile: true;
 }
 
 export interface IWorkShiftVehicle {

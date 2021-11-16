@@ -24,7 +24,7 @@ export class UserInfoComponent implements OnInit {
     }
 
     public async changeStatus(id: number): Promise<void> {
-        this.userInfo.statusId$.next(id);
+        this.userInfo.changeStatus(id);
         if (id === 1) {
             await this.presentModalChooseStatus();
         }

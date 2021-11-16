@@ -140,7 +140,6 @@ export class TabsInfoService {
 
             if (this.newItems$.getValue().length === 0) {
                 this.currentTask$.next(this.elkTask);
-                this.userInfo.statusId$.next(EStatus.busy);
             }
             await this.getTasks();
         }

@@ -18,6 +18,7 @@ input {
   .indicator {
     height: sizeHeight(40);
     width: sizeHeight(40);
+    min-width: sizeHeight(40);
     margin-right: sizeWidth(11);;
 
     display: flex;

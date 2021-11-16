@@ -14,6 +14,7 @@ import {
 import {IStatusInfo} from "../../../@shared/avatar-modal/avatar-modal.component";
 import {UserInfoService} from "../../../services/user-info.service";
 import {PreloaderService} from "../platform/preloader.service";
+import {Observable} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -57,8 +58,12 @@ export class ApiService {
         return await this.http.post<IWorkShiftEnd>(`${this.restUrl}/api/WorkShift/finish`, params).toPromise();
     }
 
-    public async changeStatus(param: IWorkShiftStatus): Promise<IWorkShift> {
-        return await this.http.put<IWorkShift>(`${this.restUrl}/api/WorkShift/status`, param).toPromise();
+    public async changeStatus(param: IWorkShiftStatus): Promise<{id: number; state: string}> {
+        return await this.http.post<{id: number; state: string}>(`${this.restUrl}/api/WorkShift/status`, param).toPromise();
+    }
+
+    public getCurrentStatus(userId: number): Observable<{id: number; state: string}> {
+        return this.http.get<{id: number; state: string}>(`${this.restUrl}/api/WorkShift/status/${userId}`);
     }
 
     public async getStatusList(): Promise<IStatusInfo[]> {

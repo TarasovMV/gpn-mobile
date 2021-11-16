@@ -26,7 +26,6 @@ export class ResolveTaskComponent implements OnInit {
     public async accept(): Promise<void> {
         if (this.type === 'endAll'){
             await this.navCtrl.navigateRoot('/tabs/tabs-ready');
-            this.userInfo.statusId$.next(EStatus.free);
         } else {
             await this.navCtrl.navigateRoot('/nfc');
         }

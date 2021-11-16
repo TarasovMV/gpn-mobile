@@ -9,14 +9,14 @@
   <div class="dropdown__current dropdown__current_event">
     <div
       class="indicator"
-      [style.background]="options[currentStatusIdx]?.bgColor"
+      [style.background]="currentStatus?.bgColor"
     >
       <div
         class="indicator__inner"
-        [style.background]="options[currentStatusIdx]?.color"
+        [style.background]="currentStatus?.color"
       ></div>
     </div>
-    <span>{{ options[currentStatusIdx]?.state }}</span>
+    <span>{{ currentStatus?.state }}</span>
   </div>
   <div
     class="dropdown__menu"

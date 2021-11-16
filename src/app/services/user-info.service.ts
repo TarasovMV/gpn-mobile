@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import { ModalController } from '@ionic/angular';
 import { ActivityModalComponent } from '../@shared/activity-modal/activity-modal.component';
 import {
@@ -9,13 +9,17 @@ import {
 import { IUser, IUserCredentials } from '../@core/model/user.model';
 import { ApiService } from '../@core/services/api/api.service';
 import { IVehicle } from '../@core/model/vehicle.model';
-import { IWorkShiftEnd } from '../@core/model/workshift.model';
+import {IWorkShiftEnd, IWorkShiftStatus} from '../@core/model/workshift.model';
 import { SimpleModalComponent } from '../@shared/modals/simple-modal/simple-modal.component';
+import {logging} from "protractor";
+import {mergeMap} from "rxjs/operators";
 
 export enum EStatus {
     notActive = 1,
     busy = 2,
     free = 3,
+    lunchTime = 4,
+    pendingLunch = 5
 }
 
 @Injectable({
@@ -57,6 +61,14 @@ export class UserInfoService {
             color: '#FF1D25',
             bgColor: 'rgba(255, 29, 37, 0.2)',
         },
+        4: {
+            color: '#FF1D25',
+            bgColor: 'rgba(255, 29, 37, 0.2)',
+        },
+        5: {
+            color: '#FF1D25',
+            bgColor: 'rgba(255, 29, 37, 0.2)',
+        },
     };
 
     private readonly defaultUser: Partial<IUser> = {
@@ -71,19 +83,7 @@ export class UserInfoService {
     constructor(
         public modalController: ModalController,
         private apiService: ApiService
-    ) {
-        this.statusId$.subscribe((item) => {
-            const userId = this.currentUser?.userId;
-            const driverStateId = this.statusId$.getValue();
-            const statusList = this.statusList$.getValue();
-            const state = statusList.find(
-                (status) => status?.id === driverStateId
-            );
-            if (state && driverStateId) {
-                console.log('смена статуса');
-            }
-        });
-    }
+    ) {}
 
     public async openActivityModal(): Promise<void> {
         this.presentModalActivity().then();
@@ -135,6 +135,30 @@ export class UserInfoService {
         this.statusId$.next(null);
         this.workShift$.next(null);
         this.endStatistic$.next(res);
+    }
+
+    public async changeStatus(id: number): Promise<void> {
+        this.statusId$.next(EStatus.pendingLunch);
+
+        const userId = this.currentUser?.userId;
+        const params: IWorkShiftStatus = {
+            isMobile: true,
+            stateId: id,
+            userId
+        };
+
+        const acceptedStatus = await this.apiService.changeStatus(params);
+        this.statusId$.next(acceptedStatus?.id);
+    }
+
+    public getCurrantStatus(): Observable<{id: number; state: string}> {
+        const userId = this.currentUser?.userId;
+        if (userId) {
+            return this.apiService.getCurrentStatus(userId);
+        }
+        else {
+            return new Observable<{id: number; state: string}>();
+        }
     }
 
     private async presentModalActivity() {

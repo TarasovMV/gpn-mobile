@@ -12,12 +12,15 @@ import { expandAnimation } from '../animations/expand.animation';
 export class StatusDropdownComponent implements OnInit {
     @Input() options: IStatusInfo[];
     @Input() set currentOptionId(id: number) {
+        const statusList = this.userInfo.statusList$.getValue();
         this.currentStatusIdx = this.options.findIndex(item => item.id === id);
+        this.currentStatus = statusList.find(item => item.id === id);
     };
 
     @Output() onChanged = new EventEmitter<number>();
 
     public currentStatusIdx: number;
+    public currentStatus: IStatusInfo = null;
     public dropdownExpand: boolean = false;
 
     constructor(public userInfo: UserInfoService) {}
@@ -32,6 +35,7 @@ export class StatusDropdownComponent implements OnInit {
 
     public chooseStatus(i: number): void {
         this.currentStatusIdx = i;
+        this.currentStatus = this.options[i];
         this.onChanged.emit(this.options[i].id);
     }
 

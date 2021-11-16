@@ -5,6 +5,7 @@ import { UserInfoService } from '../../services/user-info.service';
 import { TasksService } from '../../services/tasks.service';
 import { TabsInfoService } from '../../services/tabs/tabs-info.service';
 import {PreloaderService} from "../../@core/services/platform/preloader.service";
+import {delay, mergeMap} from "rxjs/operators";
 
 export interface IPageTab {
     readonly route: PageTabType;
@@ -45,10 +46,16 @@ export class TabsPage implements OnInit {
 
     constructor(
         private navCtrl: NavController,
-        private preloader: PreloaderService
+        private preloader: PreloaderService,
+        private userInfo: UserInfoService
     ) {}
 
     async ngOnInit() {
+        const status$ = new BehaviorSubject(null);
+        status$.pipe(delay(500), mergeMap(() => this.userInfo.getCurrantStatus())).subscribe(res => {
+            this.userInfo.statusId$.next(res.id);
+            status$.next(res.id);
+        });
     }
 
     public selectTab(tab: IPageTab): void {

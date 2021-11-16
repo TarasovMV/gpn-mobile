@@ -5,7 +5,7 @@ import { IStatusInfo } from '../../../avatar-modal/avatar-modal.component';
     name: 'statusFilter',
 })
 export class StatusFilterPipe implements PipeTransform {
-    transform(value: IStatusInfo[], id: number): IStatusInfo[] {
-        return value.filter((item) => item.id !== id);
+    transform(value: IStatusInfo[], idList: number[]): IStatusInfo[] {
+        return value.filter((item) => !idList.includes(item.id));
     }
 }
