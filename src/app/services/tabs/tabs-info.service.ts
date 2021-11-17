@@ -150,6 +150,7 @@ export class TabsInfoService {
         const finalizedTasks = this.finalizesItems$.getValue();
         const userId = this.userInfo.currentUser.userId;
 
+        this.userInfo.changeStatus(EStatus.free);
         const res = await this.tasksApi.finalizeAllTasks({ userId });
         const resNumbers = (res ?? []).map((item) => item.taskNumber);
         if (res.length > 0) {

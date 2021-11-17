@@ -39,6 +39,7 @@ export class TabsTasksPage implements OnInit, IPageTab {
 
         if(newTasksList.length !== 0) {
             this.tabsService.currentTask$.next(newTasksList[0]);
+            this.userInfo.changeStatus(EStatus.busy);
             this.navCtrl.navigateRoot('/map').then();
         }
     }
