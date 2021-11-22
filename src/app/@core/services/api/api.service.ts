@@ -1,33 +1,29 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {AppConfigService} from '../platform/app-config.service';
 import {IUser, IUserCredentials} from '../../model/user.model';
-import {IVehicle} from "../../model/vehicle.model";
-import {ITask, ITaskData} from "../../model/task.model";
+import {IVehicle} from '../../model/vehicle.model';
 import {
     ISetWorkShift,
     IWorkShift,
     IWorkShiftEnd,
     IWorkShiftStatus,
     IWorkShiftVehicle
-} from "../../model/workshift.model";
-import {IStatusInfo} from "../../../@shared/avatar-modal/avatar-modal.component";
-import {UserInfoService} from "../../../services/user-info.service";
-import {PreloaderService} from "../platform/preloader.service";
-import {Observable} from "rxjs";
+} from '../../model/workshift.model';
+import {IStatusInfo} from '../../../@shared/avatar-modal/avatar-modal.component';
+import {PreloaderService} from '../platform/preloader.service';
+import {Observable} from 'rxjs';
+import {environment} from '../../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ApiService {
-    private readonly restUrl: string;
+    private readonly restUrl: string = environment.restUrl;
 
     constructor(
         private http: HttpClient,
-        private appConfigService: AppConfigService,
         private preloader: PreloaderService,
     ) {
-        this.restUrl = appConfigService.getAttribute('restUrl');
     }
 
     public async userAuth(cred: IUserCredentials): Promise<IUser> {

@@ -128,6 +128,7 @@ export class TabsInfoService {
         const currentTaskId = this.currentTask$.getValue().id;
 
         const res = await this.tasksApi.finalizeTask(currentTaskId, {});
+        this.currentTask$.next(null);
         if (res) {
             this.newItems$.next(
                 newTasks.filter((item) => item.id !== currentTaskId)

@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { HTTP_GLOBAL } from '../../../../@core/tokens';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { UserInfoService } from '../../../../services/user-info.service';
-import { AppConfigService } from '../../../../@core/services/platform/app-config.service';
+import {environment} from "../../../../../environments/environment";
 
 interface ISelectOption {
     id: number;
@@ -20,6 +20,7 @@ export class SupportComponent implements OnInit {
     public currentValueId: number = 0;
     public textValueId: number;
     public message: string = '';
+
     public get isDisableSend(): boolean {
         return !(
             this.currentValueId !== this.textValueId || !!this.message.trim()
@@ -31,9 +32,8 @@ export class SupportComponent implements OnInit {
     constructor(
         @Inject(HTTP_GLOBAL) private http: HttpClient,
         private userInfo: UserInfoService,
-        appConfig: AppConfigService
     ) {
-        this.restUrl = appConfig.getAttribute('supportUrl');
+        this.restUrl = environment.supportUrl;
     }
 
     public changeDropdownValue(idx: number): void {

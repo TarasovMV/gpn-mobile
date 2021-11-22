@@ -10,6 +10,7 @@
           [options]="userInfo.statusList$ | async | statusFilter: [5]"
           [currentOptionId]="currentStatusId"
           (onChanged)="changeStatus($event)"
+          [disabled]="disableStatusBtn$ | async"
         ></app-status-dropdown>
       </div>
     </div>
