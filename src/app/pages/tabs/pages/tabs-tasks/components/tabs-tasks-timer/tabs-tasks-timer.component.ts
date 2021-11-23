@@ -79,11 +79,6 @@ export class TabsTasksTimerComponent implements OnDestroy {
                         '' +
                         Math.floor((Math.abs(diffNowPlan) / 1000 / 60) % 60),
                 };
-                console.log(
-                    'now cratesd ' + +now + '  ' + +this.taskCreatedTime
-                );
-
-                console.log(this.percent);
 
                 this.remainingTime = {
                     hours:

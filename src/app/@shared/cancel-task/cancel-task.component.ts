@@ -51,6 +51,7 @@ export class CancelTaskComponent implements OnInit {
             await this.dismiss();
             await this.navCtrl.navigateRoot('map');
         } else {
+            this.tabsService.currentTask$.next(null);
             await this.dismiss();
             await this.navCtrl.navigateRoot('tabs/tabs-tasks');
         }

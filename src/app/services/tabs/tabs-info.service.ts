@@ -66,6 +66,10 @@ export class TabsInfoService {
                 this.getTasks().then();
             }
         });
+
+        this.currentTask$.subscribe(item => {
+            console.log('А вот и текущая таска', item);
+        });
     }
 
     public startMove(): void {
@@ -128,7 +132,6 @@ export class TabsInfoService {
         const currentTaskId = this.currentTask$.getValue().id;
 
         const res = await this.tasksApi.finalizeTask(currentTaskId, {});
-        this.currentTask$.next(null);
         if (res) {
             this.newItems$.next(
                 newTasks.filter((item) => item.id !== currentTaskId)
@@ -139,17 +142,21 @@ export class TabsInfoService {
                 ...newTasks.filter((item) => item.id === currentTaskId),
             ]);
 
-            if (this.newItems$.getValue().length === 0) {
+            if (this.newItems$.getValue().length === 0 && this.selectedItems$.getValue().length !== 0) {
                 this.currentTask$.next(this.elkTask);
+            } else {
+                this.currentTask$.next(null);
             }
-            await this.getTasks();
         }
+        await this.getTasks();
     }
 
     public async endTasks(): Promise<void> {
         const selectedTasks = this.selectedItems$.getValue();
         const finalizedTasks = this.finalizesItems$.getValue();
         const userId = this.userInfo.currentUser.userId;
+
+        this.currentTask$.next(null);
 
         this.userInfo.changeStatus(EStatus.free);
         const res = await this.tasksApi.finalizeAllTasks({ userId });
