@@ -66,10 +66,6 @@ export class TabsInfoService {
                 this.getTasks().then();
             }
         });
-
-        this.currentTask$.subscribe(item => {
-            console.log('А вот и текущая таска', item);
-        });
     }
 
     public startMove(): void {
