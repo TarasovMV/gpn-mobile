@@ -126,7 +126,7 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
         this.config = {
             width: this.width,
             height: (405 / 720) * this.width,
-            initScale: 4,
+            initScale: 7,
         };
         this.mapStyle = 'transform: scale(' + this.config.initScale + ')';
         this.subscriptions.push();
@@ -333,16 +333,16 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
             return this.scaleStyle;
         } else {
             const delta = x - this.zoom;
-            if (this.zoomOrigin + delta * this.zoomOrigin < .7) {
-                this.zoomOrigin = .7;
+            if (this.zoomOrigin + delta * this.zoomOrigin < .5) {
+                this.zoomOrigin = .5;
             } else {
                 this.zoomOrigin += delta * this.zoomOrigin;
             }
             this.zoom = x;
 
-            if (this.zoomOrigin > 2) {
+            if (this.zoomOrigin > 1.8) {
                 this.mapDetail$.next('max');
-            } else if (this.zoomOrigin > 1.2) {
+            } else if (this.zoomOrigin > 0.9) {
                 this.mapDetail$.next('medium');
             } else {
                 this.mapDetail$.next('min');

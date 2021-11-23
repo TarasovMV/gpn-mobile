@@ -16,7 +16,7 @@
       <div [style]="scaleStyle" class="entry-box">
         <div class="entry-box entry-box__map" [style]="mapStyle">
 <!--          <img src="assets/Icons/map/map{{(theme.isDarkTheme | async) ? '-dark' : '-light'}}.svg"/>-->
-          <svg-icon src="assets/Icons/map/{{mapDetail$ | async}}.svg"></svg-icon>
+          <svg-icon src="assets/Icons/map/{{mapDetail$ | async}}{{(theme.isDarkTheme | async) ? '-dark' : '-light'}}.svg"></svg-icon>
           <div #svg class="svg"></div>
         </div>
       </div>
