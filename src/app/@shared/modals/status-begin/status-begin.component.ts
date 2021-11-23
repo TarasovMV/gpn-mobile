@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { UserInfoService } from '../../../services/user-info.service';
 import { ModalController } from '@ionic/angular';
+import {TabsInfoService} from "../../../services/tabs/tabs-info.service";
+import {map} from "rxjs/operators";
+import {Observable} from "rxjs";
 
 @Component({
     selector: 'app-status-begin',
@@ -8,9 +11,11 @@ import { ModalController } from '@ionic/angular';
     styleUrls: ['./status-begin.component.scss'],
 })
 export class StatusBeginComponent implements OnInit {
+    public disableStatusBtn$: Observable<boolean> = this.taskService.currentTask$.pipe(map((task => !!task)));
     constructor(
         public userInfo: UserInfoService,
-        public modalController: ModalController
+        public modalController: ModalController,
+        public taskService: TabsInfoService,
     ) {}
 
     public currentStatusId: number = 3;

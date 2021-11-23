@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ITaskData } from '../../@core/model/task.model';
 import { HttpClient } from '@angular/common/http';
-import { AppConfigService } from '../../@core/services/platform/app-config.service';
+import {environment} from '../../../environments/environment';
 
 export interface IReason {
     id: number;
@@ -12,10 +12,8 @@ export interface IReason {
     providedIn: 'root',
 })
 export class TasksApiService {
-    private readonly restUrl: string;
-    constructor(private http: HttpClient, appConfigService: AppConfigService) {
-        this.restUrl = appConfigService.getAttribute('restUrl');
-    }
+    private readonly restUrl: string = environment.restUrl;
+    constructor(private http: HttpClient) {}
 
     public async startMoveRequest(): Promise<void> {
         try {

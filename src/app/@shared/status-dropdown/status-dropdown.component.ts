@@ -11,6 +11,7 @@ import { expandAnimation } from '../animations/expand.animation';
 })
 export class StatusDropdownComponent implements OnInit {
     @Input() options: IStatusInfo[];
+    @Input() disabled: boolean = false;
     @Input() set currentOptionId(id: number) {
         const statusList = this.userInfo.statusList$.getValue();
         this.currentStatusIdx = this.options.findIndex(item => item.id === id);

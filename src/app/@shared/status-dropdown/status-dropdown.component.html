@@ -1,7 +1,8 @@
-<div class="dropdown">
+<div class="dropdown" [class.dropdown_disabled]="disabled">
   <input
     (click)="toggleDropdown()"
     (focusout)="closeDropdown()"
+    [disabled]="disabled"
     readonly
     type="text"
     class="dropdown__current"

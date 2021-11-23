@@ -4,6 +4,8 @@ import { ModalController } from '@ionic/angular';
 import { TabsInfoService } from '../../../services/tabs/tabs-info.service';
 import { VerifyModalComponent } from '../../../pages/nfc-verify/components/verify-modal/verify-modal.component';
 import { StatisticModalComponent } from '../statistic-modal/statistic-modal.component';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Component({
     selector: 'app-status-current',
@@ -11,13 +13,14 @@ import { StatisticModalComponent } from '../statistic-modal/statistic-modal.comp
     styleUrls: ['./status-current.component.scss'],
 })
 export class StatusCurrentComponent implements OnInit {
+    public disableStatusBtn$: Observable<boolean> = this.taskInfo.currentTask$.pipe(map((task => !!task)));
     constructor(
         public userInfo: UserInfoService,
         public taskInfo: TabsInfoService,
         public modalController: ModalController
     ) {}
 
-    public currentStatusId: number = 1;
+    public currentStatusId = 1;
 
     public async dismiss(): Promise<void> {
         await this.modalController.dismiss().then();

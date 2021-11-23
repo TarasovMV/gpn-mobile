@@ -21,6 +21,7 @@
       <app-status-dropdown
         [options]="userInfo.statusList$ | async | statusFilter: [5]"
         [currentOptionId]="userInfo.statusId$ | async"
+        [disabled]="disableStatusBtn$ | async"
         (onChanged)="changeStatus($event)"
       ></app-status-dropdown>
     </div>

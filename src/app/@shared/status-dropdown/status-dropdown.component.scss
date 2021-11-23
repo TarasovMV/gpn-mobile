@@ -44,6 +44,7 @@ input {
   &__current {
     height: sizeHeight(90);
     width: 100%;
+
     position: absolute;
 
     &_event {
@@ -63,7 +64,6 @@ input {
   }
 
   &__menu {
-    max-height: sizeHeight(170);
     width: 100%;
 
     border: sizeHeight(1) solid var(--border-forms-color);
@@ -98,5 +98,9 @@ input {
       border: 0px solid var(--border-forms-color);
       overflow: hidden;
     }
+  }
+
+  &_disabled {
+    opacity: 0.5;
   }
 }
