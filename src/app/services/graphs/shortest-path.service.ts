@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { IGraph } from './graphs.models';
 import * as jsnx from 'jsnx';
-import { map } from 'rxjs/operators';
+import {map, take} from 'rxjs/operators';
 import { ICoord } from '../../pages/tabs/pages/tabs-tasks/tabs-tasks.page';
 import { GeoProjection } from 'as-geo-projection';
 
@@ -12,46 +12,49 @@ import { GeoProjection } from 'as-geo-projection';
 })
 export class ShortestPathService {
     private geo;
+    private graph: IGraph = null;
     constructor(private http: HttpClient) {
         this.geo = new GeoProjection();
+        this.getGraph().pipe(take(1)).subscribe(data => {
+            this.graph = data;
+        });
     }
 
     public getGraph(): Observable<IGraph> {
         return this.http.get<IGraph>(`assets/graphs/graph1.json`);
     }
 
-    public findShortest(source: number, target: number): Observable<ICoord[]> {
+    public findShortest(source: number | string, target: number | string): ICoord[] {
         const G = new jsnx.Graph();
-        return this.getGraph().pipe(
-            map((item) => {
-                item.nodes.forEach((node) => {
-                    G.addNode(node.id);
-                });
 
-                item.links.forEach((link) => {
-                    G.addEdge(link.source, link.target);
-                    G.getEdgeData(link.source, link.target).weight =
-                        link.weight;
-                });
+        this.graph.nodes.forEach((node) => {
+            G.addNode(node.id);
+        });
 
-                const path: any[] = jsnx.shortestPath(G, {
-                    source,
-                    target,
-                    weight: 'weight',
-                });
+        this.graph.links.forEach((link) => {
+            G.addEdge(link.source, link.target);
+            G.getEdgeData(link.source, link.target).weight =
+                link.weight;
+        });
 
-                item.nodes.forEach((node) => {
-                    const myNode = path.findIndex(
-                        (nodeId) => nodeId === node.id
-                    );
-                    if (myNode !== -1) {
-                        path[myNode] = node.Coords;
-                    }
-                });
+        const path: any[] = jsnx.shortestPath(G, {
+            source,
+            target,
+            weight: 'weight',
+        });
 
-                return this.geoTransform(path);
-            })
-        );
+        this.graph.nodes.forEach((node) => {
+            const myNode = path.findIndex(
+                (nodeId) => nodeId === node.id
+            );
+            if (myNode !== -1) {
+                path[myNode] = node.Coords;
+            }
+        });
+
+        const transformedPath = this.geoTransform(path);
+
+        return transformedPath;
     }
 
     public geoTransform(coords: any[]): ICoord[] {

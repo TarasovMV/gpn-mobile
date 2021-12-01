@@ -122,7 +122,7 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
         );
     }
 
-   async ngAfterViewInit(): Promise<void> {
+    ngAfterViewInit(): void {
         this.width = this.screenRef.nativeElement.clientWidth;
         this.height = this.screenRef.nativeElement.offsetHeight;
         this.config = {
@@ -139,15 +139,15 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
 
         const taskId = this.tabsService.currentTask$.getValue().id;
 
-        // this.currentRoute = this.tabsService
-        //     .getRoutes(taskId)
-        //     .map((item) => {
-        //         return geo.getRelativeByWgs({ latitude: item.y, longitude: item.x })
-        //     }).map((item) => {
-        //         return { x: item.x, y: 100 - item.y };
-        //     });
+        const curTaskRoutes = this.tabsService.getRoutes(taskId);
+        const graphRoute = this.graph.findShortest(105, 'locker26');
 
-        this.currentRoute = await this.graph.findShortest(1, 23).toPromise();
+        this.currentRoute = curTaskRoutes
+            .map((item) => {
+                return geo.getRelativeByWgs({ latitude: item.y, longitude: item.x })
+            }).map((item) => {
+                return { x: item.x, y: 100 - item.y };
+            });
 
         this.drawRoute([{ ...this.currentRoute[0] }, ...this.currentRoute]);
         this.drawNavPoints([this.currentRoute[this.currentRoute.length - 1]]);
