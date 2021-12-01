@@ -18,6 +18,7 @@ import { ICoord } from '../tabs/pages/tabs-tasks/tabs-tasks.page';
 import { ResolveTaskComponent } from './components/resolve-task/resolve-task.component';
 import { GeoProjection } from 'as-geo-projection';
 import {ThemeService} from "../../services/theme.service";
+import {ShortestPathService} from "../../services/graphs/shortest-path.service";
 
 interface IMapConfig {
     width: number;
@@ -103,7 +104,8 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
         private zone: NgZone,
         private cdRef: ChangeDetectorRef,
         public modalController: ModalController,
-        public theme: ThemeService
+        public theme: ThemeService,
+        private graph: ShortestPathService
     ) {}
 
     ngOnDestroy(): void {
@@ -120,7 +122,7 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
         );
     }
 
-    ngAfterViewInit(): void {
+   async ngAfterViewInit(): Promise<void> {
         this.width = this.screenRef.nativeElement.clientWidth;
         this.height = this.screenRef.nativeElement.offsetHeight;
         this.config = {
@@ -137,12 +139,15 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
 
         const taskId = this.tabsService.currentTask$.getValue().id;
 
-        this.currentRoute = this.tabsService
-            .getRoutes(taskId)
-            .map((item) =>
-                geo.getRelativeByWgs({ latitude: item.y, longitude: item.x })
-            )
-            .map((item) => ({ x: item.x, y: 100 - item.y }));
+        // this.currentRoute = this.tabsService
+        //     .getRoutes(taskId)
+        //     .map((item) => {
+        //         return geo.getRelativeByWgs({ latitude: item.y, longitude: item.x })
+        //     }).map((item) => {
+        //         return { x: item.x, y: 100 - item.y };
+        //     });
+
+        this.currentRoute = await this.graph.findShortest(1, 23).toPromise();
 
         this.drawRoute([{ ...this.currentRoute[0] }, ...this.currentRoute]);
         this.drawNavPoints([this.currentRoute[this.currentRoute.length - 1]]);

@@ -17,6 +17,7 @@ import { TabsInfoService } from './services/tabs/tabs-info.service';
 import { GeoProjection, toFlat, toWGS } from 'as-geo-projection';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { PreloaderService } from './@core/services/platform/preloader.service';
+import {ShortestPathService} from "./services/graphs/shortest-path.service";
 
 @Component({
     selector: 'app-root',
@@ -35,6 +36,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private nfcService: NfcService,
         private userInfo: UserInfoService,
         private tasksService: TabsInfoService,
+        private shortest: ShortestPathService
     ) {}
 
     public ngOnInit(): void {
