@@ -14,7 +14,7 @@
     "module": "es2020",
     "lib": ["es2018", "dom"],
     "paths": {
-      "jsnx": ["node_modules/jsnetworkx/jsnetworkx.js"]
+      "jsnx": ["src/assets/libs/jsnetworkx.js"]
     }
   },
   "angularCompilerOptions": {
