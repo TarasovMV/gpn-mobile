@@ -1,4 +1,4 @@
-import { ICoord } from '../../pages/tabs/pages/tabs-tasks/tabs-tasks.page';
+import {ICoordinate} from './gps.model';
 
 export interface ITaskData {
     tasks: ITask[];
@@ -35,5 +35,5 @@ export interface ITask {
 
 export interface IRoute {
     taskId: number;
-    point: ICoord;
+    point: ICoordinate;
 }

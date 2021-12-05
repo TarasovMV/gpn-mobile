@@ -11,17 +11,9 @@
     </div>
     <div class="title">{{(tabsService.currentTask$ | async)?.number}}</div>
   </app-header>
-  <div [style]="transformStyle" class="box">
-    <div [style]="rotationStyle" class="entry-box">
-      <div [style]="scaleStyle" class="entry-box">
-        <div class="entry-box entry-box__map" [style]="mapStyle">
-<!--          <img src="assets/Icons/map/map{{(theme.isDarkTheme | async) ? '-dark' : '-light'}}.svg"/>-->
-          <svg-icon src="assets/Icons/map/{{mapDetail$ | async}}{{(theme.isDarkTheme | async) ? '-dark' : '-light'}}.svg"></svg-icon>
-          <div #svg class="svg"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <app-map-view [setScreenRef]="screenRef">
+    <div #svg class="svg"></div>
+  </app-map-view>
   <div class="progress">
     <app-map-progress
       [percent]="currentTime / allTime * 100"

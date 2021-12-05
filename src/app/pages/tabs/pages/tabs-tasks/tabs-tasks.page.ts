@@ -1,16 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {IPageTab, PageTabType} from '../../tabs.page';
-import {BehaviorSubject} from 'rxjs';
-import {NEW_TASKS, TASKS_IN_PROGRESS} from './mock';
 import {TabsInfoService} from '../../../../services/tabs/tabs-info.service';
 import {ModalController, NavController} from '@ionic/angular';
 import {ChooseTaskOverlayComponent} from './components/choose-task-overlay/choose-task-overlay.component';
-import {EStatus, UserInfoService} from "../../../../services/user-info.service";
+import {EStatus, UserInfoService} from '../../../../services/user-info.service';
 
-export interface ICoord {
-    x: number;
-    y: number;
-}
 
 @Component({
     selector: 'app-tabs-tasks',

@@ -1,0 +1,42 @@
+.box {
+  display: flex;
+  margin: auto;
+  width: 100vw;
+  height: 100vh;
+  color: black;
+
+  .entry-box {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+
+    &__map {
+      height: fit-content;
+      // transition: transform .5s linear;
+    }
+  }
+
+  img {
+    width: 100%;
+    margin: auto;
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+  }
+
+  svg-icon {
+    width: 100%;
+    margin: auto;
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .point {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: red;
+    border-radius: 50%;
+  }
+}

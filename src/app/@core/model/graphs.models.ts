@@ -1,4 +1,4 @@
-import {ICoord} from '../../pages/tabs/pages/tabs-tasks/tabs-tasks.page';
+import {ICoordinate} from './gps.model';
 
 export interface IGraph {
     directed: boolean;
@@ -8,7 +8,7 @@ export interface IGraph {
 }
 
 export interface INode {
-    Coords: ICoord;
+    Coords: ICoordinate;
     id: number;
 }
 

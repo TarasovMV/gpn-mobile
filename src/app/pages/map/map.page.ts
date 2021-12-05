@@ -1,370 +1,115 @@
 import {
     AfterViewInit,
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
     Component,
     ElementRef,
     NgZone,
-    OnDestroy,
     OnInit,
     ViewChild,
 } from '@angular/core';
-import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
+import {filter, map, shareReplay, take} from 'rxjs/operators';
 import { TabsInfoService } from '../../services/tabs/tabs-info.service';
 import { ModalController, NavController } from '@ionic/angular';
-import Hammer from 'hammerjs';
-import * as d3 from 'd3';
-import { ICoord } from '../tabs/pages/tabs-tasks/tabs-tasks.page';
 import { ResolveTaskComponent } from './components/resolve-task/resolve-task.component';
-import { GeoProjection } from 'as-geo-projection';
-import {ThemeService} from "../../services/theme.service";
-import {ShortestPathService} from "../../services/graphs/shortest-path.service";
+import { ShortestPathService } from '../../services/graphs/shortest-path.service';
+import {GpsService} from '../../@core/services/platform/gps.service';
+import * as d3 from 'd3';
+import {ICoordinate} from '../../@core/model/gps.model';
+import {GpsProjectionService} from '../../services/graphs/gps-projection.service';
+import {GeoProjectionService} from '../../services/graphs/geo-projection.service';
 
-interface IMapConfig {
-    width: number;
-    height: number;
-    initScale: number;
-}
-
-type MapDetail = 'min' | 'medium' | 'max';
 
 @Component({
     selector: 'app-map',
     templateUrl: './map.page.html',
     styleUrls: ['./map.page.scss'],
-    // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MapPage implements OnInit, AfterViewInit, OnDestroy {
+export class MapPage implements OnInit, AfterViewInit {
     @ViewChild('screen') screenRef: ElementRef;
     @ViewChild('svg') svgElement: ElementRef;
 
-    public subscriptions: Subscription[] = [];
+    public currentTime: number = 0;
+    public allTime: number = 5 * 1000;
 
-    width;
-    height;
-
-    public config: IMapConfig = null;
-
-    mapDetail$: BehaviorSubject<MapDetail> = new BehaviorSubject<MapDetail>('medium');
-
-    listener: Subject<any> = new Subject<any>();
-    array = [];
-    rotationOrigin = 0;
-    rotation;
-    zoomOrigin = 1;
-    zoom;
-    xOrigin = 0;
-    yOrigin = 0;
-    x = 0;
-    y = 0;
-    isPinch = false;
-    isPan = false;
-
-    xLast = 0;
-    yLast = 0;
-    xNew = 0;
-    yNew = 0;
-    xImage = 0;
-    yImage = 0;
-
-    xLastR = 0;
-    yLastR = 0;
-    xNewR = 0;
-    yNewR = 0;
-    xImageR = 0;
-    yImageR = 0;
-
-    point = {
-        x: 0,
-        y: 0,
-    };
-
-    carPoint: any;
-
-    transformStyle: string;
-    scaleStyle: string;
-    mapStyle: string;
-    rotationStyle: string;
-    pointStyle: string;
-    currentPosition: ICoord;
-    allTime: number = 5 * 1000;
-    currentTime: number = 0;
+    currentPosition: ICoordinate;
 
     private svg: any;
+    private isOpenModal: boolean = false;
+    private isTrackPosition: boolean = true;
+    private readonly position$: Observable<ICoordinate> = this.gpsService.position$.pipe(
+        filter((gps) => !!gps),
+        shareReplay(1),
+    );
 
-    private currentRoute: ICoord[] = [];
-    private position$: BehaviorSubject<ICoord> = new BehaviorSubject<ICoord>({
-        x: 0,
-        y: 0,
-    });
+    private get destination(): { taskId: number; linkId: number | string; x: number; y: number } {
+        const id = this.tabsService.currentTask$.getValue().id;
+        const route = this.tabsService.getRoutes(id);
+        const point = route[route?.length - 1];
+        const projectionPoint = this.geoProjection.wgsConvert({ latitude: point.y, longitude: point.x });
+        return {taskId: id, linkId: 'link', x: projectionPoint.x, y: projectionPoint.y};
+    }
 
     constructor(
         public tabsService: TabsInfoService,
+        public modalController: ModalController,
         private navCtrl: NavController,
         private zone: NgZone,
-        private cdRef: ChangeDetectorRef,
-        public modalController: ModalController,
-        public theme: ThemeService,
-        private graph: ShortestPathService
+        private graph: ShortestPathService,
+        private gpsService: GpsService,
+        private gpsProjection: GpsProjectionService,
+        private geoProjection: GeoProjectionService,
     ) {}
 
-    ngOnDestroy(): void {
-        this.subscriptions.forEach((item) => item.unsubscribe());
-    }
-
     ngOnInit(): void {
-        this.subscriptions.push(
-            this.listener.subscribe((x) => {
-                this.scaleStyle = this.zoomHandler(x.scale);
-                this.rotationStyle = this.rotationHandler(x.rotation, x);
-                this.cdRef.detectChanges();
-            })
-        );
     }
 
     ngAfterViewInit(): void {
-        this.width = this.screenRef.nativeElement.clientWidth;
-        this.height = this.screenRef.nativeElement.offsetHeight;
-        this.config = {
-            width: this.width,
-            height: (405 / 720) * this.width,
-            initScale: 7,
-        };
-        this.mapStyle = 'transform: scale(' + this.config.initScale + ')';
-        this.subscriptions.push();
-        this.init();
         this.drawSvg();
 
-        const geo = new GeoProjection();
+        this.position$.subscribe((pos) => {
+            const destination = this.destination;
+            const res = this.gpsProjection.getProjection(pos);
+            const user = this.geoProjection.relativeConvert({x: res.x, y: res.y});
 
-        const taskId = this.tabsService.currentTask$.getValue().id;
+            if (!!destination) {
+                const route = this.graph
+                    .findShortest(res.linkId, destination.linkId, {x: res.x, y: res.y})
+                    ?.map((point) => this.geoProjection.relativeConvert(point)) ?? [];
+                this.drawRoute(route);
+                this.drawNavPoints([route[route.length - 1]]);
+                // TODO: maybe replace to background service
+                if (this.geoProjection.isEnd(res, destination) && !this.isOpenModal) {
+                    this.openEndTaskModal(destination.taskId === null ? 'endAll' : 'endOne').then();
+                }
+            }
+            this.drawCarPoint(user.x, user.y);
 
-        const curTaskRoutes = this.tabsService.getRoutes(taskId);
-        const graphRoute = this.graph.findShortest(105, 'locker26');
-
-        this.currentRoute = curTaskRoutes
-            .map((item) => {
-                return geo.getRelativeByWgs({ latitude: item.y, longitude: item.x })
-            }).map((item) => {
-                return { x: item.x, y: 100 - item.y };
-            });
-
-        this.drawRoute([{ ...this.currentRoute[0] }, ...this.currentRoute]);
-        this.drawNavPoints([this.currentRoute[this.currentRoute.length - 1]]);
-        this.currentRoute.forEach((item, i) => {
-            this.allTime = (this.currentRoute.length - 1) * 1000;
-            setTimeout(() => {
-                this.setCameraPosition(item.x, item.y);
-                this.drawCarPoint(item.x, item.y);
-                this.currentTime = i * 1000;
-            }, i * 1000);
-
-            if (i === this.currentRoute.length - 1) {
-                setTimeout(() => {
-                    this.openEndTaskModal(taskId === null ? 'endAll' : 'endOne').then();
-                }, i * 1000);
+            if (this.isTrackPosition) {
+                this.setCameraPosition(user.x, user.y);
             }
         });
-    }
 
-    init(): void {
-        const element = this.screenRef.nativeElement;
-        const mc = new Hammer.Manager(element);
-        const tap = new Hammer.Tap();
-        const pinch = new Hammer.Pinch();
-        const rotate = new Hammer.Rotate();
-        const pan = new Hammer.Pan();
-
-        pinch.recognizeWith(rotate);
-        mc.add([pinch, rotate, pan, tap]);
-        this.addListener(mc);
-    }
-
-    addListener(mc): void {
-        this.cdRef.detectChanges();
-        mc.on('pan', (x) => {
-            if (this.isPinch || !this.isPan) {
-                return;
-            }
-            this.positionHandler(x.deltaX, x.deltaY);
-            this.transformStyle = `transform: translate(${this.x}px, ${this.y}px)`;
-            this.cdRef.detectChanges();
-        });
-
-        mc.on('tap', (x) => {
-            return;
-            this.width = this.screenRef.nativeElement.offsetWidth;
-            this.height = this.screenRef.nativeElement.offsetHeight;
-
-            const angle = degToRad(-this.rotationOrigin);
-
-            const cX = this.xImageR;
-            const cY = this.yImageR;
-
-            const prevCenterX = this.width / 2 - cX;
-            const prevCenterY = this.height / 2 - cY;
-
-            const nextCenterX =
-                prevCenterX * Math.cos(angle) - prevCenterY * Math.sin(angle);
-            const nextCenterY =
-                prevCenterX * Math.sin(angle) + prevCenterY * Math.cos(angle);
-
-            const dX = nextCenterX - prevCenterX;
-            const dY = nextCenterY - prevCenterY;
-
-            const xScreen = x.center.x - this.x - this.xNewR;
-            const yScreen = x.center.y - this.y - this.yNewR;
-
-            const xP = this.width / 2 - xScreen;
-            const yP = this.height / 2 - yScreen;
-
-            const testX =
-                this.width / 2 -
-                (xP * Math.cos(angle) - yP * Math.sin(angle)) +
-                dX;
-            const testY =
-                this.height / 2 -
-                (xP * Math.sin(angle) + yP * Math.cos(angle)) +
-                dY;
-
-            this.pointStyle = `left: ${testX}px; top: ${testY}px`;
-            this.cdRef.detectChanges();
-        });
-
-        mc.on('panstart', (x) => {
-            if (this.isPinch) {
-                return;
-            }
-            this.isPan = true;
-            this.cdRef.detectChanges();
-        });
-
-        mc.on('panend', (x) => {
-            this.isPan = false;
-            this.xOrigin = this.x;
-            this.yOrigin = this.y;
-            this.cdRef.detectChanges();
-        });
-
-        mc.on('pinch rotate', (x) => {
-            this.listener.next(x);
-        });
-
-        mc.on('pinchend', () => {
-            setTimeout(() => (this.isPinch = false), 100);
-            this.rotation = undefined;
-            this.zoom = undefined;
-            this.cdRef.detectChanges();
-        });
-
-        mc.on('pinchstart', (x) => {
-            this.isPinch = true;
-            this.rotation = undefined;
-            this.zoom = undefined;
-
-            this.width = this.screenRef.nativeElement.offsetWidth;
-            this.height = this.screenRef.nativeElement.offsetHeight;
-
-            const angle = degToRad(-this.rotationOrigin);
-
-            const cX = this.xImageR;
-            const cY = this.yImageR;
-
-            const prevCenterX = this.width / 2 - cX;
-            const prevCenterY = this.height / 2 - cY;
-
-            const nextCenterX =
-                prevCenterX * Math.cos(angle) - prevCenterY * Math.sin(angle);
-            const nextCenterY =
-                prevCenterX * Math.sin(angle) + prevCenterY * Math.cos(angle);
-
-            const dX = nextCenterX - prevCenterX;
-            const dY = nextCenterY - prevCenterY;
-
-            const xScreen = x.center.x - this.x - this.xNewR;
-            const yScreen = x.center.y - this.y - this.yNewR;
-
-            const xP = this.width / 2 - xScreen;
-            const yP = this.height / 2 - yScreen;
-
-            this.xImageR =
-                this.width / 2 -
-                (xP * Math.cos(angle) - yP * Math.sin(angle)) +
-                dX;
-            this.yImageR =
-                this.height / 2 -
-                (xP * Math.sin(angle) + yP * Math.cos(angle)) +
-                dY;
-
-            this.pointStyle = `left: ${this.xImageR}px; top: ${this.yImageR}px`;
-            this.xNewR += xScreen - this.xImageR;
-            this.yNewR += yScreen - this.yImageR;
-
-            this.xImage += (xScreen - this.xLast) / this.zoomOrigin;
-            this.yImage += (yScreen - this.yLast) / this.zoomOrigin;
-            this.xNew = xScreen - this.xImage;
-            this.yNew = yScreen - this.yImage;
-            this.xLast = xScreen;
-            this.yLast = yScreen;
-            this.cdRef.detectChanges();
-        });
-    }
-
-    rotationHandler(x, ev): string {
-        if (this.rotation === undefined) {
-            this.rotation = x;
-
-            this.width = this.screenRef.nativeElement.offsetWidth;
-            this.height = this.screenRef.nativeElement.offsetHeight;
-
-            return this.rotationStyle;
-        } else {
-            const delta = x - this.rotation;
-            this.rotationOrigin += delta;
-            this.rotation = x;
-
-            return `
-                transform:
-                    translate(${this.xNewR}px, ${this.yNewR}px)
-                    rotate(${this.rotationOrigin}deg);
-                transform-origin: ${this.xImageR}px ${this.yImageR}px;
-            `;
-        }
-    }
-
-    zoomHandler(x): string {
-        if (this.zoom === undefined) {
-            this.zoom = x;
-            return this.scaleStyle;
-        } else {
-            const delta = x - this.zoom;
-            if (this.zoomOrigin + delta * this.zoomOrigin < .5) {
-                this.zoomOrigin = .5;
-            } else {
-                this.zoomOrigin += delta * this.zoomOrigin;
-            }
-            this.zoom = x;
-
-            if (this.zoomOrigin > 1.8) {
-                this.mapDetail$.next('max');
-            } else if (this.zoomOrigin > 0.9) {
-                this.mapDetail$.next('medium');
-            } else {
-                this.mapDetail$.next('min');
-            }
-
-            return `
-                transform:
-                    translate(${this.xNew}px, ${this.yNew}px)
-                    scale(${this.zoomOrigin});
-                transform-origin: ${this.xImage}px ${this.yImage}px;
-            `;
-        }
-    }
-
-    positionHandler(dx, dy): void {
-        this.x = this.xOrigin + dx;
-        this.y = this.yOrigin + dy;
+        // TODO: to clear
+        // this.currentRoute = curTaskRoutes
+        //     .map((item) => this.geoProjection.getRelativeByWgs({ latitude: item.y, longitude: item.x }))
+        //     .map((item) => ({ x: item.x, y: 100 - item.y }));
+        //
+        // this.drawRoute([{ ...this.currentRoute[0] }, ...this.currentRoute]);
+        // this.drawNavPoints([this.currentRoute[this.currentRoute.length - 1]]);
+        // this.currentRoute.forEach((item, i) => {
+        //     this.allTime = (this.currentRoute.length - 1) * 1000;
+        //     setTimeout(() => {
+        //         this.setCameraPosition(item.x, item.y);
+        //         this.drawCarPoint(item.x, item.y);
+        //         this.currentTime = i * 1000;
+        //     }, i * 1000);
+        //
+        //     if (i === this.currentRoute.length - 1) {
+        //         setTimeout(() => {
+        //             this.openEndTaskModal(taskId === null ? 'endAll' : 'endOne').then();
+        //         }, i * 1000);
+        //     }
+        // });
     }
 
     public redirectToTab(): void {
@@ -372,30 +117,26 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public goToPosition(): void {
-        const pos = this.position$.getValue();
-        this.setCameraPosition(pos.x, pos.y);
+        this.isTrackPosition = true;
+        this.position$
+            .pipe(take(1), map(this.geoProjection.relativeConvert))
+            .subscribe((pos) => this.setCameraPosition(pos.x, pos.y));
+    }
+
+    // TODO: execute on gestures from MapViewComponent
+    public stopTrackPosition(): void {
+        this.isTrackPosition = false;
     }
 
     private setCameraPosition(x: number, y: number): void {
-        this.transformStyle = '';
-        this.scaleStyle = '';
-        this.rotationStyle = '';
-
-        this.x = 0;
-        this.y = 0;
-        this.xOrigin = 0;
-        this.yOrigin = 0;
-
-        const resX = (50 - x) * this.config.initScale;
-        const resY = (50 - y) * this.config.initScale;
-        this.mapStyle = `transform: translate(${resX}%, ${resY}%) scale(${this.config.initScale})`;
+        // TODO: send data to view
     }
 
     private drawSvg(): void {
         this.svg = d3.select(this.svgElement.nativeElement).append('svg');
         this.svg
             .attr('width', '100%')
-            .attr('height', '100%')
+            .attr('height', '100%');
     }
 
     private drawRoute(coords: { x: number; y: number }[]): void {
@@ -458,36 +199,16 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
             .attr('cx', `${x}%`)
             .attr('cy', `${y}%`)
             .attr('class', 'car-point-back');
-        this.setCameraPosition(x, y);
-    }
-
-    private getDistance(coords: { x: number; y: number }[]): number {
-        return coords
-            .map((c, i, arr) => ({
-                x1: c.x,
-                x2: arr[i + 1]?.x,
-                y1: c.y,
-                y2: arr[i + 1]?.y,
-            }))
-            .filter((x) => !!x.x2 && !!x.y2)
-            .map((l) =>
-                Math.sqrt(Math.pow(l.x1 - l.x2, 2) + Math.pow(l.y1 - l.y2, 2))
-            )
-            .reduce((acc, next) => acc + next);
     }
 
     private async openEndTaskModal(type: string = 'endOne'): Promise<void> {
+        this.isOpenModal = true;
         const modal = await this.modalController.create({
             component: ResolveTaskComponent,
             cssClass: 'custom-modal resolve-modal',
-            componentProps: {
-                type,
-                coord: this.currentPosition,
-            },
+            componentProps: { type },
             backdropDismiss: false,
         });
         return await modal.present();
     }
 }
-
-const degToRad = (degrees) => degrees * (Math.PI / 180);

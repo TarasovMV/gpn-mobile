@@ -55,6 +55,32 @@
     bottom: sizeHeight(40);
   }
 
+  app-map-view {
+    .svg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+
+      ::ng-deep {
+        .nav-point {
+          fill: transparent;
+          stroke: white;
+          &-inner {
+            fill: white;
+          }
+        }
+
+        .car-point {
+          fill: black;
+          &-back {
+            fill: var(--border-blue-color);
+            fill-opacity: 0.2;
+          }
+        }
+      }
+    }
+  }
+
   .circle-btn {
     height: sizeHeight(114);
     width: sizeHeight(114);
@@ -87,73 +113,6 @@
     }
 
     left: sizeHeight(30);
-  }
-
-  .box {
-    display: flex;
-    margin: auto;
-    width: 100vw;
-    height: 100vh;
-    color: black;
-
-    .entry-box {
-      position: relative;
-      display: flex;
-      width: 100%;
-      height: 100%;
-      margin: auto;
-
-      &__map {
-        height: fit-content;
-        // transition: transform .5s linear;
-      }
-    }
-
-    img {
-      width: 100%;
-      margin: auto;
-      will-change: transform;
-      -webkit-backface-visibility: hidden;
-    }
-
-    svg-icon {
-      width: 100%;
-      margin: auto;
-      will-change: transform;
-      -webkit-backface-visibility: hidden;
-    }
-
-    .point {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: red;
-      border-radius: 50%;
-    }
-
-    .svg {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-
-      ::ng-deep {
-        .nav-point {
-          fill: transparent;
-          stroke: white;
-          &-inner {
-            fill: white;
-          }
-        }
-
-        .car-point {
-          fill: black;
-          &-back {
-            fill: var(--border-blue-color);
-            fill-opacity: 0.2;
-          }
-        }
-      }
-    }
   }
 }
 

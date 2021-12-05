@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IDiagram } from '../../pages/tabs/pages/tabs-main/tabs-main.page';
-import { ICoord } from '../../pages/tabs/pages/tabs-tasks/tabs-tasks.page';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../../@core/services/api/api.service';
 import {EStatus, UserInfoService} from '../user-info.service';
@@ -10,6 +9,7 @@ import { TasksApiService } from './tasks-api.service';
 import { ISelectOption } from '../../@shared/select/select.interfaces';
 import { SimpleModalComponent } from '../../@shared/modals/simple-modal/simple-modal.component';
 import { ModalController } from '@ionic/angular';
+import {ICoordinate} from '../../@core/model/gps.model';
 
 @Injectable({
     providedIn: 'root',
@@ -111,7 +111,8 @@ export class TabsInfoService {
         this.routes$.next(tasksData.route);
     }
 
-    public getRoutes(taskId: number): ICoord[] {
+    // TODO: refactor to return with id
+    public getRoutes(taskId: number): ICoordinate[] {
         const route = this.routes$
             .getValue()
             .filter((item) => item.taskId === taskId)

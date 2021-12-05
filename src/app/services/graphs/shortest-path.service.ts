@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { IGraph } from './graphs.models';
-import * as jsnx from 'jsnx';
-import {map, take} from 'rxjs/operators';
-import { ICoord } from '../../pages/tabs/pages/tabs-tasks/tabs-tasks.page';
+import {take} from 'rxjs/operators';
 import { GeoProjection } from 'as-geo-projection';
+import { IGraph } from '../../@core/model/graphs.models';
+import {ICoordinate} from '../../@core/model/gps.model';
+import * as jsnx from 'jsnx';
+
 
 @Injectable({
     providedIn: 'root',
@@ -24,7 +25,8 @@ export class ShortestPathService {
         return this.http.get<IGraph>(`assets/graphs/graph1.json`);
     }
 
-    public findShortest(source: number | string, target: number | string): ICoord[] {
+    // TODO delete sourceLink add new node and 2 links
+    public findShortest(sourceLink: number | string, targetNode: number | string, user: ICoordinate): ICoordinate[] {
         const G = new jsnx.Graph();
 
         this.graph.nodes.forEach((node) => {
@@ -38,8 +40,8 @@ export class ShortestPathService {
         });
 
         const path: any[] = jsnx.shortestPath(G, {
-            source,
-            target,
+            sourceLink,
+            targetNode,
             weight: 'weight',
         });
 
@@ -57,7 +59,7 @@ export class ShortestPathService {
         return transformedPath;
     }
 
-    public geoTransform(coords: any[]): ICoord[] {
+    public geoTransform(coords: any[]): ICoordinate[] {
         coords = coords.map(item => ({x: item.Y, y: item.X}));
         return coords.map((item) => {
             const flat = this.geo.getRelativeByWgs({ latitude: item.y, longitude: item.x });

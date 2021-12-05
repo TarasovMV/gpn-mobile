@@ -3,11 +3,11 @@ import { NoPreloading, RouterModule, Routes } from '@angular/router';
 import { AuthenticationGuard } from './@core/guards/authentication.guard';
 
 const routes: Routes = [
-    {
-        path: '',
-        loadChildren: () =>
-            import('./pages/login/login.module').then((m) => m.LoginPageModule),
-    },
+    // {
+    //     path: '',
+    //     loadChildren: () =>
+    //         import('./pages/login/login.module').then((m) => m.LoginPageModule),
+    // },
     {
         path: 'login',
         loadChildren: () =>
@@ -20,8 +20,9 @@ const routes: Routes = [
             import('./pages/tabs/tabs.module').then((m) => m.TabsPageModule),
     },
     {
-        path: 'map',
-        canActivate: [AuthenticationGuard],
+        path: '',
+        // path: 'map',
+        // canActivate: [AuthenticationGuard],
         loadChildren: () =>
             import('./pages/map/map.module').then((m) => m.MapPageModule),
     },

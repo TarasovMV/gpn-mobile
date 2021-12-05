@@ -11,6 +11,7 @@ import {SharedModule} from '../../@shared/shared.module';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {MapProgressComponent} from './components/map-progress/map-progress.component';
 import {ResolveTaskComponent} from './components/resolve-task/resolve-task.component';
+import {MapViewComponent} from './components/map-view/map-view.component';
 
 @NgModule({
     imports: [
@@ -22,7 +23,7 @@ import {ResolveTaskComponent} from './components/resolve-task/resolve-task.compo
         SharedModule,
         AngularSvgIconModule,
     ],
-    declarations: [MapPage, MapProgressComponent, ResolveTaskComponent]
+    declarations: [MapPage, MapProgressComponent, ResolveTaskComponent, MapViewComponent]
 })
 export class MapPageModule {
 }
