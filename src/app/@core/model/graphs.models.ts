@@ -1,5 +1,7 @@
 import {ICoordinate} from './gps.model';
 
+export type NodeID = number | string;
+
 export interface IGraph {
     directed: boolean;
     multigraph: boolean;
@@ -8,13 +10,21 @@ export interface IGraph {
 }
 
 export interface INode {
-    Coords: ICoordinate;
-    id: number;
+    id: NodeID;
+    x: number;
+    y: number;
 }
 
 export interface ILink {
+    id: NodeID;
     weight: number;
     speed: number;
     source: number;
-    target: number;
+    target: NodeID;
+    center: ICoordinate;
+    coords: {
+        id: NodeID;
+        x: number;
+        y: number;
+    }[];
 }

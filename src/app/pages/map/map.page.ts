@@ -31,8 +31,6 @@ export class MapPage implements OnInit, AfterViewInit {
     public currentTime: number = 0;
     public allTime: number = 5 * 1000;
 
-    currentPosition: ICoordinate;
-
     private svg: any;
     private isOpenModal: boolean = false;
     private isTrackPosition: boolean = true;
@@ -45,7 +43,7 @@ export class MapPage implements OnInit, AfterViewInit {
         const id = this.tabsService.currentTask$.getValue().id;
         const route = this.tabsService.getRoutes(id);
         const point = route[route?.length - 1];
-        const projectionPoint = this.geoProjection.wgsConvert({ latitude: point.y, longitude: point.x });
+        const projectionPoint = this.geoProjection.wgsConvert({ latitude: point.x, longitude: point.y });
         return {taskId: id, linkId: 'link', x: projectionPoint.x, y: projectionPoint.y};
     }
 
@@ -206,7 +204,7 @@ export class MapPage implements OnInit, AfterViewInit {
         const modal = await this.modalController.create({
             component: ResolveTaskComponent,
             cssClass: 'custom-modal resolve-modal',
-            componentProps: { type },
+            componentProps: {type},
             backdropDismiss: false,
         });
         return await modal.present();

@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import {take} from 'rxjs/operators';
 import { GeoProjection } from 'as-geo-projection';
 import { IGraph } from '../../@core/model/graphs.models';
 import {ICoordinate} from '../../@core/model/gps.model';
 import * as jsnx from 'jsnx';
+import {GRAPH} from './graph.const';
 
 
 @Injectable({
@@ -13,19 +11,12 @@ import * as jsnx from 'jsnx';
 })
 export class ShortestPathService {
     private geo;
-    private graph: IGraph = null;
-    constructor(private http: HttpClient) {
+    private readonly graph: IGraph = GRAPH;
+    constructor() {
         this.geo = new GeoProjection();
-        this.getGraph().pipe(take(1)).subscribe(data => {
-            this.graph = data;
-        });
     }
 
-    public getGraph(): Observable<IGraph> {
-        return this.http.get<IGraph>(`assets/graphs/graph1.json`);
-    }
-
-    // TODO delete sourceLink add new node and 2 links
+    // TODO: delete sourceLink add new node and 2 links
     public findShortest(sourceLink: number | string, targetNode: number | string, user: ICoordinate): ICoordinate[] {
         const G = new jsnx.Graph();
 
@@ -50,20 +41,14 @@ export class ShortestPathService {
                 (nodeId) => nodeId === node.id
             );
             if (myNode !== -1) {
-                path[myNode] = node.Coords;
+                path[myNode] = node;
             }
         });
 
-        const transformedPath = this.geoTransform(path);
-
-        return transformedPath;
+        return this.geoTransform(path);
     }
 
-    public geoTransform(coords: any[]): ICoordinate[] {
-        coords = coords.map(item => ({x: item.Y, y: item.X}));
-        return coords.map((item) => {
-            const flat = this.geo.getRelativeByWgs({ latitude: item.y, longitude: item.x });
-            return { x: flat.x, y: 100 - flat.y };
-        });
+    private geoTransform(coords: any[]): ICoordinate[] {
+        return coords.map((item) => this.geo.getRelativeByWgs({ latitude: item.x, longitude: item.y }));
     }
 }
