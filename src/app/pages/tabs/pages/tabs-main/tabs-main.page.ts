@@ -90,10 +90,14 @@ export class TabsMainPage implements OnInit, IPageTab, AfterViewInit {
     public redirectToTab(tabName: string): void {
         switch (tabName) {
             case 'В работе':
+                this.tabsService.currentTab$.next(0);
+                this.navCtrl.navigateRoot('/tabs/tabs-ready').then();
+                return;
             case 'Новые':
                 this.navCtrl.navigateRoot('/tabs/tabs-tasks').then();
                 return;
             case 'Выполнены':
+                this.tabsService.currentTab$.next(1);
                 this.navCtrl.navigateRoot('tabs/tabs-ready').then();
                 return;
             default:
