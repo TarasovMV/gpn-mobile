@@ -39,12 +39,15 @@ export class MapPage implements OnInit, AfterViewInit {
         shareReplay(1),
     );
 
-    private get destination(): { taskId: number; linkId: number | string; x: number; y: number } {
+    private get destination(): { taskId: number; pointId: number | string; x: number; y: number } {
+        if (!this.tabsService.currentTask$.getValue()) {
+            return undefined;
+        }
         const id = this.tabsService.currentTask$.getValue().id;
         const route = this.tabsService.getRoutes(id);
         const point = route[route?.length - 1];
         const projectionPoint = this.geoProjection.wgsConvert({ latitude: point.x, longitude: point.y });
-        return {taskId: id, linkId: 'link', x: projectionPoint.x, y: projectionPoint.y};
+        return {taskId: id, pointId: 'link', x: projectionPoint.x, y: projectionPoint.y};
     }
 
     constructor(
@@ -63,29 +66,54 @@ export class MapPage implements OnInit, AfterViewInit {
 
     ngAfterViewInit(): void {
         this.drawSvg();
+        const pos = {
+            x: 8152030.730888853,
+            y: 7377330.666441435
+        };
+        const destination = this.destination;
+        const res = this.gpsProjection.getProjection(pos);
+        const user = this.geoProjection.relativeConvert({x: res.x, y: res.y});
 
-        this.position$.subscribe((pos) => {
-            const destination = this.destination;
-            const res = this.gpsProjection.getProjection(pos);
-            const user = this.geoProjection.relativeConvert({x: res.x, y: res.y});
+        // if (!!destination) {
+        //     const route = this.graph
+        //         .findShortest(res.linkId, destination.pointId, {x: res.x, y: res.y})
+        //         ?.map((point) => this.geoProjection.relativeConvert(point)) ?? [];
+        //     this.drawRoute(route);
+        //     this.drawNavPoints([route[route.length - 1]]);
+        //     // TODO: maybe replace to background service
+        //     if (this.geoProjection.isEnd(res, destination) && !this.isOpenModal) {
+        //         this.openEndTaskModal(destination.taskId === null ? 'endAll' : 'endOne').then();
+        //     }
+        // }
+        this.drawCarPoint(user.x, user.y);
 
-            if (!!destination) {
-                const route = this.graph
-                    .findShortest(res.linkId, destination.linkId, {x: res.x, y: res.y})
-                    ?.map((point) => this.geoProjection.relativeConvert(point)) ?? [];
-                this.drawRoute(route);
-                this.drawNavPoints([route[route.length - 1]]);
-                // TODO: maybe replace to background service
-                if (this.geoProjection.isEnd(res, destination) && !this.isOpenModal) {
-                    this.openEndTaskModal(destination.taskId === null ? 'endAll' : 'endOne').then();
-                }
-            }
-            this.drawCarPoint(user.x, user.y);
+        if (this.isTrackPosition) {
+            this.setCameraPosition(user.x, user.y);
+        }
 
-            if (this.isTrackPosition) {
-                this.setCameraPosition(user.x, user.y);
-            }
-        });
+        // TODO: uncomment after test
+        // this.position$.subscribe((pos) => {
+        //     const destination = this.destination;
+        //     const res = this.gpsProjection.getProjection(pos);
+        //     const user = this.geoProjection.relativeConvert({x: res.x, y: res.y});
+        //
+        //     if (!!destination) {
+        //         const route = this.graph
+        //             .findShortest(res.linkId, destination.pointId, {x: res.x, y: res.y})
+        //             ?.map((point) => this.geoProjection.relativeConvert(point)) ?? [];
+        //         this.drawRoute(route);
+        //         this.drawNavPoints([route[route.length - 1]]);
+        //         // TODO: maybe replace to background service
+        //         if (this.geoProjection.isEnd(res, destination) && !this.isOpenModal) {
+        //             this.openEndTaskModal(destination.taskId === null ? 'endAll' : 'endOne').then();
+        //         }
+        //     }
+        //     this.drawCarPoint(user.x, user.y);
+        //
+        //     if (this.isTrackPosition) {
+        //         this.setCameraPosition(user.x, user.y);
+        //     }
+        // });
 
         // TODO: to clear
         // this.currentRoute = curTaskRoutes
@@ -181,6 +209,7 @@ export class MapPage implements OnInit, AfterViewInit {
     }
 
     private drawCarPoint(x: number, y: number) {
+        console.log(x, y);
         this.svg.select('.car-point').remove();
         this.svg.select('.car-point-back').remove();
         this.svg

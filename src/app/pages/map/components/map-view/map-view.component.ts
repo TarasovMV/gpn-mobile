@@ -32,7 +32,7 @@ export class MapViewComponent implements OnInit, AfterViewInit {
         this.config = {
             width: this.width,
             height: (405 / 720) * this.width,
-            initScale: 7,
+            initScale: 1,
         };
         this.mapStyle = 'transform: scale(' + this.config.initScale + ')';
         this.init();

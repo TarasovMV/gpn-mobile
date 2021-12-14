@@ -2,8 +2,8 @@
   <div [style]="rotationStyle" class="entry-box">
     <div [style]="scaleStyle" class="entry-box">
       <div class="entry-box entry-box__map" [style]="mapStyle">
-        <svg-icon src="assets/Icons/map/{{mapDetail$ | async}}{{(theme.isDarkTheme | async) ? '-dark' : '-light'}}.svg"></svg-icon>
-        <ng-template></ng-template>
+        <svg-icon style="display: flex" src="assets/Icons/map/{{mapDetail$ | async}}{{(theme.isDarkTheme | async) ? '-dark' : '-light'}}.svg"></svg-icon>
+        <ng-content></ng-content>
       </div>
     </div>
   </div>

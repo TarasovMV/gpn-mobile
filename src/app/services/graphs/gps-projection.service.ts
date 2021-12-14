@@ -33,18 +33,18 @@ export class GpsProjectionService {
             const x = (a * y + d) / b;
 
             if (x > link.coords[1].x || x < link.coords[0].x) {
-                return { x, y, dist: Number.POSITIVE_INFINITY, link: link.id };
+                return { x, y, dist: Number.POSITIVE_INFINITY, linkId: link.id };
             } else {
-                return { x, y, dist:  Math.sqrt((x - point.x) * (x - point.x) + (y - point.y) * (y - point.y)), link: link.id };
+                return { x, y, dist:  Math.sqrt((x - point.x) * (x - point.x) + (y - point.y) * (y - point.y)), linkId: link.id };
             }
         };
 
         const filterCuts = (point, routes) => {
             const centerDist = (p1, p2) => Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);
-            return routes.sort((cur, next) => centerDist(point, cur.center) - centerDist(point, next.center)).slice(0, 10);
+            return [...routes].sort((cur, next) => centerDist(point, cur.center) - centerDist(point, next.center)).slice(0, 10);
         };
 
         const nearLinks = filterCuts(dot, graph.links);
-        return nearLinks[0];
+        return nearLinks.map(x => getCoerced(x, dot)).sort((cur, next) => cur.dist - next.dist)[0];
     }
 }

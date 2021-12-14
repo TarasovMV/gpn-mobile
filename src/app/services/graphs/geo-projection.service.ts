@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import { toFlat } from 'as-geo-projection';
+import {GeoProjection, toFlat} from 'as-geo-projection';
 import {ICoordinate} from '../../@core/model/gps.model';
 import {IGeoProjectionWGS} from 'as-geo-projection/build/main/lib/geo-projection';
 
@@ -10,6 +10,7 @@ import {IGeoProjectionWGS} from 'as-geo-projection/build/main/lib/geo-projection
 export class GeoProjectionService {
     private readonly topLeftCoords: ICoordinate;
     private readonly bottomRightCoords: ICoordinate;
+    private readonly geo: GeoProjection = new GeoProjection();
 
     constructor() {}
 
@@ -18,12 +19,8 @@ export class GeoProjectionService {
     }
 
     public relativeConvert(coords: ICoordinate): ICoordinate {
-        const dx: number = this.bottomRightCoords.x - this.topLeftCoords.x;
-        const dy: number = this.topLeftCoords.y - this.bottomRightCoords.y;
-        return {
-            x: (coords.x - this.topLeftCoords.x) / dx * 100,
-            y: (coords.y - this.bottomRightCoords.y) / dy * 100,
-        };
+        const res = this.geo.getRelativeByFlat(coords);
+        return {x: res.x, y: 100 - res.y};
     }
 
     // TODO: add logic
