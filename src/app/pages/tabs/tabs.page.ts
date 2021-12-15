@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {BehaviorSubject, interval, Subscription} from 'rxjs';
 import { NavController } from '@ionic/angular';
 import { UserInfoService } from '../../services/user-info.service';
 import { TasksService } from '../../services/tasks.service';
@@ -20,6 +20,7 @@ export type PageTabType = 'main' | 'tasks' | 'ready';
     styleUrls: ['./tabs.page.scss'],
 })
 export class TabsPage implements OnInit {
+    public subscription: Subscription = new Subscription();
     public currentTab$: BehaviorSubject<PageTabType> =
         new BehaviorSubject<PageTabType>('main');
 
@@ -47,14 +48,25 @@ export class TabsPage implements OnInit {
     constructor(
         private navCtrl: NavController,
         private preloader: PreloaderService,
-        private userInfo: UserInfoService
+        private userInfo: UserInfoService,
+        private tasksService: TabsInfoService
     ) {}
 
     async ngOnInit() {
         const status$ = new BehaviorSubject(null);
         status$.pipe(delay(500), mergeMap(() => this.userInfo.getCurrantStatus())).subscribe(res => {
-            this.userInfo.statusId$.next(res.id);
-            status$.next(res.id);
+            this.userInfo.statusId$.next(res?.id);
+            status$.next(res?.id);
+        },
+        error => {
+            console.error('Что-то не то с запросом', error);
+            return;
+        });
+
+        this.subscription = interval(3000).subscribe(()=> {
+            try {
+                this.tasksService.getTasks().then();
+            } catch (e) {}
         });
     }
 

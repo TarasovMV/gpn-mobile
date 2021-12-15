@@ -21,6 +21,8 @@ export class TabsInfoService {
         0
     );
 
+    public count: BehaviorSubject<number> = new BehaviorSubject<number>(1);
+
     public currentTask$: BehaviorSubject<ITask> = new BehaviorSubject<
         ITask | { id: number }
     >(null);
@@ -81,6 +83,9 @@ export class TabsInfoService {
     }
 
     public async getTasks(): Promise<void> {
+        if (!this.userInfo.currentUser.userId || !this.userInfo.workShift$.getValue()) {
+            return
+        }
         const tasksData: ITaskData = await this.tasksApi.getTasks(
             this.userInfo.currentUser.userId
         );
