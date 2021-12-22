@@ -1,9 +1,9 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import {Component, OnInit, EventEmitter, Output, OnDestroy} from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
-import { UserInfoService } from '../../../../services/user-info.service';
+import {EStatus, UserInfoService} from '../../../../services/user-info.service';
 import {StatusCurrentComponent} from '../../../modals/status-current/status-current.component';
 import {TabsInfoService} from '../../../../services/tabs/tabs-info.service';
-import {Observable} from "rxjs";
+import {BehaviorSubject, Observable, Subscription} from "rxjs";
 import {map} from "rxjs/operators";
 
 @Component({
@@ -11,11 +11,13 @@ import {map} from "rxjs/operators";
     templateUrl: './user-info.component.html',
     styleUrls: ['./user-info.component.scss'],
 })
-export class UserInfoComponent implements OnInit {
+export class UserInfoComponent implements OnInit, OnDestroy {
     @Output() onChangeUser = new EventEmitter<boolean>();
     @Output() onChangeCar = new EventEmitter<boolean>();
     public isOpened = false;
+    public forbiddenStatus$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([5]);
     public disableStatusBtn$: Observable<boolean> = this.taskService.currentTask$.pipe(map((task => !!task)));
+    statusCheckSubscription: Subscription = new Subscription();
     constructor(
         private navCtrl: NavController,
         public userInfo: UserInfoService,
@@ -42,7 +44,21 @@ export class UserInfoComponent implements OnInit {
         this.onChangeCar.emit(true);
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.statusCheckSubscription = this.taskService.currentTask$.subscribe(item => {
+            if (!item) {
+                let statusList = this.forbiddenStatus$.getValue();
+                statusList.push(EStatus.busy);
+                statusList = Array.from(new Set(statusList));
+
+                this.forbiddenStatus$.next(statusList);
+            }
+        });
+    }
+
+    ngOnDestroy(): void {
+        this.statusCheckSubscription.unsubscribe()
+    }
 
     private async presentModalChooseStatus() {
         const modal = await this.modalController.create({

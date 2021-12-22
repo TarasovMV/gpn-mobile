@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { UserInfoService } from '../../../services/user-info.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {EStatus, UserInfoService} from '../../../services/user-info.service';
 import { ModalController } from '@ionic/angular';
 import { TabsInfoService } from '../../../services/tabs/tabs-info.service';
 import { VerifyModalComponent } from '../../../pages/nfc-verify/components/verify-modal/verify-modal.component';
 import { StatisticModalComponent } from '../statistic-modal/statistic-modal.component';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 @Component({
@@ -12,8 +12,10 @@ import {map} from 'rxjs/operators';
     templateUrl: './status-current.component.html',
     styleUrls: ['./status-current.component.scss'],
 })
-export class StatusCurrentComponent implements OnInit {
+export class StatusCurrentComponent implements OnInit, OnDestroy {
     public disableStatusBtn$: Observable<boolean> = this.taskInfo.currentTask$.pipe(map((task => !!task)));
+    public forbiddenStatus$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([5]);
+    statusCheckSubscription: Subscription = new Subscription();
     constructor(
         public userInfo: UserInfoService,
         public taskInfo: TabsInfoService,
@@ -50,5 +52,19 @@ export class StatusCurrentComponent implements OnInit {
         this.currentStatusId = id;
     }
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.statusCheckSubscription = this.taskInfo.currentTask$.subscribe(item => {
+            if (!item) {
+                let statusList = this.forbiddenStatus$.getValue();
+                statusList.push(EStatus.busy);
+                statusList = Array.from(new Set(statusList));
+
+                this.forbiddenStatus$.next(statusList);
+            }
+        });
+    }
+
+    ngOnDestroy(): void {
+        this.statusCheckSubscription.unsubscribe()
+    }
 }
