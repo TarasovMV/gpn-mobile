@@ -1,18 +1,18 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {TabsInfoService} from '../../../../services/tabs/tabs-info.service';
 
 @Component({
-  selector: 'app-map-progress',
-  templateUrl: './map-progress.component.html',
-  styleUrls: ['./map-progress.component.scss'],
+    selector: 'app-map-progress',
+    templateUrl: './map-progress.component.html',
+    styleUrls: ['./map-progress.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapProgressComponent implements OnInit {
-    @Input() percent = 0;
     @Input() name: string;
-    constructor(
-        public tabsService: TabsInfoService
-    ) { }
+    @Input() percent = 0;
+    @Input() time: number;
 
-    ngOnInit() {}
+    constructor(public tabsService: TabsInfoService) {}
 
+    ngOnInit(): void {}
 }

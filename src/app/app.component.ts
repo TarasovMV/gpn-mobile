@@ -8,16 +8,13 @@ import {
 } from '@angular/core';
 import { KeyboardService } from './@core/services/platform/keyboard.service';
 import { Platform } from '@ionic/angular';
-import { ThemeService } from './services/theme.service';
+import { ThemeService } from './@core/services/platform/theme.service';
 import { DOCUMENT } from '@angular/common';
 import { UserInfoService } from './services/user-info.service';
 import { Subscription } from 'rxjs';
 import { NfcService } from './@core/services/platform/nfc.service';
-import { TabsInfoService } from './services/tabs/tabs-info.service';
-import { GeoProjection, toFlat, toWGS } from 'as-geo-projection';
 import { SplashScreen } from '@capacitor/splash-screen';
-import { PreloaderService } from './@core/services/platform/preloader.service';
-import {ShortestPathService} from "./services/graphs/shortest-path.service";
+import {PreprocessService} from './services/graphs/preprocess.service';
 
 @Component({
     selector: 'app-root',
@@ -35,11 +32,11 @@ export class AppComponent implements OnInit, OnDestroy {
         private themeService: ThemeService,
         private nfcService: NfcService,
         private userInfo: UserInfoService,
-        private tasksService: TabsInfoService,
-        private shortest: ShortestPathService
+        private preprocess: PreprocessService,
     ) {}
 
     public ngOnInit(): void {
+
         this.initializeApp();
         this.themeService.setThemeConfiguratorRoot(this.document).then();
 
@@ -65,12 +62,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private initializeApp(): void {
         this.nfcService.initNfc();
         this.platform.ready().then(() => {
-            setTimeout(() =>
-                this.keyboardService
-                    .setInitSettings(this.platform, this.appWindow)
-                    .then()
-            );
-            setTimeout(() => this.tasksService.cancelData(), 1000);
+            setTimeout(() => this.keyboardService.setInitSettings(this.platform, this.appWindow).then());
             setTimeout(() => SplashScreen.hide(), 300);
         });
     }

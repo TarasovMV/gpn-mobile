@@ -1,0 +1,14 @@
+@import "src/theme/functions";
+
+.wrapper {
+  min-height: sizeHeight(130);
+  width: sizeWidth(640);
+  padding: sizeHeight(25) sizeHeight(35);
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  background: var(--bg-header-color);
+  box-shadow: 0 sizeHeight(4) sizeHeight(8) var(--gradient-main-color-1);
+  border-radius: sizeHeight(8);
+}

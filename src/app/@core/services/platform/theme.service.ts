@@ -28,7 +28,7 @@ export class ThemeService {
 
 export class ThemeConfigurator {
     private isDarkTheme$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    public isDarkThemeObservable: Observable<boolean> = this.isDarkTheme$.asObservable();
+    public isDarkThemeObservable: Observable<boolean> = this.isDarkTheme$;
 
     constructor(private document: Document, private renderer: Renderer2, themeStorage: string, private storage: Storage) {
         this.isDarkThemeObservable.subscribe((ref) => this.setTheme(ref));

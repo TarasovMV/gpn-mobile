@@ -29,6 +29,7 @@ export class TasksApiService {
     public async getTasks(userId: number): Promise<ITaskData> {
         return await this.http
             .get<ITaskData>(`${this.restUrl}/api/Task/driver/${userId}`)
+            // .get<ITaskData>(`assets/mock.json`)
             .toPromise();
     }
 

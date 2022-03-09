@@ -11,12 +11,16 @@
     </div>
     <div class="title">{{(tabsService.currentTask$ | async)?.number}}</div>
   </app-header>
-  <app-map-view [setScreenRef]="screenRef">
+  <app-map-view [setScreenRef]="screenRef" [setPosition]="cameraPosition$ | async" (onGesture)="toggleTrack(false)">
     <div #svg class="svg"></div>
   </app-map-view>
+<!--    <div class="progress">-->
+<!--      <app-map-debug></app-map-debug>-->
+<!--    </div>-->
   <div class="progress">
     <app-map-progress
-      [percent]="currentTime / allTime * 100"
+      [time]="displayTime$ | async"
+      [percent]="displayPercent$ | async"
       [name]="((tabsService?.currentTask$ | async) || [null])[0]?.plantName"
     ></app-map-progress>
   </div>
@@ -36,7 +40,7 @@
 
   <div
     class="circle-btn geo"
-    (click)="goToPosition()"
+    (click)="toggleTrack(true)"
   >
     <svg-icon
       [svgStyle]="{

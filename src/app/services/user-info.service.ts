@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import { ModalController } from '@ionic/angular';
-import { ActivityModalComponent } from '../@shared/activity-modal/activity-modal.component';
 import {
     IStatusColor,
     IStatusInfo,
@@ -11,8 +10,6 @@ import { ApiService } from '../@core/services/api/api.service';
 import { IVehicle } from '../@core/model/vehicle.model';
 import {IWorkShiftEnd, IWorkShiftStatus} from '../@core/model/workshift.model';
 import { SimpleModalComponent } from '../@shared/modals/simple-modal/simple-modal.component';
-import {logging} from "protractor";
-import {mergeMap} from "rxjs/operators";
 
 export enum EStatus {
     notActive = 1,

@@ -31,7 +31,7 @@ export class TabsTasksPage implements OnInit, IPageTab {
     public openMap(): void {
         const newTasksList = this.tabsService.newItems$.getValue();
 
-        if(newTasksList.length !== 0) {
+        if(!!newTasksList?.length) {
             this.tabsService.currentTask$.next(newTasksList[0]);
             this.userInfo.changeStatus(EStatus.busy);
             this.navCtrl.navigateRoot('/map').then();

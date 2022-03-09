@@ -35,6 +35,12 @@
             "prefix": "app",
             "style": "camelCase"
           }
+        ],
+        "@typescript-eslint/no-inferrable-types": [
+          0,
+          {
+            "ignoreParameters": true
+          }
         ]
       }
     },

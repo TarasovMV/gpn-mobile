@@ -1,0 +1,6 @@
+<div class="wrapper">
+  <span>latitude: {{latitude$ | async | number:"0.2-2"}}</span>
+  <span>longitude: {{longitude$ | async | number:"0.2-2"}}</span>
+  <span>accuracy: {{accuracy$ | async | number:"0.2-2"}}</span>
+  <span>valid: {{(valid$ | async) ? 'На карте' : 'Вне карты'}}</span>
+</div>

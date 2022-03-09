@@ -9,7 +9,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
     ModalController,
     NavController,
-    PopoverController,
 } from '@ionic/angular';
 import { KeyboardService } from '../../@core/services/platform/keyboard.service';
 import { Subject } from 'rxjs';
@@ -19,7 +18,8 @@ import { SimpleModalComponent } from '../../@shared/modals/simple-modal/simple-m
 import { TabsInfoService } from '../../services/tabs/tabs-info.service';
 import { SsPush } from 'plugin-sspush';
 import { UserInfoService } from '../../services/user-info.service';
-import {ApiService} from "../../@core/services/api/api.service";
+import {ApiService} from '../../@core/services/api/api.service';
+
 
 @Component({
     selector: 'app-login',
@@ -27,7 +27,7 @@ import {ApiService} from "../../@core/services/api/api.service";
     styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit, OnDestroy {
-    @ViewChild('content') private content: ElementRef;
+    @ViewChild('content') public content: ElementRef;
     @ViewChild('ripple', { static: true }) public rippleEl: ElementRef;
     public loginForm: FormGroup = new FormGroup({
         userName: new FormControl('Uazov', Validators.required),
@@ -79,7 +79,7 @@ export class LoginPage implements OnInit, OnDestroy {
                     statusBarIcon: true,
                     vibrationLength: 300,
                 });
-                this.taskService.pushInfo.subscribe(async (value) => {
+                this.taskService.pushInfo$.subscribe(async (value) => {
                     if (value !== null) {
                         await SsPush.resetBadgeCount();
                         await SsPush.showDriverTasksNotification({

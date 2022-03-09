@@ -1,6 +1,15 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnInit} from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output
+} from '@angular/core';
 import {BehaviorSubject, Subject} from 'rxjs';
-import {ThemeService} from '../../../../services/theme.service';
+import {ThemeService} from '../../../../@core/services/platform/theme.service';
 import Hammer from 'hammerjs';
 
 const degToRad = (degrees) => degrees * (Math.PI / 180);
@@ -17,6 +26,7 @@ interface IMapConfig {
     styleUrls: ['./map-view.component.scss'],
 })
 export class MapViewComponent implements OnInit, AfterViewInit {
+    @Output() onGesture: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Input() public set setPosition(value: {x: number; y: number} | undefined) {
         if (!!value) {
             this.setCameraPosition(value.x, value.y);
@@ -32,7 +42,7 @@ export class MapViewComponent implements OnInit, AfterViewInit {
         this.config = {
             width: this.width,
             height: (405 / 720) * this.width,
-            initScale: 1,
+            initScale: 7,
         };
         this.mapStyle = 'transform: scale(' + this.config.initScale + ')';
         this.init();
@@ -114,6 +124,7 @@ export class MapViewComponent implements OnInit, AfterViewInit {
             this.positionHandler(x.deltaX, x.deltaY);
             this.transformStyle = `transform: translate(${this.x}px, ${this.y}px)`;
             this.cdRef.detectChanges();
+            this.onGesture.emit(true);
         });
 
         // TODO: clear test code
@@ -163,6 +174,7 @@ export class MapViewComponent implements OnInit, AfterViewInit {
             }
             this.isPan = true;
             this.cdRef.detectChanges();
+            this.onGesture.emit(true);
         });
 
         mc.on('panend', (x) => {
@@ -170,10 +182,12 @@ export class MapViewComponent implements OnInit, AfterViewInit {
             this.xOrigin = this.x;
             this.yOrigin = this.y;
             this.cdRef.detectChanges();
+            this.onGesture.emit(true);
         });
 
         mc.on('pinch rotate', (x) => {
             this.listener$.next(x);
+            this.onGesture.emit(true);
         });
 
         mc.on('pinchend', () => {
@@ -181,6 +195,7 @@ export class MapViewComponent implements OnInit, AfterViewInit {
             this.rotation = undefined;
             this.zoom = undefined;
             this.cdRef.detectChanges();
+            this.onGesture.emit(true);
         });
 
         mc.on('pinchstart', (x) => {
@@ -233,6 +248,7 @@ export class MapViewComponent implements OnInit, AfterViewInit {
             this.xLast = xScreen;
             this.yLast = yScreen;
             this.cdRef.detectChanges();
+            this.onGesture.emit(true);
         });
     }
 

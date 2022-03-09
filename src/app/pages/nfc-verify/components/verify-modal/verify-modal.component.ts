@@ -4,9 +4,8 @@ import {
     OnDestroy,
     OnInit,
 } from '@angular/core';
-import { ModalController, NavController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { NfcTimerModalComponent } from '../nfc-timer-modal/nfc-timer-modal.component';
-import { TasksService } from '../../../../services/tasks.service';
 import { TabsInfoService } from '../../../../services/tabs/tabs-info.service';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';

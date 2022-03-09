@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { IDiagram } from '../../pages/tabs/pages/tabs-main/tabs-main.page';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../../@core/services/api/api.service';
 import {EStatus, UserInfoService} from '../user-info.service';
@@ -10,49 +9,34 @@ import { ISelectOption } from '../../@shared/select/select.interfaces';
 import { SimpleModalComponent } from '../../@shared/modals/simple-modal/simple-modal.component';
 import { ModalController } from '@ionic/angular';
 import {ICoordinate} from '../../@core/model/gps.model';
+import {GRAPH} from '../graphs/graph.const';
+import {filter} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root',
 })
 export class TabsInfoService {
-    public diagramData$: BehaviorSubject<IDiagram> =
-        new BehaviorSubject<IDiagram>(null);
-    public currentTab$: BehaviorSubject<number> = new BehaviorSubject<number>(
-        0
-    );
+    public readonly currentTab$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+    public readonly currentTask$: BehaviorSubject<ITask> = new BehaviorSubject<ITask>(null);
+    public readonly pushInfo$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+    public readonly newItems$: BehaviorSubject<ITask[]> = new BehaviorSubject<ITask[]>([]);
+    public readonly selectedItems$: BehaviorSubject<ITask[]> = new BehaviorSubject<ITask[]>([]);
+    public readonly finalizesItems$: BehaviorSubject<ITask[]> = new BehaviorSubject<ITask[]>([]);
+    public readonly routes$: BehaviorSubject<IRoute[]> = new BehaviorSubject<IRoute[]>([]);
+    public readonly reasonsList$: BehaviorSubject<ISelectOption[]> = new BehaviorSubject<ISelectOption[]>([]); // Причины завершения задания
 
-    public currentTask$: BehaviorSubject<ITask> = new BehaviorSubject<
-        ITask | { id: number }
-    >(null);
-    public pushInfo: BehaviorSubject<number> = new BehaviorSubject<number>(
-        null
-    );
-
-    public newItems$: BehaviorSubject<ITask[]> = new BehaviorSubject<ITask[]>(
-        []
-    );
-    public selectedItems$: BehaviorSubject<ITask[]> = new BehaviorSubject<
-        ITask[]
-    >([]);
-    public finalizesItems$: BehaviorSubject<ITask[]> = new BehaviorSubject<
-        ITask[]
-    >([]);
-
-    public routes$: BehaviorSubject<IRoute[]> = new BehaviorSubject<IRoute[]>(
-        []
-    );
-
-    public reasonsList$: BehaviorSubject<ISelectOption[]> = new BehaviorSubject<
-        ISelectOption[]
-    >([]); // Причины завершения задания
-
-    public readonly elkTask: { id: number; plantName: string } = {
+    public readonly elkTask: ITask = {
         id: null,
         plantName: 'ЕЛК',
+        // TODO: add nodes params
+        node: {
+            id: '',
+            point: {x: 0, y: 0}
+        }
     };
 
-    private taskDataCopy: ITaskData = null;
     public fakeModalTaskId: number = -1;
+    private taskDataCopy: ITaskData = null;
 
     constructor(
         private http: HttpClient,
@@ -61,34 +45,28 @@ export class TabsInfoService {
         private userInfo: UserInfoService,
         private modalController: ModalController
     ) {
-        this.userInfo.workShift$.subscribe((id) => {
-            if (id != null) {
-                this.getTasks().then();
-            }
-        });
+        this.userInfo.workShift$
+            .pipe(filter(id => id != null))
+            .subscribe((id) => this.getTasks().then());
     }
 
-    public startMove(): void {
-        console.log('Движение началось');
-    }
-
-    public endMove(): void {
-        console.log('Движение закончилось');
-    }
-
-    public cancelData(): void {
-        console.log('Приложение запустилось что-то сбросилось');
-    }
-
+    // TODO: узнать что делать при получении нового задания (придумать что делать с currentTask$)
     public async getTasks(): Promise<void> {
         const tasksData: ITaskData = await this.tasksApi.getTasks(
-            this.userInfo.currentUser.userId
+            this.userInfo?.currentUser?.userId ?? 7
         );
         const tasks = tasksData?.tasks ?? [];
 
-        tasks.forEach((item, i) => {
-            tasks[i].probes = tasks[i].probes.map(probe => ({...probe, checked: false}));
-            tasks[i].tares = tasks[i].tares.map(probe => ({...probe, checked: false}));
+        tasks.forEach((item) => {
+            item.probes = item.probes.map(probe => ({...probe, checked: false}));
+            item.tares = item.tares.map(probe => ({...probe, checked: false}));
+            const pointId = tasksData.route.filter(x => x.taskId === item.id)?.slice(-1)?.[0]?.pointId;
+            item.node = {
+                id: pointId,
+                // нестрогое сравнение оставить
+                // eslint-disable-next-line eqeqeq
+                point: !!pointId ? GRAPH.nodes.find(x => x.id == pointId) : undefined,
+            };
         });
 
         this.checkPushNotification(this.taskDataCopy?.tasks, tasks);
@@ -175,12 +153,6 @@ export class TabsInfoService {
         }
     }
 
-    public async declineTask(id: number, reasonId: number): Promise<void> {
-        const body = { taskDeclineReasonId: reasonId };
-        await this.tasksApi.declineTask(id, body);
-        await this.getTasks();
-    }
-
     public async failTask(
         id: number,
         reasonId: number,
@@ -237,7 +209,7 @@ export class TabsInfoService {
         if (newTasksCount > 0) {
             console.log('Новых задач: ' + newTasksCount);
             this.fakeModalTaskId = currentId?.[1] ?? -1;
-            this.pushInfo.next(newTasksCount);
+            this.pushInfo$.next(newTasksCount);
             return true;
         }
         return false;

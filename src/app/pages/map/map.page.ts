@@ -1,161 +1,137 @@
 import {
     AfterViewInit,
     Component,
-    ElementRef,
-    NgZone,
+    ElementRef, inject, Inject, OnDestroy,
     OnInit,
     ViewChild,
 } from '@angular/core';
-import { Observable } from 'rxjs';
-import {filter, map, shareReplay, take} from 'rxjs/operators';
+import {Observable, Subject} from 'rxjs';
+import {filter, map, shareReplay, takeUntil} from 'rxjs/operators';
 import { TabsInfoService } from '../../services/tabs/tabs-info.service';
 import { ModalController, NavController } from '@ionic/angular';
 import { ResolveTaskComponent } from './components/resolve-task/resolve-task.component';
 import { ShortestPathService } from '../../services/graphs/shortest-path.service';
-import {GpsService} from '../../@core/services/platform/gps.service';
 import * as d3 from 'd3';
-import {ICoordinate} from '../../@core/model/gps.model';
+import {ICoordinate, IGpsService} from '../../@core/model/gps.model';
 import {GpsProjectionService} from '../../services/graphs/gps-projection.service';
 import {GeoProjectionService} from '../../services/graphs/geo-projection.service';
+import {FakeGpsService} from '../../@core/services/platform/fake-gps.service';
+import {GpsService} from '../../@core/services/platform/gps.service';
+
+import {IGraph} from '../../@core/model/graphs.models';
+import {GRAPH} from '../../services/graphs/graph.const';
 
 
 @Component({
     selector: 'app-map',
     templateUrl: './map.page.html',
     styleUrls: ['./map.page.scss'],
+    // providers: [{provide: 'GPS', useFactory: () => inject(FakeGpsService)}]
+    providers: [{provide: 'GPS', useFactory: () => inject(GpsService)}]
 })
-export class MapPage implements OnInit, AfterViewInit {
-    @ViewChild('screen') screenRef: ElementRef;
+export class MapPage implements OnInit, AfterViewInit, OnDestroy {
+    @ViewChild('screen', {static: true}) screenRef: ElementRef;
     @ViewChild('svg') svgElement: ElementRef;
 
-    public currentTime: number = 0;
-    public allTime: number = 5 * 1000;
+    public readonly cameraPosition$: Subject<ICoordinate> = new Subject<ICoordinate>();
+    public readonly displayTime$: Subject<number> = new Subject<number>();
+    public readonly displayPercent$: Observable<number> = this.displayTime$.pipe(map(x =>
+        Math.min(Math.max(100 - x / this.initTime * 100, 0), 100)
+    ));
 
     private svg: any;
+    private initTime: number = undefined;
     private isOpenModal: boolean = false;
     private isTrackPosition: boolean = true;
     private readonly position$: Observable<ICoordinate> = this.gpsService.position$.pipe(
         filter((gps) => !!gps),
         shareReplay(1),
     );
+    private readonly destroy$: Subject<boolean> = new Subject<boolean>();
 
     private get destination(): { taskId: number; pointId: number | string; x: number; y: number } {
         if (!this.tabsService.currentTask$.getValue()) {
             return undefined;
         }
         const id = this.tabsService.currentTask$.getValue().id;
-        const route = this.tabsService.getRoutes(id);
-        const point = route[route?.length - 1];
-        const projectionPoint = this.geoProjection.wgsConvert({ latitude: point.x, longitude: point.y });
-        return {taskId: id, pointId: 'link', x: projectionPoint.x, y: projectionPoint.y};
+        const node = this.tabsService.currentTask$.getValue().node;
+        return {taskId: id, pointId: node.id, x: node.point.x, y: node.point.y};
     }
 
     constructor(
         public tabsService: TabsInfoService,
-        public modalController: ModalController,
+        private modalController: ModalController,
         private navCtrl: NavController,
-        private zone: NgZone,
         private graph: ShortestPathService,
-        private gpsService: GpsService,
+        @Inject('GPS') private gpsService: IGpsService,
         private gpsProjection: GpsProjectionService,
         private geoProjection: GeoProjectionService,
     ) {}
 
-    ngOnInit(): void {
+    async ngOnInit(): Promise<void> {
+        // await this.tabsService.getTasks();
+        // this.tabsService.currentTask$.next(this.tabsService.newItems$.getValue()[0]);
+
+        // TODO: delete after demo on prod
+        // const id = this.tabsService.currentTask$.getValue()?.id;
+        // if (!id) {
+        //     return;
+        // }
+        // const route = this.tabsService.getRoutes(id);
+        // this.gpsService.init?.(route);
+        this.gpsService.init?.();
     }
 
     ngAfterViewInit(): void {
         this.drawSvg();
-        const pos = {
-            x: 8152030.730888853,
-            y: 7377330.666441435
-        };
-        const destination = this.destination;
-        const res = this.gpsProjection.getProjection(pos);
-        const user = this.geoProjection.relativeConvert({x: res.x, y: res.y});
+        // this.drawGraph(GRAPH, '--border-blue-color');
+        // this.drawGraph(GRAPH1, '--index-error-color');
+        // return;
+        this.position$.pipe(takeUntil(this.destroy$)).subscribe(pos => {
+            const destination = this.destination;
+            const res = this.gpsProjection.getProjection(pos);
+            const user = this.geoProjection.relativeConvert({x: res.x, y: res.y});
 
-        // if (!!destination) {
-        //     const route = this.graph
-        //         .findShortest(res.linkId, destination.pointId, {x: res.x, y: res.y})
-        //         ?.map((point) => this.geoProjection.relativeConvert(point)) ?? [];
-        //     this.drawRoute(route);
-        //     this.drawNavPoints([route[route.length - 1]]);
-        //     // TODO: maybe replace to background service
-        //     if (this.geoProjection.isEnd(res, destination) && !this.isOpenModal) {
-        //         this.openEndTaskModal(destination.taskId === null ? 'endAll' : 'endOne').then();
-        //     }
-        // }
-        this.drawCarPoint(user.x, user.y);
+            if (user.x > 100 || user.x < 0 || user.y > 100 || user.y < 0) {
+                return;
+            }
 
-        if (this.isTrackPosition) {
-            this.setCameraPosition(user.x, user.y);
-        }
+            if (!!destination) {
+                const path = this.graph.findShortest(res.linkId, destination.pointId, {x: res.x, y: res.y});
+                const route = path?.map((point) => this.geoProjection.relativeConvert(point)) ?? [];
+                this.initTime = this.initTime ? this.initTime : this.geoProjection.getPathTime(path);
+                this.displayTime$.next(this.geoProjection.getPathTime(path));
+                this.drawRoute(route);
+                this.drawNavPoints([route[route.length - 1]]);
+                // TODO: maybe replace to background service
+                if (this.geoProjection.isEnd(res, destination) && !this.isOpenModal) {
+                    this.openEndTaskModal(!destination.taskId ? 'endAll' : 'endOne').then();
+                }
+            }
+            this.drawCarPoint(user.x, user.y);
 
-        // TODO: uncomment after test
-        // this.position$.subscribe((pos) => {
-        //     const destination = this.destination;
-        //     const res = this.gpsProjection.getProjection(pos);
-        //     const user = this.geoProjection.relativeConvert({x: res.x, y: res.y});
-        //
-        //     if (!!destination) {
-        //         const route = this.graph
-        //             .findShortest(res.linkId, destination.pointId, {x: res.x, y: res.y})
-        //             ?.map((point) => this.geoProjection.relativeConvert(point)) ?? [];
-        //         this.drawRoute(route);
-        //         this.drawNavPoints([route[route.length - 1]]);
-        //         // TODO: maybe replace to background service
-        //         if (this.geoProjection.isEnd(res, destination) && !this.isOpenModal) {
-        //             this.openEndTaskModal(destination.taskId === null ? 'endAll' : 'endOne').then();
-        //         }
-        //     }
-        //     this.drawCarPoint(user.x, user.y);
-        //
-        //     if (this.isTrackPosition) {
-        //         this.setCameraPosition(user.x, user.y);
-        //     }
-        // });
+            if (this.isTrackPosition) {
+                this.setCameraPosition(user.x, user.y);
+            }
+        });
+    }
 
-        // TODO: to clear
-        // this.currentRoute = curTaskRoutes
-        //     .map((item) => this.geoProjection.getRelativeByWgs({ latitude: item.y, longitude: item.x }))
-        //     .map((item) => ({ x: item.x, y: 100 - item.y }));
-        //
-        // this.drawRoute([{ ...this.currentRoute[0] }, ...this.currentRoute]);
-        // this.drawNavPoints([this.currentRoute[this.currentRoute.length - 1]]);
-        // this.currentRoute.forEach((item, i) => {
-        //     this.allTime = (this.currentRoute.length - 1) * 1000;
-        //     setTimeout(() => {
-        //         this.setCameraPosition(item.x, item.y);
-        //         this.drawCarPoint(item.x, item.y);
-        //         this.currentTime = i * 1000;
-        //     }, i * 1000);
-        //
-        //     if (i === this.currentRoute.length - 1) {
-        //         setTimeout(() => {
-        //             this.openEndTaskModal(taskId === null ? 'endAll' : 'endOne').then();
-        //         }, i * 1000);
-        //     }
-        // });
+    ngOnDestroy(): void {
+        this.gpsService.cancel?.();
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 
     public redirectToTab(): void {
         this.navCtrl.navigateRoot('/tabs/tabs-tasks').then();
     }
 
-    public goToPosition(): void {
-        this.isTrackPosition = true;
-        this.position$
-            .pipe(take(1), map(this.geoProjection.relativeConvert))
-            .subscribe((pos) => this.setCameraPosition(pos.x, pos.y));
-    }
-
-    // TODO: execute on gestures from MapViewComponent
-    public stopTrackPosition(): void {
-        this.isTrackPosition = false;
+    public toggleTrack(status: boolean): void {
+        this.isTrackPosition = status;
     }
 
     private setCameraPosition(x: number, y: number): void {
-        // TODO: send data to view
+        this.cameraPosition$.next({x ,y});
     }
 
     private drawSvg(): void {
@@ -163,6 +139,40 @@ export class MapPage implements OnInit, AfterViewInit {
         this.svg
             .attr('width', '100%')
             .attr('height', '100%');
+    }
+
+    private drawGraph(graph: IGraph, color: string): void {
+        graph.links.map(x => {
+            const coords = x.coords.map(c => this.geoProjection.relativeConvert(c));
+            return {
+                x1: coords[0].x,
+                y1: coords[0].y,
+                x2: coords[1].x,
+                y2: coords[1].y,
+            };
+        }).forEach((x, i, arr) => {
+            this.svg
+                .append('line')
+                .style('stroke', `var(${color})`)
+                .style('stroke-width', `0.07%`)
+                .attr('class', 'nav-line')
+                .attr('x1', `${x.x1}%`)
+                .attr('y1', `${x.y1}%`)
+                .attr('x2', `${x.x2}%`)
+                .attr('y2', `${x.y2}%`);
+        });
+
+        graph.nodes
+            .map(n => this.geoProjection.relativeConvert(n))
+            .forEach((c) => {
+                this.svg
+                    .append('circle')
+                    .attr('r', 0.5)
+                    .attr('stroke-width', 0.1)
+                    .attr('cx', `${c.x}%`)
+                    .attr('cy', `${c.y}%`)
+                    .attr('class', 'nav-point-inner');
+        });
     }
 
     private drawRoute(coords: { x: number; y: number }[]): void {
@@ -179,7 +189,8 @@ export class MapPage implements OnInit, AfterViewInit {
                 this.svg
                     .append('line')
                     .style('stroke', 'var(--border-blue-color)')
-                    .style('stroke-width', `0.3%`)
+                    .style('stroke-dasharray', '2 1')
+                    .style('stroke-width', `0.07%`)
                     .attr('class', 'nav-line')
                     .attr('x1', `${l.x1}%`)
                     .attr('y1', `${l.y1}%`)
@@ -209,7 +220,6 @@ export class MapPage implements OnInit, AfterViewInit {
     }
 
     private drawCarPoint(x: number, y: number) {
-        console.log(x, y);
         this.svg.select('.car-point').remove();
         this.svg.select('.car-point-back').remove();
         this.svg

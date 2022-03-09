@@ -1,25 +1,24 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ModalController} from '@ionic/angular';
 import {AvatarModalComponent} from '../avatar-modal/avatar-modal.component';
-import {BehaviorSubject} from 'rxjs';
-import {ThemeService} from '../../services/theme.service';
+import {ThemeService} from '../../@core/services/platform/theme.service';
 import {UserInfoService} from '../../services/user-info.service';
 
+
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
     @Input() withThemeSwitch = false;
 
     constructor(
-      public modalController: ModalController,
-      public theme: ThemeService,
-      public userInfo: UserInfoService
-    ) { }
-
-    ngOnInit() {}
+        public theme: ThemeService,
+        public userInfo: UserInfoService,
+        private modalController: ModalController,
+    ) {
+    }
 
     public async openModal(e: Event): Promise<void> {
         this.presentModal().then();

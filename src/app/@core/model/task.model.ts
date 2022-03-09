@@ -21,6 +21,10 @@ export interface ITask {
     availableTimeToExceed?: number;
     nfc?: string;
     checked?: boolean;
+    node?: {
+        id: string | number;
+        point: ICoordinate;
+    };
     probes?: {
         name: string;
         count: number;
@@ -36,4 +40,5 @@ export interface ITask {
 export interface IRoute {
     taskId: number;
     point: ICoordinate;
+    pointId: string;
 }

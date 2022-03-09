@@ -1,7 +1,9 @@
+@use 'sass:math';
+
 @function sizeHeight($value) {
-  @return $value / 1280 * 100vh;
+  @return math.div($value, 1280) * 100vh;
 }
 
 @function sizeWidth($value) {
-  @return $value / 720 * 100vw;
+  @return  math.div($value, 720) * 100vw;
 }
