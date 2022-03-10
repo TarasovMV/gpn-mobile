@@ -7,7 +7,7 @@ import {
 import { ModalController } from '@ionic/angular';
 import { NfcTimerModalComponent } from '../nfc-timer-modal/nfc-timer-modal.component';
 import { TabsInfoService } from '../../../../services/tabs/tabs-info.service';
-import { Observable, Subscription } from 'rxjs';
+import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 
@@ -18,7 +18,8 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VerifyModalComponent implements OnInit, OnDestroy {
-    public isValid: boolean = true;
+    public isValid$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+    public disabled$: Observable<boolean> = this.isValid$.pipe(map((item) => !item));
     public form: FormGroup = new FormGroup({
         arr: new FormArray([]),
     });
@@ -48,11 +49,13 @@ export class VerifyModalComponent implements OnInit, OnDestroy {
                 [...task.tares, ...task.probes].forEach((item) => {
                     const formControl = new FormControl(item.checked);
                     this.formArr.push(formControl);
-                    this.isValid = this.isValid && item.checked;
+                    const isValid = this.isValid$.getValue();
+                    this.isValid$.next(isValid && item.checked);
                 });
             }),
             this.formArr.valueChanges.subscribe((value) => {
-                this.isValid = value.every((item) => item === true);
+                const isValid = value.every((item) => item === true);
+                this.isValid$.next(isValid);
             })
         );
     }

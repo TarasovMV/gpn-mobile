@@ -38,7 +38,7 @@
     <button
       class="btn btn_active"
       (click)="presentNfcTimerModal()"
-      [disabled]="!isValid"
+      [disabled]="(disabled$ | async)"
     >
       подтвердить
     </button>
