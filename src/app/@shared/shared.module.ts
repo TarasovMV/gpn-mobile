@@ -27,6 +27,7 @@ import {PopoverComponent} from "./select/popover/popover.component";
 import {SelectComponent} from "./select/select.component";
 import {FormsModule} from "@angular/forms";
 import {SimpleDialogModalComponent} from "./modals/simple-dialog-modal/simple-dialog-modal.component";
+import {EmergencyCancellationModalComponent} from "./modals/emergancy-cancelation-modal/emergency-cancellation-modal.component";
 
 @NgModule({
     declarations: [
@@ -53,7 +54,8 @@ import {SimpleDialogModalComponent} from "./modals/simple-dialog-modal/simple-di
         CancelTaskComponent,
         PopoverComponent,
         SelectComponent,
-        SimpleDialogModalComponent
+        SimpleDialogModalComponent,
+        EmergencyCancellationModalComponent
     ],
     exports: [
         HeaderComponent,
@@ -71,7 +73,8 @@ import {SimpleDialogModalComponent} from "./modals/simple-dialog-modal/simple-di
         AcceptModalComponent,
         CancelTaskComponent,
         PopoverComponent,
-        SimpleDialogModalComponent
+        SimpleDialogModalComponent,
+        EmergencyCancellationModalComponent
     ],
     imports: [CommonModule, AngularSvgIconModule, IonicModule, FormsModule],
 })
