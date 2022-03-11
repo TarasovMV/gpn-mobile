@@ -15,7 +15,6 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
     selector: 'app-verify-modal',
     templateUrl: './verify-modal.component.html',
     styleUrls: ['./verify-modal.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VerifyModalComponent implements OnInit, OnDestroy {
     public isValid: boolean = true;

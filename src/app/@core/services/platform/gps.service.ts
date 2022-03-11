@@ -42,11 +42,11 @@ export class GpsService implements IGpsService {
     }
 
     private sendPosition(position: Position): void {
-        const taskId = this.tabsService.currentTask$?.getValue()?.id ?? 0;
+        const taskId = this.tabsService.currentTask$?.getValue()?.id ?? null;
         const body = {
             taskId,
             userId: 7,
-            currentPosition: `${position.coords.latitude},${position.coords.longitude}`,
+            currentPosition: `${position.coords.latitude}, ${position.coords.longitude}`,
         };
         this.http.post(`${this.restUrl}/api/WorkShift/current-position`, body).toPromise().then();
     }

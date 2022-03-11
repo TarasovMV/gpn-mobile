@@ -87,6 +87,10 @@ export class TabsInfoService {
             tasks.filter((item) => item.inCar && !item.isFinalized)
         );
         this.routes$.next(tasksData.route);
+
+        if (this.newItems$.getValue()?.length && this.currentTask$.getValue() !== this.newItems$.getValue()[0]) {
+            this.currentTask$.next(this.newItems$.getValue()[0]);
+        }
     }
 
     // TODO: refactor to return with id

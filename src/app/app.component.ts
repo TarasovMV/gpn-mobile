@@ -11,10 +11,11 @@ import { Platform } from '@ionic/angular';
 import { ThemeService } from './@core/services/platform/theme.service';
 import { DOCUMENT } from '@angular/common';
 import { UserInfoService } from './services/user-info.service';
-import { Subscription } from 'rxjs';
+import {interval, Subscription} from 'rxjs';
 import { NfcService } from './@core/services/platform/nfc.service';
 import { SplashScreen } from '@capacitor/splash-screen';
 import {PreprocessService} from './services/graphs/preprocess.service';
+import {TabsInfoService} from './services/tabs/tabs-info.service';
 
 @Component({
     selector: 'app-root',
@@ -32,6 +33,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private themeService: ThemeService,
         private nfcService: NfcService,
         private userInfo: UserInfoService,
+        private tabsInfoService: TabsInfoService,
         private preprocess: PreprocessService,
     ) {}
 
@@ -52,6 +54,10 @@ export class AppComponent implements OnInit, OnDestroy {
                     }, time);
                 }
             }
+        });
+
+        interval(10000).subscribe(() => {
+            this.tabsInfoService.getTasks().then();
         });
     }
 
