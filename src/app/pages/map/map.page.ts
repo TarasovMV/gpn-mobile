@@ -122,6 +122,10 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
         this.destroy$.complete();
     }
 
+    public redirectToNFC(): void {
+        this.navCtrl.navigateRoot('/nfc').then();
+    }
+
     public redirectToTab(): void {
         this.navCtrl.navigateRoot('/tabs/tabs-tasks').then();
     }
