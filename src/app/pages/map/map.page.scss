@@ -102,6 +102,9 @@
     svg-icon {
       height: 3.9vh;
     }
+    &_disabled {
+      opacity: 0.7;
+    }
   }
 
   .geo {

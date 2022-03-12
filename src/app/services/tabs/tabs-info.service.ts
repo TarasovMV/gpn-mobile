@@ -89,7 +89,12 @@ export class TabsInfoService {
         this.routes$.next(tasksData.route);
 
         if (this.newItems$.getValue()?.length && this.currentTask$.getValue() !== this.newItems$.getValue()[0]) {
-            this.currentTask$.next(this.newItems$.getValue()[0]);
+            const newTasks = this.newItems$.getValue();
+            const prevId = this.currentTask$.getValue()?.id;
+            const curId = newTasks[0]?.id;
+            if(curId !== prevId) {
+                this.currentTask$.next(this.newItems$.getValue()[0]);
+            }
         }
     }
 

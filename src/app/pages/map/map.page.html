@@ -27,6 +27,7 @@
 
   <div
     class="circle-btn"
+    [class.circle-btn_disabled]="(tabsService.currentTask$ | async)?.id === null"
     (click)="redirectToNFC()"
   >
     <svg-icon

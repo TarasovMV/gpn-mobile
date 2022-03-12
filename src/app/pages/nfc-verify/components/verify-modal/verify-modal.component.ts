@@ -1,33 +1,36 @@
-import {
-    Component,
-    OnDestroy,
-    OnInit,
-} from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { NfcTimerModalComponent } from '../nfc-timer-modal/nfc-timer-modal.component';
-import { TabsInfoService } from '../../../../services/tabs/tabs-info.service';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {ModalController} from '@ionic/angular';
+import {NfcTimerModalComponent} from '../nfc-timer-modal/nfc-timer-modal.component';
+import {TabsInfoService} from '../../../../services/tabs/tabs-info.service';
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
-import { map } from 'rxjs/operators';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import {distinctUntilChanged, map} from 'rxjs/operators';
+import {FormArray, FormControl, FormGroup} from '@angular/forms';
 
 @Component({
     selector: 'app-verify-modal',
     templateUrl: './verify-modal.component.html',
     styleUrls: ['./verify-modal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VerifyModalComponent implements OnInit, OnDestroy {
-    public isValid$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-    public disabled$: Observable<boolean> = this.isValid$.pipe(map((item) => !item));
+    public isValid$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+        true
+    );
+    public disabled$: Observable<boolean> = this.isValid$.pipe(
+        map((item) => !item)
+    );
     public form: FormGroup = new FormGroup({
         arr: new FormArray([]),
     });
     public taresCount$: Observable<number> = this.tabsService.currentTask$.pipe(
+        distinctUntilChanged((prev, curr) => prev?.id === curr.id),
         map((x) =>
             x.tares.map((t) => t.count).reduce((acc, next) => acc + next, 0)
         )
     );
     public probesCount$: Observable<number> =
         this.tabsService.currentTask$.pipe(
+            distinctUntilChanged((prev, curr) => prev?.id === curr.id),
             map((x) =>
                 x.probes
                     .map((t) => t.count)
@@ -43,14 +46,18 @@ export class VerifyModalComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.subscription.push(
-            this.tabsService.currentTask$.subscribe((task) => {
-                [...task.tares, ...task.probes].forEach((item) => {
-                    const formControl = new FormControl(item.checked);
-                    this.formArr.push(formControl);
-                    const isValid = this.isValid$.getValue();
-                    this.isValid$.next(isValid && item.checked);
-                });
-            }),
+            this.tabsService.currentTask$
+                .pipe(
+                    distinctUntilChanged((prev, curr) => prev?.id === curr.id)
+                )
+                .subscribe((task) => {
+                    [...task.tares, ...task.probes].forEach((item) => {
+                        const formControl = new FormControl(item.checked);
+                        this.formArr.push(formControl);
+                        const isValid = this.isValid$.getValue();
+                        this.isValid$.next(isValid && item.checked);
+                    });
+                }),
             this.formArr.valueChanges.subscribe((value) => {
                 const isValid = value.every((item) => item === true);
                 this.isValid$.next(isValid);
@@ -59,7 +66,7 @@ export class VerifyModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.subscription.forEach(item => item.unsubscribe());
+        this.subscription.forEach((item) => item.unsubscribe());
     }
 
     public async close(): Promise<void> {
