@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { DialogModalComponent } from '../@shared/modals/dialog-modal/dialog-modal.component';
 import { EmergencyCancellationModalComponent } from '../@shared/modals/emergancy-cancelation-modal/emergency-cancellation-modal.component';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
+
 
 @Injectable({
     providedIn: 'root',

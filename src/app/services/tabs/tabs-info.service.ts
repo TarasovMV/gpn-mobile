@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../../@core/services/api/api.service';
@@ -8,9 +8,11 @@ import { TasksApiService } from './tasks-api.service';
 import { ISelectOption } from '../../@shared/select/select.interfaces';
 import { SimpleModalComponent } from '../../@shared/modals/simple-modal/simple-modal.component';
 import { ModalController } from '@ionic/angular';
-import {ICoordinate} from '../../@core/model/gps.model';
+import {ICoordinate, IGpsService} from '../../@core/model/gps.model';
 import {GRAPH} from '../graphs/graph.const';
-import {filter} from 'rxjs/operators';
+import {filter, map} from 'rxjs/operators';
+import {GPS} from '../../@core/tokens';
+import {positionStringify} from '../../@core/functions/position-stringify.function';
 
 @Injectable({
     providedIn: 'root',
@@ -43,7 +45,8 @@ export class TabsInfoService {
         private apiService: ApiService,
         private tasksApi: TasksApiService,
         private userInfo: UserInfoService,
-        private modalController: ModalController
+        private modalController: ModalController,
+        @Inject(GPS) private gpsService: IGpsService,
     ) {
         this.userInfo.workShift$
             .pipe(filter(id => id != null))
@@ -52,9 +55,12 @@ export class TabsInfoService {
 
     // TODO: узнать что делать при получении нового задания (придумать что делать с currentTask$)
     public async getTasks(): Promise<void> {
-        const tasksData: ITaskData = await this.tasksApi.getTasks(
-            this.userInfo?.currentUser?.userId ?? 7
-        );
+        const id = this.userInfo?.currentUser?.userId;
+        if (!id) {
+            return;
+        }
+
+        const tasksData: ITaskData = await this.tasksApi.getTasks(id);
         const tasks = tasksData?.tasks ?? [];
 
         tasks.forEach((item) => {
@@ -143,6 +149,7 @@ export class TabsInfoService {
         this.currentTask$.next(null);
 
         this.userInfo.changeStatus(EStatus.free);
+        // const position = await this.gpsService.getCurrentPosition.pipe(map(x => positionStringify(x.coords))).toPromise();
         const res = await this.tasksApi.finalizeAllTasks({ userId, position: '' });
         const resNumbers = (res ?? []).map((item) => item.taskNumber);
         if (res.length > 0) {

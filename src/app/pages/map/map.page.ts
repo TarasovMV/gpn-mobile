@@ -1,7 +1,7 @@
 import {
     AfterViewInit,
     Component,
-    ElementRef, inject, Inject, OnDestroy,
+    ElementRef, Inject, OnDestroy,
     OnInit,
     ViewChild,
 } from '@angular/core';
@@ -15,19 +15,15 @@ import * as d3 from 'd3';
 import {ICoordinate, IGpsService} from '../../@core/model/gps.model';
 import {GpsProjectionService} from '../../services/graphs/gps-projection.service';
 import {GeoProjectionService} from '../../services/graphs/geo-projection.service';
-import {FakeGpsService} from '../../@core/services/platform/fake-gps.service';
-import {GpsService} from '../../@core/services/platform/gps.service';
-
 import {IGraph} from '../../@core/model/graphs.models';
-import {GRAPH} from '../../services/graphs/graph.const';
+import {GPS} from '../../@core/tokens';
+import {environment} from '../../../environments/environment';
 
 
 @Component({
     selector: 'app-map',
     templateUrl: './map.page.html',
     styleUrls: ['./map.page.scss'],
-    // providers: [{provide: 'GPS', useFactory: () => inject(FakeGpsService)}]
-    providers: [{provide: 'GPS', useFactory: () => inject(GpsService)}]
 })
 export class MapPage implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('screen', {static: true}) screenRef: ElementRef;
@@ -63,23 +59,20 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
         private modalController: ModalController,
         private navCtrl: NavController,
         private graph: ShortestPathService,
-        @Inject('GPS') private gpsService: IGpsService,
+        @Inject(GPS) private gpsService: IGpsService,
         private gpsProjection: GpsProjectionService,
         private geoProjection: GeoProjectionService,
     ) {}
 
     async ngOnInit(): Promise<void> {
-        // await this.tabsService.getTasks();
-        // this.tabsService.currentTask$.next(this.tabsService.newItems$.getValue()[0]);
-
-        // TODO: delete after demo on prod
-        // const id = this.tabsService.currentTask$.getValue()?.id;
-        // if (!id) {
-        //     return;
-        // }
-        // const route = this.tabsService.getRoutes(id);
-        // this.gpsService.init?.(route);
-        this.gpsService.init?.();
+        if (environment.fakeGps) {
+            const id = this.tabsService.currentTask$.getValue()?.id;
+            if (!id) {
+                return;
+            }
+            const route = this.tabsService.getRoutes(id);
+            this.gpsService.init?.(route);
+        }
     }
 
     ngAfterViewInit(): void {

@@ -4,10 +4,23 @@ import {ICoordinate, IGpsService} from '../../model/gps.model';
 import {GeoProjectionService} from '../../../services/graphs/geo-projection.service';
 import {fromArray} from 'rxjs/internal/observable/fromArray';
 import {concatMap, delay } from 'rxjs/operators';
+import {Position} from '@capacitor/geolocation/dist/esm/definitions';
 
-@Injectable({
-    providedIn: 'root'
-})
+
+const FAKE_POSITION: Position = {
+    timestamp: new Date().getTime(),
+    coords: {
+        latitude: 73.231663,
+        longitude: 55.081142,
+        accuracy: null,
+        altitudeAccuracy: null,
+        altitude: null,
+        speed: null,
+        heading: null,
+    }
+};
+
+@Injectable()
 export class FakeGpsService implements IGpsService{
     public readonly position$: BehaviorSubject<ICoordinate> = new BehaviorSubject<ICoordinate>(undefined);
     private route = [];
@@ -27,6 +40,10 @@ export class FakeGpsService implements IGpsService{
     public cancel(): void {
         this.stopRoute();
         this.position$.next(undefined);
+    }
+
+    public get getCurrentPosition(): Observable<Position> {
+        return of(FAKE_POSITION);
     }
 
     private divideRoute(initRoute: ICoordinate[]): ICoordinate[] {

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ITaskData } from '../../@core/model/task.model';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
+import {HTTP_CACHE_HEADER, HttpCachingService} from '../../@core/services/http-caching.service';
 
 export interface IReason {
     id: number;
@@ -13,7 +14,10 @@ export interface IReason {
 })
 export class TasksApiService {
     private readonly restUrl: string = environment.restUrl;
-    constructor(private http: HttpClient) {}
+    constructor(
+        private http: HttpClient,
+        private httpCachingService: HttpCachingService,
+    ) {}
 
     public async startMoveRequest(): Promise<void> {
         try {
@@ -42,8 +46,11 @@ export class TasksApiService {
         }
     ): Promise<boolean> {
         try {
+            const id = this.httpCachingService.getNextId();
+            let headers = new HttpHeaders();
+            headers = headers.append(HTTP_CACHE_HEADER, id.toString());
             await this.http
-                .put<void>(`${this.restUrl}/api/Task/${taskId}/fail`, body)
+                .put<void>(`${this.restUrl}/api/Task/${taskId}/fail`, body, {headers})
                 .toPromise();
             return true;
         } catch (e) {
@@ -71,8 +78,11 @@ export class TasksApiService {
     // Завершить задачу
     public async finalizeTask(taskId: number, body: object): Promise<boolean> {
         try {
+            const id = this.httpCachingService.getNextId();
+            let headers = new HttpHeaders();
+            headers = headers.append(HTTP_CACHE_HEADER, id.toString());
             await this.http
-                .put<void>(`${this.restUrl}/api/Task/${taskId}/finalize`, body)
+                .put<void>(`${this.restUrl}/api/Task/${taskId}/finalize`, body, {headers})
                 .toPromise();
             return true;
         } catch (e) {

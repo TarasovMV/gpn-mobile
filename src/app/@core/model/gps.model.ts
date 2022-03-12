@@ -1,4 +1,4 @@
-import {BehaviorSubject, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {Position} from '@capacitor/geolocation/dist/esm/definitions';
 
 export interface ICoordinate {
@@ -13,6 +13,7 @@ export interface IGpsInfo extends ICoordinate {
 
 export interface IGpsService {
     readonly position$: BehaviorSubject<IGpsInfo>;
+    getCurrentPosition: Observable<Position>;
     readonly rawPosition$?: Subject<Position>;
     init?: (route?: ICoordinate[]) => void;
     cancel?: () => void;

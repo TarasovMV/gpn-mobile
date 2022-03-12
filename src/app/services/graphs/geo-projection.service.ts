@@ -32,6 +32,11 @@ export class GeoProjectionService {
         return delta < 110;
     }
 
+    public isOut(user: ICoordinate, destination: ICoordinate): boolean {
+        const delta = Math.sqrt((user.x - destination.x) * (user.x - destination.x) + (user.y - destination.y) * (user.y - destination.y));
+        return delta > 150;
+    }
+
     /**
      * @description return path time in ms for speed = 25km/h as default
      * @param path - user path

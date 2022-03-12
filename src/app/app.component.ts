@@ -16,6 +16,12 @@ import { NfcService } from './@core/services/platform/nfc.service';
 import { SplashScreen } from '@capacitor/splash-screen';
 import {PreprocessService} from './services/graphs/preprocess.service';
 import {TabsInfoService} from './services/tabs/tabs-info.service';
+import {GPS} from './@core/tokens';
+import {IGpsService} from './@core/model/gps.model';
+import {map} from 'rxjs/operators';
+import {positionStringify} from './@core/functions/position-stringify.function';
+import {CarTrackingService} from './@core/services/car-tracking.service';
+
 
 @Component({
     selector: 'app-root',
@@ -26,6 +32,7 @@ export class AppComponent implements OnInit, OnDestroy {
     @ViewChild('appWindow', { static: true }) private appWindow: ElementRef;
     private subscription: Subscription;
     private timeOut: any;
+
     constructor(
         private keyboardService: KeyboardService,
         private platform: Platform,
@@ -34,11 +41,13 @@ export class AppComponent implements OnInit, OnDestroy {
         private nfcService: NfcService,
         private userInfo: UserInfoService,
         private tabsInfoService: TabsInfoService,
+        @Inject(GPS) private gpsService: IGpsService,
+        private carTracking: CarTrackingService,
+
         private preprocess: PreprocessService,
     ) {}
 
     public ngOnInit(): void {
-
         this.initializeApp();
         this.themeService.setThemeConfiguratorRoot(this.document).then();
 

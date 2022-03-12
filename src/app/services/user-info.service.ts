@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import { ModalController } from '@ionic/angular';
 import {
@@ -10,6 +10,10 @@ import { ApiService } from '../@core/services/api/api.service';
 import { IVehicle } from '../@core/model/vehicle.model';
 import {IWorkShiftEnd, IWorkShiftStatus} from '../@core/model/workshift.model';
 import { SimpleModalComponent } from '../@shared/modals/simple-modal/simple-modal.component';
+import {IGpsService} from '../@core/model/gps.model';
+import {GPS} from '../@core/tokens';
+import {map} from 'rxjs/operators';
+import {positionStringify} from '../@core/functions/position-stringify.function';
 
 export enum EStatus {
     notActive = 1,
@@ -44,6 +48,9 @@ export class UserInfoService {
         0
     );
 
+    public endStatistic$: BehaviorSubject<IWorkShiftEnd> =
+        new BehaviorSubject<IWorkShiftEnd>(null);
+
     public readonly statusColors: { [key: string]: IStatusColor } = {
         1: {
             color: '#F7931E',
@@ -74,12 +81,10 @@ export class UserInfoService {
         patronymic: 'Иванович',
     };
 
-    public endStatistic$: BehaviorSubject<IWorkShiftEnd> =
-        new BehaviorSubject<IWorkShiftEnd>(null);
-
     constructor(
         public modalController: ModalController,
-        private apiService: ApiService
+        private apiService: ApiService,
+        @Inject(GPS) private gpsService: IGpsService,
     ) {}
 
     public async openActivityModal(): Promise<void> {
@@ -115,11 +120,13 @@ export class UserInfoService {
         const userId = this.currentUser.userId;
         const vehicleId = this.car$.getValue().id;
         const driverStateId = this.statusId$.getValue();
+        const position = await this.gpsService.getCurrentPosition.pipe(map(x => positionStringify(x.coords))).toPromise();
 
         const workShift = await this.apiService.setWorkShift({
             userId,
             vehicleId,
             driverStateId,
+            position
         });
         this.workShift$.next(workShift.id);
     }

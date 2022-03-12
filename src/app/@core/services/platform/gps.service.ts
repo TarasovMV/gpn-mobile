@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, interval, Subject} from 'rxjs';
+import {Injectable, Injector} from '@angular/core';
+import {BehaviorSubject, interval, Observable, Subject} from 'rxjs';
 import { Geolocation } from '@capacitor/geolocation';
 import {IGpsInfo, IGpsService} from '../../model/gps.model';
 import {Position} from '@capacitor/geolocation/dist/esm/definitions';
@@ -8,10 +8,12 @@ import {GeoProjectionService} from '../../../services/graphs/geo-projection.serv
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 import {TabsInfoService} from '../../../services/tabs/tabs-info.service';
+import {fromPromise} from 'rxjs/internal-compatibility';
+import {positionStringify} from '../../functions/position-stringify.function';
+import {EmergencyCancellationService} from '../../../services/emergency-cancellation.service';
 
-@Injectable({
-    providedIn: 'root'
-})
+
+@Injectable()
 export class GpsService implements IGpsService {
     public readonly position$: BehaviorSubject<IGpsInfo> = new BehaviorSubject<IGpsInfo>(undefined);
     public readonly rawPosition$: Subject<Position> = new Subject<Position>();
@@ -22,12 +24,10 @@ export class GpsService implements IGpsService {
     constructor(
         private geoProjection: GeoProjectionService,
         private http: HttpClient,
-        private tabsService: TabsInfoService,
+        private injector: Injector,
+        private emergencyCancellation: EmergencyCancellationService,
     ) {
-        // interval(2000).pipe(
-        //     throttleTime(1000),
-        //     tap((x) => console.log('interval', x))
-        // ).subscribe();
+        this.init().then();
     }
 
     public async init(): Promise<void> {
@@ -38,15 +38,23 @@ export class GpsService implements IGpsService {
             tap((x) => this.sendPosition$.next(x)),
             map((x) => this.geoProjection.wgsConvert({latitude: x.coords.latitude, longitude: x.coords.longitude})),
         ).subscribe(x => this.position$.next(x));
-        this.sendPosition$.pipe(throttleTime(5000)).subscribe(x => this.sendPosition(x));
+        this.sendPosition$.pipe(throttleTime(3000)).subscribe(x => this.sendPosition(x));
+    }
+
+    public get getCurrentPosition(): Observable<Position> {
+        return fromPromise(Geolocation.getCurrentPosition());
     }
 
     private sendPosition(position: Position): void {
-        const taskId = this.tabsService.currentTask$?.getValue()?.id ?? null;
+        const tabsService = this.injector.get<TabsInfoService>(TabsInfoService);
+        if (!tabsService.currentTask$.getValue()) {
+            return;
+        }
+        const taskId = tabsService.currentTask$.getValue().id ?? null;
         const body = {
             taskId,
             userId: 7,
-            currentPosition: `${position.coords.latitude}, ${position.coords.longitude}`,
+            currentPosition: positionStringify(position.coords),
         };
         this.http.post(`${this.restUrl}/api/WorkShift/current-position`, body).toPromise().then();
     }
