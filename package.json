@@ -13,6 +13,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/animations": "^12.1.5",
     "@angular/common": "~12.1.1",
     "@angular/compiler": "~12.1.1",
     "@angular/core": "~12.1.1",
@@ -29,6 +30,7 @@
     "@capacitor/keyboard": "1.0.2",
     "@capacitor/splash-screen": "^1.1.1",
     "@ionic-native/barcode-scanner": "^5.36.0",
+    "@ionic-native/core": "^5.36.0",
     "@ionic-native/nfc": "^5.36.0",
     "@ionic/angular": "^5.5.2",
     "@ionic/storage": "^3.0.6",

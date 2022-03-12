@@ -138,7 +138,7 @@ export class TabsInfoService {
         this.currentTask$.next(null);
 
         this.userInfo.changeStatus(EStatus.free);
-        const res = await this.tasksApi.finalizeAllTasks({ userId });
+        const res = await this.tasksApi.finalizeAllTasks({ userId, position: '' });
         const resNumbers = (res ?? []).map((item) => item.taskNumber);
         if (res.length > 0) {
             this.selectedItems$.next(

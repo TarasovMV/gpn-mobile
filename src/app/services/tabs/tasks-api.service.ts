@@ -83,6 +83,7 @@ export class TasksApiService {
     // Проверить метку
     public async finalizeAllTasks(body: {
         userId: number;
+        position: string;
     }): Promise<{ taskNumber: number; prodObjName: string }[]> {
         try {
             return await this.http
