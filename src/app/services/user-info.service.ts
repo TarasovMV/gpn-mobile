@@ -14,6 +14,7 @@ import {IGpsService} from '../@core/model/gps.model';
 import {GPS} from '../@core/tokens';
 import {map} from 'rxjs/operators';
 import {positionStringify} from '../@core/functions/position-stringify.function';
+import {PreloaderService} from "../@core/services/platform/preloader.service";
 
 export enum EStatus {
     notActive = 1,
@@ -84,6 +85,7 @@ export class UserInfoService {
     constructor(
         public modalController: ModalController,
         private apiService: ApiService,
+        private preloader: PreloaderService,
         @Inject(GPS) private gpsService: IGpsService,
     ) {}
 
@@ -120,7 +122,14 @@ export class UserInfoService {
         const userId = this.currentUser.userId;
         const vehicleId = this.car$.getValue().id;
         const driverStateId = this.statusId$.getValue();
-        const position = await this.gpsService.getCurrentPosition.pipe(map(x => positionStringify(x.coords))).toPromise();
+        let position = '';
+        await this.preloader.activate();
+        try {
+            position = await this.gpsService.getCurrentPosition.pipe(map(x => positionStringify(x.coords))).toPromise();
+        } catch (e) {}
+        finally {
+            await this.preloader.disable();
+        }
 
         const workShift = await this.apiService.setWorkShift({
             userId,
@@ -157,7 +166,8 @@ export class UserInfoService {
 
     public getCurrantStatus(): Observable<{id: number; state: string}> {
         const userId = this.currentUser?.userId;
-        if (userId) {
+        const workShiftId = this.workShift$.getValue();
+        if (userId && workShiftId) {
             return this.apiService.getCurrentStatus(userId);
         }
         else {

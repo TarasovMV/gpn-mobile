@@ -25,7 +25,7 @@ export interface ISetWorkShift {
     userId: number;
     vehicleId: number;
     driverStateId: number;
-    position: string;
+    position?: string;
 }
 
 export interface IWorkShiftEnd {

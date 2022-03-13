@@ -56,7 +56,8 @@ export class TabsInfoService {
     // TODO: узнать что делать при получении нового задания (придумать что делать с currentTask$)
     public async getTasks(): Promise<void> {
         const id = this.userInfo?.currentUser?.userId;
-        if (!id) {
+        const workShiftId = this.userInfo.workShift$.getValue();
+        if (!id || !workShiftId) {
             return;
         }
 
