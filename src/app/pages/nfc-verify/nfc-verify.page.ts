@@ -28,7 +28,6 @@ export class NfcVerifyPage implements OnInit {
     ) {}
 
     public ngOnInit(): void {
-        this.fakeModal();
     }
 
     public async openModal(): Promise<void> {
@@ -59,27 +58,5 @@ export class NfcVerifyPage implements OnInit {
             showBackdrop: false,
         });
         return await modal.present();
-    }
-
-    private async presentFakeModal() {
-        const modal = await this.modalCtrl.create({
-            componentProps: {
-                message: 'Закончить забор проб и выгрузку тары?',
-            },
-            component: SimpleDialogModalComponent,
-            cssClass: 'custom-modal resolve-modal',
-        });
-        return await modal.present();
-    }
-
-    private fakeModal(): void{
-        const currantTaskId = this.tabsService.currentTask$.getValue().id;
-        const secondTaskId = this.tabsService.fakeModalTaskId;
-
-        if(currantTaskId === secondTaskId) {
-            setTimeout(()=>{
-               this.presentFakeModal().then();
-            }, 300);
-        }
     }
 }
