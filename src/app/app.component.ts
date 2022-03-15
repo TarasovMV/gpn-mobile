@@ -65,7 +65,7 @@ export class AppComponent implements OnInit, OnDestroy {
             }
         });
 
-        interval(10000).subscribe(() => {
+        interval(5000).subscribe(() => {
             this.tabsInfoService.getTasks().then();
         });
     }

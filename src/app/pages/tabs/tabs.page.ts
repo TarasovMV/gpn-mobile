@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {BehaviorSubject, interval} from 'rxjs';
 import { NavController } from '@ionic/angular';
 import { UserInfoService } from '../../services/user-info.service';
 import {PreloaderService} from '../../@core/services/platform/preloader.service';

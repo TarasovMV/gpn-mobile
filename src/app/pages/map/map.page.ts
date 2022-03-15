@@ -5,8 +5,8 @@ import {
     OnInit,
     ViewChild,
 } from '@angular/core';
-import {Observable, Subject} from 'rxjs';
-import {filter, map, shareReplay, takeUntil} from 'rxjs/operators';
+import {combineLatest, Observable, Subject} from 'rxjs';
+import {distinctUntilChanged, filter, map, shareReplay, takeUntil} from 'rxjs/operators';
 import { TabsInfoService } from '../../services/tabs/tabs-info.service';
 import { ModalController, NavController } from '@ionic/angular';
 import { ResolveTaskComponent } from './components/resolve-task/resolve-task.component';
@@ -77,10 +77,11 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
 
     ngAfterViewInit(): void {
         this.drawSvg();
-        // this.drawGraph(GRAPH, '--border-blue-color');
-        // this.drawGraph(GRAPH1, '--index-error-color');
-        // return;
-        this.position$.pipe(takeUntil(this.destroy$)).subscribe(pos => {
+        const currentTask$ = this.tabsService.currentTask$.pipe(distinctUntilChanged((prev, curr) => prev.id === curr.id));
+        combineLatest(
+            this.position$,
+            currentTask$
+        ).pipe(takeUntil(this.destroy$), map((data) => data[0])).subscribe(pos => {
             const destination = this.destination;
             const res = this.gpsProjection.getProjection(pos);
             const user = this.geoProjection.relativeConvert({x: res.x, y: res.y});
