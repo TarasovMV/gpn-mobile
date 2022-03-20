@@ -10,9 +10,9 @@ import { SimpleModalComponent } from '../../@shared/modals/simple-modal/simple-m
 import { ModalController } from '@ionic/angular';
 import {ICoordinate, IGpsService} from '../../@core/model/gps.model';
 import {GRAPH} from '../graphs/graph.const';
-import {filter, map} from 'rxjs/operators';
+import {filter} from 'rxjs/operators';
 import {GPS} from '../../@core/tokens';
-import {positionStringify} from '../../@core/functions/position-stringify.function';
+
 
 @Injectable({
     providedIn: 'root',
@@ -30,10 +30,12 @@ export class TabsInfoService {
     public readonly elkTask: ITask = {
         id: null,
         plantName: 'ЕЛК',
-        // TODO: add nodes params
         node: {
-            id: '',
-            point: {x: 0, y: 0}
+            id: 107,
+            point: {
+                x: 8154008.430547221,
+                y: 7374383.438178856
+            }
         }
     };
 
@@ -95,13 +97,24 @@ export class TabsInfoService {
         );
         this.routes$.next(tasksData.route);
 
-        if (this.newItems$.getValue()?.length && this.currentTask$.getValue() !== this.newItems$.getValue()[0]) {
+        if (!!this.newItems$.getValue()?.length && this.currentTask$.getValue() !== this.newItems$.getValue()[0]) {
             const newTasks = this.newItems$.getValue();
             const prevId = this.currentTask$.getValue()?.id;
             const curId = newTasks[0]?.id;
             if(curId !== prevId) {
                 this.currentTask$.next(this.newItems$.getValue()[0]);
             }
+        } else if (
+            !this.newItems$.getValue().length &&
+            !!this.selectedItems$.getValue().length &&
+            this.currentTask$.getValue()?.id !== null
+        ) {
+            this.currentTask$.next(this.elkTask);
+        } else if (
+            !this.newItems$.getValue().length &&
+            !this.selectedItems$.getValue().length
+        ) {
+            this.currentTask$.next(null);
         }
     }
 

@@ -36,6 +36,10 @@ export class TabsTasksPage implements OnInit, IPageTab {
             this.userInfo.changeStatus(EStatus.busy);
             this.navCtrl.navigateRoot('/map').then();
         }
+
+        if (this.tabsService.currentTask$.getValue()?.id === null) {
+            this.navCtrl.navigateRoot('/map').then();
+        }
     }
 
     private async presentModal(): Promise<HTMLIonModalElement> {

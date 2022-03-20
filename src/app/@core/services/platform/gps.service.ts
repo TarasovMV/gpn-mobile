@@ -25,14 +25,13 @@ export class GpsService implements IGpsService {
         private geoProjection: GeoProjectionService,
         private http: HttpClient,
         private injector: Injector,
-        private emergencyCancellation: EmergencyCancellationService,
     ) {
         this.init().then();
     }
 
     public async init(): Promise<void> {
         const permission = await Geolocation.checkPermissions();
-        await Geolocation.watchPosition({enableHighAccuracy: true, timeout: 500}, (x: Position) => this.rawPosition$.next(x));
+        await Geolocation.watchPosition({enableHighAccuracy: true, timeout: 50}, (x: Position) => this.rawPosition$.next(x));
         this.rawPosition$.pipe(
             filter((x) => !!x?.coords?.longitude && !!x?.coords?.latitude),
             tap((x) => this.sendPosition$.next(x)),

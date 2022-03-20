@@ -78,10 +78,10 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
     ngAfterViewInit(): void {
         this.drawSvg();
         const currentTask$ = this.tabsService.currentTask$.pipe(distinctUntilChanged((prev, curr) => prev.id === curr.id));
-        combineLatest(
+        combineLatest([
             this.position$,
             currentTask$
-        ).pipe(takeUntil(this.destroy$), map((data) => data[0])).subscribe(pos => {
+        ]).pipe(takeUntil(this.destroy$)).subscribe(([pos, _]) => {
             const destination = this.destination;
             const res = this.gpsProjection.getProjection(pos);
             const user = this.geoProjection.relativeConvert({x: res.x, y: res.y});
@@ -116,8 +116,10 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
         this.destroy$.complete();
     }
 
-    public redirectToNFC(): void {
+    public async redirectToNFC(): Promise<void> {
         if(this.tabsService.currentTask$.getValue()?.id === null ) {
+            await this.navCtrl.navigateRoot('/tabs/tabs-ready');
+            this.tabsService.currentTask$.next(null);
             return;
         }
         this.navCtrl.navigateRoot('/nfc').then();

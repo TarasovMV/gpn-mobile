@@ -20,6 +20,12 @@ const FAKE_POSITION: Position = {
     }
 };
 
+const START_POSITION: ICoordinate = {
+    x: 0,
+    y: 0,
+};
+
+
 @Injectable()
 export class FakeGpsService implements IGpsService{
     public readonly position$: BehaviorSubject<ICoordinate> = new BehaviorSubject<ICoordinate>(undefined);
