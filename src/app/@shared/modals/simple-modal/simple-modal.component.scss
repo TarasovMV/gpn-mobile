@@ -18,6 +18,9 @@
   .message {
     color: var(--text-contrast-color);
     font-size: sizeHeight(40);
+
+    margin-bottom: 50px;
+    overflow: auto;
   }
 
   button {
@@ -30,6 +33,6 @@
 
     position: absolute;
     right: sizeWidth(50);
-    bottom: sizeHeight(50);
+    bottom: sizeHeight(30);
   }
 }

@@ -14,6 +14,7 @@ export interface ITask {
     lockerId?: number;
     isAccepted?: boolean;
     isFinalized?: boolean;
+    comment?: string;
     isFailed?: boolean;
     inCar?: boolean;
     dateTimeStart?: Date;

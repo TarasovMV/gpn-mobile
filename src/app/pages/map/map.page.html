@@ -22,6 +22,7 @@
       [time]="displayTime$ | async"
       [percent]="displayPercent$ | async"
       [name]="((tabsService?.currentTask$ | async) || [null])[0]?.plantName"
+      [msg]="(tabsService?.currentTask$ | async)?.comment"
     ></app-map-progress>
   </div>
 
