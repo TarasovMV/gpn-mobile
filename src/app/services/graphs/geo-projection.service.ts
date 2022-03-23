@@ -52,10 +52,11 @@ export class GeoProjectionService {
     }
 
     public getDistanceMeters(point1: IGeoProjectionWGS, point2: IGeoProjectionWGS): number {
-        const lon1 = point1.longitude * Math.PI / 180;
-        const lon2 = point2.longitude * Math.PI / 180;
-        const lat1 = point1.latitude * Math.PI / 180;
-        const lat2 = point2.latitude * Math.PI / 180;
+        const calc = (value) => value * Math.PI / 180;
+        const lon1 = calc(point1.longitude);
+        const lon2 = calc(point2.longitude);
+        const lat1 = calc(point1.latitude);
+        const lat2 = calc(point2.latitude);
 
         // Haversine formula
         const dlon = lon2 - lon1;

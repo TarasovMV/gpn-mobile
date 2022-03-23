@@ -11,6 +11,7 @@ import {TabsInfoService} from '../../../services/tabs/tabs-info.service';
 import {fromPromise} from 'rxjs/internal-compatibility';
 import {positionStringify} from '../../functions/position-stringify.function';
 import {EmergencyCancellationService} from '../../../services/emergency-cancellation.service';
+import {CarTrackingService} from '../car-tracking.service';
 
 
 @Injectable()
@@ -46,6 +47,7 @@ export class GpsService implements IGpsService {
 
     private sendPosition(position: Position): void {
         const tabsService = this.injector.get<TabsInfoService>(TabsInfoService);
+        const trackingService = this.injector.get<CarTrackingService>(CarTrackingService);
         if (!tabsService.currentTask$.getValue()) {
             return;
         }
@@ -54,6 +56,8 @@ export class GpsService implements IGpsService {
             taskId,
             userId: 7,
             currentPosition: positionStringify(position.coords),
+            taskAllTime: trackingService.taskAllTime,
+            taskRestTime: trackingService.taskRestTime,
         };
         this.http.post(`${this.restUrl}/api/WorkShift/current-position`, body).toPromise().then();
     }
