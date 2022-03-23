@@ -15,7 +15,7 @@ export class EmergencyCancellationService {
 
     public async openEmergencyCancellationModal(): Promise<void> {
         const currentRoute = this.router.url;
-        if (currentRoute.includes('/map')) {
+        if (!currentRoute.includes('nfc')) {
             return;
         }
         const modal = await this.modalController.create({

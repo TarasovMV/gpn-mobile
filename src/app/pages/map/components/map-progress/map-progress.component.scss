@@ -4,9 +4,9 @@
 }
 
 .container {
-  height: sizeHeight(130);
+  height: sizeHeight(150);
   width: sizeWidth(640);
-  padding: sizeHeight(25) sizeHeight(35);
+  padding: sizeHeight(25) sizeHeight(35) sizeHeight(15);
 
   display: flex;
   flex-direction: column;
@@ -24,13 +24,13 @@
     &__title {
       margin-right: sizeWidth(5);
       font-size: sizeHeight(40);
-      color: var(--text-contrast-color);
+      color: var(--text-main-color);
       white-space: nowrap;
     }
 
     &__time {
       font-size: sizeHeight(29);
-      color: var(--text-main-color);
+      color: var(--text-contrast-color);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -61,5 +61,15 @@
         right: -1.9vh;
       }
     }
+  }
+
+  .msg {
+    margin-top: sizeHeight(10);
+    width: sizeWidth(560);
+    font-size: sizeHeight(29);
+    color: var(--text-subscript-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }

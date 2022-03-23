@@ -88,7 +88,14 @@ body {
 
 .resolve-modal {
   .modal-wrapper {
-    height: sizeHeight(260);
+    height: sizeHeight(280);
+    width: sizeWidth(560);
+  }
+}
+
+.text-modal {
+  .modal-wrapper {
+    height: sizeHeight(330);
     width: sizeWidth(560);
   }
 }
