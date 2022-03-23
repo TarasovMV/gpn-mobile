@@ -8,23 +8,29 @@ import { TasksApiService } from './tasks-api.service';
 import { ISelectOption } from '../../@shared/select/select.interfaces';
 import { SimpleModalComponent } from '../../@shared/modals/simple-modal/simple-modal.component';
 import { ModalController } from '@ionic/angular';
-import {ICoordinate, IGpsService} from '../../@core/model/gps.model';
+import { IGpsService } from '../../@core/model/gps.model';
 import {GRAPH} from '../graphs/graph.const';
-import {filter} from 'rxjs/operators';
+import {filter, map} from 'rxjs/operators';
 import {GPS} from '../../@core/tokens';
+import {SavedObservable} from '../../@core/classes/saved-observable';
 
 
 @Injectable({
     providedIn: 'root',
 })
 export class TabsInfoService {
-    public readonly currentTab$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
     public readonly currentTask$: BehaviorSubject<ITask> = new BehaviorSubject<ITask>(null);
+
+    public readonly tasks$: BehaviorSubject<ITask[]> = new BehaviorSubject<ITask[]>([]);
+    public readonly newItems$: SavedObservable<ITask[]> =
+        new SavedObservable<ITask[]>(this.tasks$.pipe(map(x => x.filter(t => !t.isFinalized && !t.inCar))));
+    public readonly selectedItems$: SavedObservable<ITask[]> =
+        new SavedObservable<ITask[]>(this.tasks$.pipe(map(x => x.filter(t => !t.isFinalized && t.inCar))));
+    public readonly finalizesItems$: SavedObservable<ITask[]> =
+        new SavedObservable<ITask[]>(this.tasks$.pipe(map(x => x.filter(t => t.isFinalized && !t.inCar))));
+
+    public readonly currentTab$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
     public readonly pushInfo$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
-    public readonly newItems$: BehaviorSubject<ITask[]> = new BehaviorSubject<ITask[]>([]);
-    public readonly selectedItems$: BehaviorSubject<ITask[]> = new BehaviorSubject<ITask[]>([]);
-    public readonly finalizesItems$: BehaviorSubject<ITask[]> = new BehaviorSubject<ITask[]>([]);
-    public readonly routes$: BehaviorSubject<IRoute[]> = new BehaviorSubject<IRoute[]>([]);
     public readonly reasonsList$: BehaviorSubject<ISelectOption[]> = new BehaviorSubject<ISelectOption[]>([]); // Причины завершения задания
 
     public readonly elkTask: ITask = {
@@ -41,6 +47,7 @@ export class TabsInfoService {
 
     public fakeModalTaskId: number = -1;
     private taskDataCopy: ITaskData = null;
+    private readonly deletedIdsCache: number[] = [];
 
     constructor(
         private http: HttpClient,
@@ -55,7 +62,6 @@ export class TabsInfoService {
             .subscribe((id) => this.getTasks().then());
     }
 
-    // TODO: узнать что делать при получении нового задания (придумать что делать с currentTask$)
     public async getTasks(): Promise<void> {
         const id = this.userInfo?.currentUser?.userId;
         const workShiftId = this.userInfo.workShift$.getValue();
@@ -64,12 +70,13 @@ export class TabsInfoService {
         }
 
         const tasksData: ITaskData = await this.tasksApi.getTasks(id);
-        const tasks = tasksData?.tasks ?? [];
+        let tasks = tasksData?.tasks ?? [];
+        tasks = tasks.filter(t => this.deletedIdsCache.findIndex(d => d === t.id) === -1);
 
         tasks.forEach((item) => {
             item.probes = item.probes.map(probe => ({...probe, checked: false}));
             item.tares = item.tares.map(probe => ({...probe, checked: false}));
-            const pointId = tasksData.route.filter(x => x.taskId === item.id)?.slice(-1)?.[0]?.pointId;
+            const pointId = `locker${item.lockerId}`;
             item.node = {
                 id: pointId,
                 // нестрогое сравнение оставить
@@ -86,111 +93,54 @@ export class TabsInfoService {
             route: [...tasksData.route],
         };
 
-        this.newItems$.next(
-            tasks.filter((item) => !item.isFinalized && !item.inCar)
-        );
-        this.finalizesItems$.next(
-            tasks.filter((item) => item.isFinalized && !item.inCar)
-        );
-        this.selectedItems$.next(
-            tasks.filter((item) => item.inCar && !item.isFinalized)
-        );
-        this.routes$.next(tasksData.route);
+        let currentTasks = [...this.tasks$.getValue()];
 
-        if (!!this.newItems$.getValue()?.length && this.currentTask$.getValue() !== this.newItems$.getValue()[0]) {
-            const newTasks = this.newItems$.getValue();
-            const prevId = this.currentTask$.getValue()?.id;
-            const curId = newTasks[0]?.id;
-            if(curId !== prevId) {
-                this.currentTask$.next(this.newItems$.getValue()[0]);
-            }
-        } else if (
-            !this.newItems$.getValue().length &&
-            !!this.selectedItems$.getValue().length &&
-            this.currentTask$.getValue()?.id !== null
-        ) {
-            this.currentTask$.next(this.elkTask);
-        } else if (
-            !this.newItems$.getValue().length &&
-            !this.selectedItems$.getValue().length
-        ) {
-            this.currentTask$.next(null);
-        }
-    }
+        const freshTasks = tasks.filter(t => currentTasks.findIndex((c) => t.id === c.id) === -1);
+        currentTasks = currentTasks.filter(c => tasks.findIndex(t => t.id === c.id) !== -1);
 
-    // TODO: refactor to return with id
-    public getRoutes(taskId: number): ICoordinate[] {
-        const route = this.routes$
-            .getValue()
-            .filter((item) => item.taskId === taskId)
-            .map((item) => ({
-                x: item.point.y,
-                y: item.point.x,
-            }));
-        return route;
+        this.tasks$.next([...currentTasks, ...freshTasks]);
     }
 
     public async goToNextTask(): Promise<void> {
-        const newTasks = this.newItems$.getValue();
-        const selectedTasks = this.selectedItems$.getValue();
         const currentTaskId = this.currentTask$.getValue().id;
 
-        const res = await this.tasksApi.finalizeTask(currentTaskId, {});
-        if (res) {
-            this.newItems$.next(
-                newTasks.filter((item) => item.id !== currentTaskId)
-            );
+        this.tasksApi.finalizeTask(currentTaskId, {}).then();
 
-            this.selectedItems$.next([
-                ...selectedTasks,
-                ...newTasks.filter((item) => item.id === currentTaskId),
-            ]);
-
-            if (this.newItems$.getValue().length === 0 && this.selectedItems$.getValue().length !== 0) {
-                this.currentTask$.next(this.elkTask);
-            } else {
-                this.currentTask$.next(null);
+        const tasks = this.tasks$.getValue();
+        tasks.forEach(x => {
+            if(x.id === currentTaskId) {
+                x.inCar = true;
             }
-        }
-        await this.getTasks();
+        });
+        this.tasks$.next([...tasks]);
     }
 
     public async endTasks(): Promise<void> {
-        const selectedTasks = this.selectedItems$.getValue();
-        const finalizedTasks = this.finalizesItems$.getValue();
         const userId = this.userInfo.currentUser.userId;
-
-        this.currentTask$.next(null);
 
         this.userInfo.changeStatus(EStatus.free);
         // const position = await this.gpsService.getCurrentPosition.pipe(map(x => positionStringify(x.coords))).toPromise();
-        const res = await this.tasksApi.finalizeAllTasks({ userId, position: '' });
-        const resNumbers = (res ?? []).map((item) => item.taskNumber);
-        if (res.length > 0) {
-            this.selectedItems$.next(
-                selectedTasks.filter(
-                    (item) => !resNumbers.includes(+item.number)
-                )
-            );
+        this.tasksApi.finalizeAllTasks({ userId, position: '' }).then();
 
-            this.finalizesItems$.next([
-                ...finalizedTasks,
-                ...selectedTasks.filter(
-                    (item) => !!resNumbers.includes(+item.number)
-                ),
-            ]);
-            await this.getTasks();
-        }
+        const tasks = this.tasks$.getValue();
+        tasks.forEach(x => {
+            if(x.inCar && !x.isFinalized) {
+                x.inCar = false;
+                x.isFinalized = true;
+            }
+        });
+        this.tasks$.next([...tasks]);
     }
 
-    public async failTask(
-        id: number,
-        reasonId: number,
-        comment
-    ): Promise<void> {
+    public async failTask(id: number, reasonId: number, comment: string,): Promise<void> {
         const body = { taskDeclineReasonId: reasonId, comment };
-        await this.tasksApi.failTask(id, body);
-        await this.getTasks();
+        this.tasksApi.failTask(id, body).then();
+
+        let tasks = this.tasks$.getValue();
+        tasks = tasks.filter(x => x.id !== id);
+        this.tasks$.next([...tasks]);
+
+        this.deletedIdsCache.push(id);
     }
 
     public async getReasons(): Promise<void> {

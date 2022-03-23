@@ -21,6 +21,7 @@ import {IGpsService} from './@core/model/gps.model';
 import {map} from 'rxjs/operators';
 import {positionStringify} from './@core/functions/position-stringify.function';
 import {CarTrackingService} from './@core/services/car-tracking.service';
+import {CurrentTaskTrackingService} from './@core/services/current-task-tracking.service';
 
 
 @Component({
@@ -43,6 +44,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private tabsInfoService: TabsInfoService,
         @Inject(GPS) private gpsService: IGpsService,
         private carTracking: CarTrackingService,
+        private taskTracking: CurrentTaskTrackingService,
 
         private preprocess: PreprocessService,
     ) {}

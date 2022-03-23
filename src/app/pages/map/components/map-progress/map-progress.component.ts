@@ -27,7 +27,7 @@ export class MapProgressComponent implements OnInit {
 
     ngOnInit(): void {}
 
-    private async presentModal() {
+    async presentModal() {
         if (!this.msg) {
             return;
         }

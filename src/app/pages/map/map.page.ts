@@ -66,12 +66,12 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
 
     async ngOnInit(): Promise<void> {
         if (environment.fakeGps) {
-            const id = this.tabsService.currentTask$.getValue()?.id;
-            if (!id) {
-                return;
-            }
-            const route = this.tabsService.getRoutes(id);
-            this.gpsService.init?.(route);
+            // const id = this.tabsService.currentTask$.getValue()?.id;
+            // if (!id) {
+            //     return;
+            // }
+            // const route = this.tabsService.getRoutes(id);
+            // this.gpsService.init?.(route);
         }
     }
 
@@ -119,7 +119,6 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
     public async redirectToNFC(): Promise<void> {
         if(this.tabsService.currentTask$.getValue()?.id === null ) {
             await this.navCtrl.navigateRoot('/tabs/tabs-ready');
-            this.tabsService.currentTask$.next(null);
             return;
         }
         this.navCtrl.navigateRoot('/nfc').then();

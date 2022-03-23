@@ -21,18 +21,12 @@ export class TabsTasksPage implements OnInit, IPageTab {
         private navCtrl: NavController
     ) {}
 
-    ngOnInit() {}
-
-    public async openChooseOverlay(): Promise<void> {
-        const present = await this.presentModal();
-        await present.onDidDismiss();
-    }
+    ngOnInit(): void {}
 
     public openMap(): void {
         const newTasksList = this.tabsService.newItems$.getValue();
 
         if(!!newTasksList?.length) {
-            this.tabsService.currentTask$.next(newTasksList[0]);
             this.userInfo.changeStatus(EStatus.busy);
             this.navCtrl.navigateRoot('/map').then();
         }

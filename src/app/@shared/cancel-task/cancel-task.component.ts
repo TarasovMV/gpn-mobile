@@ -38,18 +38,16 @@ export class CancelTaskComponent implements OnInit {
 
     public async cancelTask(): Promise<void> {
         const taskId = this.tabsService.currentTask$.getValue().id;
-        const res = await this.tabsService.failTask(
+        this.tabsService.failTask(
             taskId,
             this.chosenReasonId,
             this.comment
-        );
+        ).then();
 
         if (this.tabsService.newItems$.getValue().length === 0) {
-            this.tabsService.currentTask$.next(this.tabsService.elkTask);
             await this.dismiss();
             await this.navCtrl.navigateRoot('map');
         } else {
-            this.tabsService.currentTask$.next(null);
             await this.dismiss();
             await this.navCtrl.navigateRoot('tabs/tabs-tasks');
         }
