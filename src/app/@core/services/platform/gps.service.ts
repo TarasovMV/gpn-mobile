@@ -56,8 +56,8 @@ export class GpsService implements IGpsService {
             taskId,
             userId: 7,
             currentPosition: positionStringify(position.coords),
-            taskAllTime: trackingService.taskAllTime,
-            taskRestTime: trackingService.taskRestTime,
+            taskAllTime: Math.round(trackingService.taskAllTime),
+            taskRestTime: Math.round(trackingService.taskRestTime),
         };
         this.http.post(`${this.restUrl}/api/WorkShift/current-position`, body).toPromise().then();
     }
