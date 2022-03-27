@@ -1,10 +1,14 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
-import { UserInfoService } from '../../../../services/user-info.service';
-import {StatusCurrentComponent} from '../../../modals/status-current/status-current.component';
-import {TabsInfoService} from '../../../../services/tabs/tabs-info.service';
-import {Observable} from "rxjs";
-import {map} from "rxjs/operators";
+import {
+    EStatus,
+    UserInfoService,
+} from '../../../../services/user-info.service';
+import { StatusCurrentComponent } from '../../../modals/status-current/status-current.component';
+import { TabsInfoService } from '../../../../services/tabs/tabs-info.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { IStatusInfo } from '../../avatar-modal.component';
 
 @Component({
     selector: 'app-user-info',
@@ -15,7 +19,22 @@ export class UserInfoComponent implements OnInit {
     @Output() onChangeUser = new EventEmitter<boolean>();
     @Output() onChangeCar = new EventEmitter<boolean>();
     public isOpened = false;
-    public disableStatusBtn$: Observable<boolean> = this.taskService.currentTask$.pipe(map((task => !!task)));
+    public disableStatusBtn$: Observable<boolean> =
+        this.taskService.currentTask$.pipe(map((task) => !!task));
+    public enabledStatusList$: Observable<IStatusInfo[]> = this.taskService
+        .isAllTasksEnded()
+        .pipe(
+            map((isEnd) => {
+                const statuses = this.userInfo.statusList$.getValue();
+                if (isEnd === true) {
+                    return statuses;
+                } else {
+                    return statuses.filter(
+                        (item) => item.id === EStatus.busy || EStatus.notActive
+                    );
+                }
+            })
+        );
     constructor(
         private navCtrl: NavController,
         public userInfo: UserInfoService,

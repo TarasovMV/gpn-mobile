@@ -1,5 +1,5 @@
-import {Inject, Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import { Inject, Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ModalController } from '@ionic/angular';
 import {
     IStatusColor,
@@ -8,20 +8,23 @@ import {
 import { IUser, IUserCredentials } from '../@core/model/user.model';
 import { ApiService } from '../@core/services/api/api.service';
 import { IVehicle } from '../@core/model/vehicle.model';
-import {IWorkShiftEnd, IWorkShiftStatus} from '../@core/model/workshift.model';
+import {
+    IWorkShiftEnd,
+    IWorkShiftStatus,
+} from '../@core/model/workshift.model';
 import { SimpleModalComponent } from '../@shared/modals/simple-modal/simple-modal.component';
-import {IGpsService} from '../@core/model/gps.model';
-import {GPS} from '../@core/tokens';
-import {map} from 'rxjs/operators';
-import {positionStringify} from '../@core/functions/position-stringify.function';
-import {PreloaderService} from "../@core/services/platform/preloader.service";
+import { IGpsService } from '../@core/model/gps.model';
+import { GPS } from '../@core/tokens';
+import { map } from 'rxjs/operators';
+import { positionStringify } from '../@core/functions/position-stringify.function';
+import { PreloaderService } from '../@core/services/platform/preloader.service';
 
 export enum EStatus {
     notActive = 1,
     busy = 2,
     free = 3,
     lunchTime = 4,
-    pendingLunch = 5
+    pendingLunch = 5,
 }
 
 @Injectable({
@@ -86,7 +89,7 @@ export class UserInfoService {
         public modalController: ModalController,
         private apiService: ApiService,
         private preloader: PreloaderService,
-        @Inject(GPS) private gpsService: IGpsService,
+        @Inject(GPS) private gpsService: IGpsService
     ) {}
 
     public async openActivityModal(): Promise<void> {
@@ -125,9 +128,11 @@ export class UserInfoService {
         let position = '';
         await this.preloader.activate();
         try {
-            position = await this.gpsService.getCurrentPosition.pipe(map(x => positionStringify(x.coords))).toPromise();
-        } catch (e) {}
-        finally {
+            position = await this.gpsService.getCurrentPosition
+                .pipe(map((x) => positionStringify(x.coords)))
+                .toPromise();
+        } catch (e) {
+        } finally {
             await this.preloader.disable();
         }
 
@@ -135,7 +140,7 @@ export class UserInfoService {
             userId,
             vehicleId,
             driverStateId,
-            position
+            position,
         });
         this.workShift$.next(workShift.id);
     }
@@ -157,21 +162,20 @@ export class UserInfoService {
         const params: IWorkShiftStatus = {
             isMobile: true,
             stateId: id,
-            userId
+            userId,
         };
 
         const acceptedStatus = await this.apiService.changeStatus(params);
         this.statusId$.next(acceptedStatus?.id);
     }
 
-    public getCurrantStatus(): Observable<{id: number; state: string}> {
+    public getCurrantStatus(): Observable<{ id: number; state: string }> {
         const userId = this.currentUser?.userId;
         const workShiftId = this.workShift$.getValue();
         if (userId && workShiftId) {
             return this.apiService.getCurrentStatus(userId);
-        }
-        else {
-            return new Observable<{id: number; state: string}>();
+        } else {
+            return new Observable<{ id: number; state: string }>();
         }
     }
 

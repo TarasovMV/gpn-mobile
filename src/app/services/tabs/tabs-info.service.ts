@@ -1,5 +1,5 @@
 import {Inject, Injectable} from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../../@core/services/api/api.service';
 import {EStatus, UserInfoService} from '../user-info.service';
@@ -65,7 +65,8 @@ export class TabsInfoService {
     public async getTasks(): Promise<void> {
         const id = this.userInfo?.currentUser?.userId;
         const workShiftId = this.userInfo.workShift$.getValue();
-        if (!id || !workShiftId) {
+        const statusId = this.userInfo.statusId$.getValue();
+        if (!id || !workShiftId || statusId === EStatus.notActive) {
             return;
         }
 
@@ -118,7 +119,7 @@ export class TabsInfoService {
     public async endTasks(): Promise<void> {
         const userId = this.userInfo.currentUser.userId;
 
-        this.userInfo.changeStatus(EStatus.free);
+        this.userInfo.changeStatus(EStatus.notActive);
         // const position = await this.gpsService.getCurrentPosition.pipe(map(x => positionStringify(x.coords))).toPromise();
         this.tasksApi.finalizeAllTasks({ userId, position: '' }).then();
 
@@ -130,6 +131,14 @@ export class TabsInfoService {
             }
         });
         this.tasks$.next([...tasks]);
+    }
+
+    public isAllTasksEnded(): Observable<boolean> {
+        const isEnd$ = combineLatest([
+            this.newItems$,
+            this.selectedItems$,
+        ]).pipe(map((data)=> data.every(item => item.length === 0)));
+        return isEnd$;
     }
 
     public async failTask(id: number, reasonId: number, comment: string,): Promise<void> {
