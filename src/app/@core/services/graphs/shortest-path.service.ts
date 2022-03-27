@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { GeoProjection } from 'as-geo-projection';
-import { IGraph } from '../../@core/model/graphs.models';
-import {ICoordinate} from '../../@core/model/gps.model';
+import { IGraph } from '../../model/graphs.models';
+import {ICoordinate} from '../../model/gps.model';
 import * as jsnx from 'jsnx';
 import {GRAPH} from './graph.const';
 

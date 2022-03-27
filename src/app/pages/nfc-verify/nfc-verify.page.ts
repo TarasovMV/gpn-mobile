@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
-import { TabsInfoService } from '../../services/tabs/tabs-info.service';
+import { TabsInfoService } from '../../@core/services/tabs-info.service';
 import { VerifyModalComponent } from './components/verify-modal/verify-modal.component';
 import {CancelTaskComponent} from "../../@shared/cancel-task/cancel-task.component";
 import {Observable} from "rxjs";

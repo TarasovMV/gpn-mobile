@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ModalController, NavController} from '@ionic/angular';
-import {UserInfoService} from '../../services/user-info.service';
+import {UserInfoService} from '../../@core/services/user-info.service';
 import {CarPopowerComponent} from '../../pages/login/components/car-popower/car-popower.component';
 
 export interface IStatusColor {

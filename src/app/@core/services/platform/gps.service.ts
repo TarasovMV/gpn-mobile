@@ -4,13 +4,13 @@ import { Geolocation } from '@capacitor/geolocation';
 import {IGpsInfo, IGpsService} from '../../model/gps.model';
 import {Position} from '@capacitor/geolocation/dist/esm/definitions';
 import {filter, map, tap, throttleTime} from 'rxjs/operators';
-import {GeoProjectionService} from '../../../services/graphs/geo-projection.service';
+import {GeoProjectionService} from '../graphs/geo-projection.service';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
-import {TabsInfoService} from '../../../services/tabs/tabs-info.service';
+import {TabsInfoService} from '../tabs-info.service';
 import {fromPromise} from 'rxjs/internal-compatibility';
 import {positionStringify} from '../../functions/position-stringify.function';
-import {EmergencyCancellationService} from '../../../services/emergency-cancellation.service';
+import {EmergencyCancellationService} from '../emergency-cancellation.service';
 import {CarTrackingService} from '../car-tracking.service';
 
 

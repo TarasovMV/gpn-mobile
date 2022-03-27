@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of, Subscription} from 'rxjs';
 import {ICoordinate, IGpsService} from '../../model/gps.model';
-import {GeoProjectionService} from '../../../services/graphs/geo-projection.service';
+import {GeoProjectionService} from '../graphs/geo-projection.service';
 import {fromArray} from 'rxjs/internal/observable/fromArray';
 import {concatMap, delay } from 'rxjs/operators';
 import {Position} from '@capacitor/geolocation/dist/esm/definitions';

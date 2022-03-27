@@ -4,7 +4,7 @@ import {
     Input,
     OnInit,
 } from '@angular/core';
-import { TabsInfoService } from '../../../../services/tabs/tabs-info.service';
+import { TabsInfoService } from '../../../../@core/services/tabs-info.service';
 import { SimpleModalComponent } from '../../../../@shared/modals/simple-modal/simple-modal.component';
 import { ModalController } from '@ionic/angular';
 

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {GeoProjection, toFlat, toWGS} from 'as-geo-projection';
-import {ICoordinate} from '../../@core/model/gps.model';
+import {ICoordinate} from '../../model/gps.model';
 import {IGeoProjectionWGS} from 'as-geo-projection/build/main/lib/geo-projection';
 
 
@@ -49,6 +49,19 @@ export class GeoProjectionService {
                 : acc + this.getDistanceMeters(this.epsgConvert(next), this.epsgConvert(arr[i + 1])),
             0
         ) / (speed / 3.6) * 1000;
+    }
+
+    /**
+     * @description return path distance in meters
+     * @param path - user path
+     */
+    public getPathDistance(path: ICoordinate[]): number {
+        return path.reduce((acc, next, i, arr) =>
+                arr.length - 1 === i
+                    ? acc
+                    : acc + this.getDistanceMeters(this.epsgConvert(next), this.epsgConvert(arr[i + 1])),
+            0
+        );
     }
 
     public getDistanceMeters(point1: IGeoProjectionWGS, point2: IGeoProjectionWGS): number {

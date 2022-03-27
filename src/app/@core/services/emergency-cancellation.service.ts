@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { EmergencyCancellationModalComponent } from '../@shared/modals/emergancy-cancelation-modal/emergency-cancellation-modal.component';
+import { EmergencyCancellationModalComponent } from '../../@shared/modals/emergancy-cancelation-modal/emergency-cancellation-modal.component';
 import {Router} from '@angular/router';
 
 

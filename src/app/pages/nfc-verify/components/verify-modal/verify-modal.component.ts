@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {ModalController} from '@ionic/angular';
 import {NfcTimerModalComponent} from '../nfc-timer-modal/nfc-timer-modal.component';
-import {TabsInfoService} from '../../../../services/tabs/tabs-info.service';
+import {TabsInfoService} from '../../../../@core/services/tabs-info.service';
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {distinctUntilChanged, map} from 'rxjs/operators';
 import {FormArray, FormControl, FormGroup} from '@angular/forms';

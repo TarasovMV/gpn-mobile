@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { UserInfoService } from '../../services/user-info.service';
+import { UserInfoService } from '../../@core/services/user-info.service';
 import {expandAnimation} from '../animations/expand.animation';
 
 @Component({

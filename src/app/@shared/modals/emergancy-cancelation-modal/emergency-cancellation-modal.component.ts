@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
-import { TabsInfoService } from '../../../services/tabs/tabs-info.service';
+import { TabsInfoService } from '../../../@core/services/tabs-info.service';
 
 @Component({
     selector: 'app-emergency-cancellation-modal',

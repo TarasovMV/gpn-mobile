@@ -14,7 +14,7 @@ import {
     ModalController,
     NavController,
 } from '@ionic/angular';
-import { TabsInfoService } from '../../../../services/tabs/tabs-info.service';
+import { TabsInfoService } from '../../../../@core/services/tabs-info.service';
 import { NfcTimerModalComponent } from '../../../nfc-verify/components/nfc-timer-modal/nfc-timer-modal.component';
 
 export interface IDeliveryItems {

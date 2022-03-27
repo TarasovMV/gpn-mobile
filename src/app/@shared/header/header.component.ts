@@ -2,7 +2,7 @@ import {Component, Input} from '@angular/core';
 import {ModalController} from '@ionic/angular';
 import {AvatarModalComponent} from '../avatar-modal/avatar-modal.component';
 import {ThemeService} from '../../@core/services/platform/theme.service';
-import {UserInfoService} from '../../services/user-info.service';
+import {UserInfoService} from '../../@core/services/user-info.service';
 
 
 @Component({

@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {IPageTab, PageTabType} from '../../tabs.page';
-import {TabsInfoService} from '../../../../services/tabs/tabs-info.service';
+import {TabsInfoService} from '../../../../@core/services/tabs-info.service';
 import {ModalController, NavController} from '@ionic/angular';
 import {ChooseTaskOverlayComponent} from './components/choose-task-overlay/choose-task-overlay.component';
-import {EStatus, UserInfoService} from '../../../../services/user-info.service';
+import {EStatus, UserInfoService} from '../../../../@core/services/user-info.service';
 
 
 @Component({

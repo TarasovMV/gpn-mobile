@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
-import { TabsInfoService } from '../../services/tabs/tabs-info.service';
+import { TabsInfoService } from '../../@core/services/tabs-info.service';
 import { CancelTaskComponent } from '../../@shared/cancel-task/cancel-task.component';
-import {EStatus, UserInfoService} from "../../services/user-info.service";
+import {EStatus, UserInfoService} from "../../@core/services/user-info.service";
 
 @Component({
     selector: 'app-end-task',

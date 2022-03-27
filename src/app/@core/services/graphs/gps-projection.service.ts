@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {ICoordinate} from '../../@core/model/gps.model';
-import {IGraph} from '../../@core/model/graphs.models';
+import {ICoordinate} from '../../model/gps.model';
+import {IGraph} from '../../model/graphs.models';
 import {GRAPH} from './graph.const';
 
 

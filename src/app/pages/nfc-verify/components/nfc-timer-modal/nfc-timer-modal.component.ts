@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { NfcService } from '../../../../@core/services/platform/nfc.service';
 import { take } from 'rxjs/operators';
-import { TabsInfoService } from '../../../../services/tabs/tabs-info.service';
+import { TabsInfoService } from '../../../../@core/services/tabs-info.service';
 import { DialogModalComponent } from '../../../../@shared/modals/dialog-modal/dialog-modal.component';
 import { AcceptModalComponent } from '../../../../@shared/modals/accept-modal/accept-modal.component';
 

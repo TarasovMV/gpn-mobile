@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { UserInfoService } from '../../../services/user-info.service';
+import { UserInfoService } from '../../../@core/services/user-info.service';
 import { ModalController } from '@ionic/angular';
-import { TabsInfoService } from '../../../services/tabs/tabs-info.service';
+import { TabsInfoService } from '../../../@core/services/tabs-info.service';
 import { VerifyModalComponent } from '../../../pages/nfc-verify/components/verify-modal/verify-modal.component';
 import { StatisticModalComponent } from '../statistic-modal/statistic-modal.component';
 import {Observable} from 'rxjs';

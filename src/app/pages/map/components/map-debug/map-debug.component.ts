@@ -2,8 +2,8 @@ import {Component, Inject} from '@angular/core';
 import {IGpsService} from '../../../../@core/model/gps.model';
 import {Observable} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
-import {GpsProjectionService} from '../../../../services/graphs/gps-projection.service';
-import {GeoProjectionService} from '../../../../services/graphs/geo-projection.service';
+import {GpsProjectionService} from '../../../../@core/services/graphs/gps-projection.service';
+import {GeoProjectionService} from '../../../../@core/services/graphs/geo-projection.service';
 
 @Component({
     selector: 'app-map-debug',

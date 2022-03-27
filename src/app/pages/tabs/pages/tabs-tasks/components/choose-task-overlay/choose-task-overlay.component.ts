@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
-import { TabsInfoService } from '../../../../../../services/tabs/tabs-info.service';
+import { TabsInfoService } from '../../../../../../@core/services/tabs-info.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { ITask } from '../../../../../../@core/model/task.model';
 

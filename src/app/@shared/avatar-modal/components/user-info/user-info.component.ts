@@ -3,9 +3,9 @@ import { ModalController, NavController } from '@ionic/angular';
 import {
     EStatus,
     UserInfoService,
-} from '../../../../services/user-info.service';
+} from '../../../../@core/services/user-info.service';
 import { StatusCurrentComponent } from '../../../modals/status-current/status-current.component';
-import { TabsInfoService } from '../../../../services/tabs/tabs-info.service';
+import { TabsInfoService } from '../../../../@core/services/tabs-info.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { IStatusInfo } from '../../avatar-modal.component';

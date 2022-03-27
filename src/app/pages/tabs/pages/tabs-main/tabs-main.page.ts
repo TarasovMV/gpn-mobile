@@ -11,9 +11,9 @@ import { BehaviorSubject, combineLatest } from 'rxjs';
 import { MAIN_PAGE_DATA } from './mock';
 import * as d3 from 'd3';
 import {ModalController, NavController} from '@ionic/angular';
-import { TabsInfoService } from '../../../../services/tabs/tabs-info.service';
+import { TabsInfoService } from '../../../../@core/services/tabs-info.service';
 import {StatusBeginComponent} from "../../../../@shared/modals/status-begin/status-begin.component";
-import {UserInfoService} from "../../../../services/user-info.service";
+import {UserInfoService} from "../../../../@core/services/user-info.service";
 
 export interface IDiagram {
     total: number;

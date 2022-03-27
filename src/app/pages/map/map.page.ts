@@ -7,14 +7,14 @@ import {
 } from '@angular/core';
 import {combineLatest, Observable, Subject} from 'rxjs';
 import {distinctUntilChanged, filter, map, shareReplay, takeUntil} from 'rxjs/operators';
-import { TabsInfoService } from '../../services/tabs/tabs-info.service';
+import { TabsInfoService } from '../../@core/services/tabs-info.service';
 import { ModalController, NavController } from '@ionic/angular';
 import { ResolveTaskComponent } from './components/resolve-task/resolve-task.component';
-import { ShortestPathService } from '../../services/graphs/shortest-path.service';
+import { ShortestPathService } from '../../@core/services/graphs/shortest-path.service';
 import * as d3 from 'd3';
 import {ICoordinate, IGpsService} from '../../@core/model/gps.model';
-import {GpsProjectionService} from '../../services/graphs/gps-projection.service';
-import {GeoProjectionService} from '../../services/graphs/geo-projection.service';
+import {GpsProjectionService} from '../../@core/services/graphs/gps-projection.service';
+import {GeoProjectionService} from '../../@core/services/graphs/geo-projection.service';
 import {IGraph} from '../../@core/model/graphs.models';
 import {GPS} from '../../@core/tokens';
 import {environment} from '../../../environments/environment';

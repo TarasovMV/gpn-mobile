@@ -4,20 +4,20 @@ import { ModalController } from '@ionic/angular';
 import {
     IStatusColor,
     IStatusInfo,
-} from '../@shared/avatar-modal/avatar-modal.component';
-import { IUser, IUserCredentials } from '../@core/model/user.model';
-import { ApiService } from '../@core/services/api/api.service';
-import { IVehicle } from '../@core/model/vehicle.model';
+} from '../../@shared/avatar-modal/avatar-modal.component';
+import { IUser, IUserCredentials } from '../model/user.model';
+import { ApiService } from './api/api.service';
+import { IVehicle } from '../model/vehicle.model';
 import {
     IWorkShiftEnd,
     IWorkShiftStatus,
-} from '../@core/model/workshift.model';
-import { SimpleModalComponent } from '../@shared/modals/simple-modal/simple-modal.component';
-import { IGpsService } from '../@core/model/gps.model';
-import { GPS } from '../@core/tokens';
+} from '../model/workshift.model';
+import { SimpleModalComponent } from '../../@shared/modals/simple-modal/simple-modal.component';
+import { IGpsService } from '../model/gps.model';
+import { GPS } from '../tokens';
 import { map } from 'rxjs/operators';
-import { positionStringify } from '../@core/functions/position-stringify.function';
-import { PreloaderService } from '../@core/services/platform/preloader.service';
+import { positionStringify } from '../functions/position-stringify.function';
+import { PreloaderService } from './platform/preloader.service';
 
 export enum EStatus {
     notActive = 1,

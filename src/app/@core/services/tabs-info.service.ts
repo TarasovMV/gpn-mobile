@@ -1,18 +1,18 @@
 import {Inject, Injectable} from '@angular/core';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { ApiService } from '../../@core/services/api/api.service';
-import {EStatus, UserInfoService} from '../user-info.service';
-import { IRoute, ITask, ITaskData } from '../../@core/model/task.model';
-import { TasksApiService } from './tasks-api.service';
+import { ApiService } from './api/api.service';
+import {EStatus, UserInfoService} from './user-info.service';
+import { ITask, ITaskData } from '../model/task.model';
+import { TasksApiService } from './api/tasks-api.service';
 import { ISelectOption } from '../../@shared/select/select.interfaces';
 import { SimpleModalComponent } from '../../@shared/modals/simple-modal/simple-modal.component';
 import { ModalController } from '@ionic/angular';
-import { IGpsService } from '../../@core/model/gps.model';
-import {GRAPH} from '../graphs/graph.const';
+import { IGpsService } from '../model/gps.model';
+import {GRAPH} from './graphs/graph.const';
 import {filter, map} from 'rxjs/operators';
-import {GPS} from '../../@core/tokens';
-import {SavedObservable} from '../../@core/classes/saved-observable';
+import {GPS} from '../tokens';
+import {SavedObservable} from '../classes/saved-observable';
 
 
 @Injectable({

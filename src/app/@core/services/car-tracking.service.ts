@@ -1,13 +1,13 @@
 import {Inject, Injectable} from '@angular/core';
-import {TabsInfoService} from '../../services/tabs/tabs-info.service';
+import {TabsInfoService} from './tabs-info.service';
 import {GPS} from '../tokens';
-import {IGpsInfo, IGpsService} from '../model/gps.model';
-import {GeoProjectionService} from '../../services/graphs/geo-projection.service';
-import {GpsProjectionService} from '../../services/graphs/gps-projection.service';
-import {EmergencyCancellationService} from '../../services/emergency-cancellation.service';
+import {IGpsService} from '../model/gps.model';
+import {GeoProjectionService} from './graphs/geo-projection.service';
+import {GpsProjectionService} from './graphs/gps-projection.service';
+import {EmergencyCancellationService} from './emergency-cancellation.service';
 import {distinctUntilChanged, filter, map, tap} from 'rxjs/operators';
 import {combineLatest} from 'rxjs';
-import {ShortestPathService} from '../../services/graphs/shortest-path.service';
+import {ShortestPathService} from './graphs/shortest-path.service';
 
 @Injectable({
     providedIn: 'root'

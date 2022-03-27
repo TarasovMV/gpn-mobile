@@ -15,9 +15,9 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CarPopowerComponent } from './components/car-popower/car-popower.component';
 import { SimpleModalComponent } from '../../@shared/modals/simple-modal/simple-modal.component';
-import { TabsInfoService } from '../../services/tabs/tabs-info.service';
+import { TabsInfoService } from '../../@core/services/tabs-info.service';
 import { SsPush } from 'plugin-sspush';
-import { UserInfoService } from '../../services/user-info.service';
+import { UserInfoService } from '../../@core/services/user-info.service';
 import {ApiService} from '../../@core/services/api/api.service';
 
 

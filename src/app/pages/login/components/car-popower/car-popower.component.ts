@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ModalController, NavController } from '@ionic/angular';
-import { UserInfoService } from '../../../../services/user-info.service';
+import { UserInfoService } from '../../../../@core/services/user-info.service';
 import { IVehicle } from '../../../../@core/model/vehicle.model';
 import { ApiService } from '../../../../@core/services/api/api.service';
 import { StatusBeginComponent } from '../../../../@shared/modals/status-begin/status-begin.component';

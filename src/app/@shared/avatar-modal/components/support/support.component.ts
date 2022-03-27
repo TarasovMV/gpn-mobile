@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { HTTP_GLOBAL } from '../../../../@core/tokens';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { UserInfoService } from '../../../../services/user-info.service';
+import { UserInfoService } from '../../../../@core/services/user-info.service';
 import {environment} from "../../../../../environments/environment";
 
 interface ISelectOption {

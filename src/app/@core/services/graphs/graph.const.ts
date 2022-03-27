@@ -1,4 +1,4 @@
-import {IGraph} from '../../@core/model/graphs.models';
+import {IGraph} from '../../model/graphs.models';
 
 export const GRAPH = {
     "directed": false,
