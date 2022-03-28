@@ -66,40 +66,44 @@ export class TabsInfoService {
         const id = this.userInfo?.currentUser?.userId;
         const workShiftId = this.userInfo.workShift$.getValue();
         const statusId = this.userInfo.statusId$.getValue();
-        if (!id || !workShiftId || statusId === EStatus.notActive) {
+        if (!id || !workShiftId) {
             return;
         }
 
         const tasksData: ITaskData = await this.tasksApi.getTasks(id);
         let tasks = tasksData?.tasks ?? [];
-        tasks = tasks.filter(t => this.deletedIdsCache.findIndex(d => d === t.id) === -1);
+        const hasExtraTask = tasks.some(t => !t.isFinalized && !t.inCar && t?.isExtra);
 
-        tasks.forEach((item) => {
-            item.probes = item.probes.map(probe => ({...probe, checked: false}));
-            item.tares = item.tares.map(probe => ({...probe, checked: false}));
-            const pointId = `locker${item.lockerId}`;
-            item.node = {
-                id: pointId,
-                // нестрогое сравнение оставить
-                // eslint-disable-next-line eqeqeq
-                point: !!pointId ? GRAPH.nodes.find(x => x.id == pointId) : undefined,
+        if (statusId !== EStatus.notActive || hasExtraTask) {
+            tasks = tasks.filter(t => this.deletedIdsCache.findIndex(d => d === t.id) === -1);
+
+            tasks.forEach((item) => {
+                item.probes = item.probes.map(probe => ({...probe, checked: false}));
+                item.tares = item.tares.map(probe => ({...probe, checked: false}));
+                const pointId = `locker${item.lockerId}`;
+                item.node = {
+                    id: pointId,
+                    // нестрогое сравнение оставить
+                    // eslint-disable-next-line eqeqeq
+                    point: !!pointId ? GRAPH.nodes.find(x => x.id == pointId) : undefined,
+                };
+            });
+
+            this.checkPushNotification(this.taskDataCopy?.tasks, tasks);
+
+            this.taskDataCopy = {
+                ...tasksData,
+                tasks: [...tasksData.tasks],
+                route: [...tasksData.route],
             };
-        });
 
-        this.checkPushNotification(this.taskDataCopy?.tasks, tasks);
+            let currentTasks = [...this.tasks$.getValue()];
 
-        this.taskDataCopy = {
-            ...tasksData,
-            tasks: [...tasksData.tasks],
-            route: [...tasksData.route],
-        };
+            const freshTasks = tasks.filter(t => currentTasks.findIndex((c) => t.id === c.id) === -1);
+            currentTasks = currentTasks.filter(c => tasks.findIndex(t => t.id === c.id) !== -1);
 
-        let currentTasks = [...this.tasks$.getValue()];
-
-        const freshTasks = tasks.filter(t => currentTasks.findIndex((c) => t.id === c.id) === -1);
-        currentTasks = currentTasks.filter(c => tasks.findIndex(t => t.id === c.id) !== -1);
-
-        this.tasks$.next([...currentTasks, ...freshTasks]);
+            this.tasks$.next([...currentTasks, ...freshTasks]);
+        }
     }
 
     public async goToNextTask(): Promise<void> {

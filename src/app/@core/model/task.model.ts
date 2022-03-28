@@ -17,6 +17,7 @@ export interface ITask {
     comment?: string;
     isFailed?: boolean;
     inCar?: boolean;
+    isExtra?: boolean;
     dateTimeStart?: Date;
     dateTimeEnd?: Date;
     availableTimeToExceed?: number;
