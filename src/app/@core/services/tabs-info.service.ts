@@ -72,7 +72,7 @@ export class TabsInfoService {
 
         const tasksData: ITaskData = await this.tasksApi.getTasks(id);
         let tasks = tasksData?.tasks ?? [];
-        const hasExtraTask = tasks.some(t => !t.isFinalized && !t.inCar && t?.isExtra);
+        const hasExtraTask = tasks.some(t => !t.isFinalized && !t.inCar && t?.isExtraTask);
 
         if (statusId !== EStatus.notActive || hasExtraTask) {
             tasks = tasks.filter(t => this.deletedIdsCache.findIndex(d => d === t.id) === -1);
