@@ -1,7 +1,4 @@
-import {Injectable} from '@angular/core';
-import {GeoProjectionService} from './geo-projection.service';
-
-const RAW_GRAPH: any = {
+{
     directed: false, multigraph: false, nodes: [
         {
             id: 142, x: 55.066157, y: 73.199021
@@ -4015,45 +4012,4 @@ const RAW_GRAPH: any = {
             ]
         }
     ]
-};
-
-@Injectable({
-    providedIn: 'root'
-})
-export class PreprocessService {
-
-    constructor(private projectionService: GeoProjectionService) {
-        // this.graphPreprocessing();
-    }
-
-    private graphPreprocessing(): void {
-        const coordConvert = (x, y) => this.projectionService.wgsConvert({longitude: y, latitude: x});
-
-        RAW_GRAPH.nodes = RAW_GRAPH.nodes.map(n => ({...n, ...coordConvert(n.x, n.y)}));
-
-        RAW_GRAPH.links.forEach(l => {
-            l.coords = [
-                {
-                    ...RAW_GRAPH.nodes.find(n => n.id === l.source),
-                    id: l.source,
-                },
-                {
-                    ...RAW_GRAPH.nodes.find(n => n.id === l.target),
-                    id: l.target,
-                }
-            ];
-            l.center = {
-                x: (l.coords[0].x + l.coords[1].x) / 2,
-                y: (l.coords[0].y + l.coords[1].y) / 2,
-            };
-        });
-
-        RAW_GRAPH.links.forEach(l => {
-            const point1 = this.projectionService.epsgConvert(l.coords[0]);
-            const point2 = this.projectionService.epsgConvert(l.coords[1]);
-            l.weight = this.projectionService.getDistanceMeters(point1, point2);
-        });
-
-        console.log(RAW_GRAPH);
-    }
 }

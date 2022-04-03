@@ -56,6 +56,9 @@ export class GeoProjectionService {
      * @param path - user path
      */
     public getPathDistance(path: ICoordinate[]): number {
+        if (!path?.length) {
+            return Infinity;
+        }
         return path.reduce((acc, next, i, arr) =>
                 arr.length - 1 === i
                     ? acc

@@ -14,12 +14,9 @@ import { UserInfoService } from './@core/services/user-info.service';
 import {interval, Subscription} from 'rxjs';
 import { NfcService } from './@core/services/platform/nfc.service';
 import { SplashScreen } from '@capacitor/splash-screen';
-import {PreprocessService} from './@core/services/graphs/preprocess.service';
 import {TabsInfoService} from './@core/services/tabs-info.service';
 import {GPS} from './@core/tokens';
 import {IGpsService} from './@core/model/gps.model';
-import {map} from 'rxjs/operators';
-import {positionStringify} from './@core/functions/position-stringify.function';
 import {CarTrackingService} from './@core/services/car-tracking.service';
 import {CurrentTaskTrackingService} from './@core/services/current-task-tracking.service';
 
@@ -45,9 +42,8 @@ export class AppComponent implements OnInit, OnDestroy {
         @Inject(GPS) private gpsService: IGpsService,
         private carTracking: CarTrackingService,
         private taskTracking: CurrentTaskTrackingService,
-
-        private preprocess: PreprocessService,
-    ) {}
+    ) {
+    }
 
     public ngOnInit(): void {
         this.initializeApp();

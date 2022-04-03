@@ -44,6 +44,10 @@ export class GpsProjectionService {
             return [...routes].sort((cur, next) => centerDist(point, cur.center) - centerDist(point, next.center)).slice(0, 10);
         };
 
+        if (!dot || !graph) {
+            return null;
+        }
+
         const nearLinks = filterCuts(dot, graph.links);
         return nearLinks.map(x => getCoerced(x, dot)).sort((cur, next) => cur.dist - next.dist)[0];
     }

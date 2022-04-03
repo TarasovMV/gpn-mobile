@@ -19,7 +19,7 @@
     <span class="name">Статус</span>
     <div class="dropdown">
       <app-status-dropdown
-        [options]="enabledStatusList$ | async"
+        [options]="enabledStatusList$ | async | statusFilter: []"
         [currentOptionId]="userInfo.statusId$ | async"
         [disabled]="disableStatusBtn$ | async"
         (onChanged)="changeStatus($event)"

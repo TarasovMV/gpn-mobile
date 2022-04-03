@@ -18,6 +18,7 @@ import {GeoProjectionService} from '../../@core/services/graphs/geo-projection.s
 import {IGraph} from '../../@core/model/graphs.models';
 import {GPS} from '../../@core/tokens';
 import {environment} from '../../../environments/environment';
+import {GRAPH} from '../../@core/services/graphs/graph.const';
 
 
 @Component({
@@ -76,8 +77,13 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit(): void {
-        this.drawSvg();
+        // this.drawSvg();
+        // this.drawGraph(GRAPH, '--border-blue-color');
+        // return;
         const currentTask$ = this.tabsService.currentTask$.pipe(distinctUntilChanged((prev, curr) => prev.id === curr.id));
+
+        this.drawSvg();
+
         combineLatest([
             this.position$,
             currentTask$

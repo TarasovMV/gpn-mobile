@@ -28,11 +28,10 @@ export class UserInfoComponent implements OnInit {
                 const statuses = this.userInfo.statusList$.getValue();
                 if (isEnd === true) {
                     return statuses;
-                } else {
-                    return statuses.filter(
-                        (item) => item.id === EStatus.busy || EStatus.notActive
-                    );
                 }
+                return statuses.filter(
+                    (item) => item.id === EStatus.busy || EStatus.notActive
+                );
             })
         );
     constructor(

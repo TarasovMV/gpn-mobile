@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import { ModalController } from '@ionic/angular';
 import {
     IStatusColor,
@@ -9,13 +9,14 @@ import { IUser, IUserCredentials } from '../model/user.model';
 import { ApiService } from './api/api.service';
 import { IVehicle } from '../model/vehicle.model';
 import {
+    IWorkShift,
     IWorkShiftEnd,
     IWorkShiftStatus,
 } from '../model/workshift.model';
 import { SimpleModalComponent } from '../../@shared/modals/simple-modal/simple-modal.component';
 import { IGpsService } from '../model/gps.model';
 import { GPS } from '../tokens';
-import { map } from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import { positionStringify } from '../functions/position-stringify.function';
 import { PreloaderService } from './platform/preloader.service';
 
@@ -54,6 +55,8 @@ export class UserInfoService {
 
     public endStatistic$: BehaviorSubject<IWorkShiftEnd> =
         new BehaviorSubject<IWorkShiftEnd>(null);
+
+    public workShift: IWorkShift;
 
     public readonly statusColors: { [key: string]: IStatusColor } = {
         1: {
@@ -115,6 +118,7 @@ export class UserInfoService {
         const workShift = await this.apiService.getWorkShift(
             this.currentUser.userId
         );
+        this.workShift = workShift;
         const car = await this.apiService.getVehicleById(workShift.vehicleId);
         this.workShift$.next(workShift.id);
         this.statusId$.next(workShift.driverStateId);
@@ -159,10 +163,15 @@ export class UserInfoService {
         this.statusId$.next(EStatus.pendingLunch);
 
         const userId = this.currentUser?.userId;
+        const position = await this.gpsService.getCurrentPosition
+            .pipe(map((x) => positionStringify(x.coords)), catchError(_ => of('')))
+            .toPromise();
+
         const params: IWorkShiftStatus = {
             isMobile: true,
             stateId: id,
             userId,
+            position
         };
 
         const acceptedStatus = await this.apiService.changeStatus(params);

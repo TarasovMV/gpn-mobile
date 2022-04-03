@@ -51,7 +51,7 @@ export class ShortestPathService {
             target: targetNode,
             weight: 'weight',
         });
-        return path.map(x => x === userLinkId ? user : this.graph.nodes.find(n => n.id === x));
+        return path?.map(x => x === userLinkId ? user : this.graph.nodes.find(n => n.id === x));
     }
 
     private geoTransform(coords: any[]): ICoordinate[] {

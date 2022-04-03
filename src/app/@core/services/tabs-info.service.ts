@@ -13,6 +13,9 @@ import {GRAPH} from './graphs/graph.const';
 import {filter, map} from 'rxjs/operators';
 import {GPS} from '../tokens';
 import {SavedObservable} from '../classes/saved-observable';
+import {GpsProjectionService} from './graphs/gps-projection.service';
+import {ShortestPathService} from './graphs/shortest-path.service';
+import {GeoProjectionService} from './graphs/geo-projection.service';
 
 
 @Injectable({
@@ -23,11 +26,44 @@ export class TabsInfoService {
 
     public readonly tasks$: BehaviorSubject<ITask[]> = new BehaviorSubject<ITask[]>([]);
     public readonly newItems$: SavedObservable<ITask[]> =
-        new SavedObservable<ITask[]>(this.tasks$.pipe(map(x => x.filter(t => !t.isFinalized && !t.inCar))));
+        new SavedObservable<ITask[]>(this.tasks$.pipe(
+            map(x => x.filter(t => !t.isFinalized && !t.inCar)),
+            map((items) => {
+                const sortByDist = (arr) => arr.sort((cur, next) => {})
+
+                const extraItems = items.filter(i => i.order <= 2);
+                const defaultItems = items.filter(i => i.order > 2);
+
+                return [...extraItems, ...defaultItems];
+            }),
+        ));
     public readonly selectedItems$: SavedObservable<ITask[]> =
         new SavedObservable<ITask[]>(this.tasks$.pipe(map(x => x.filter(t => !t.isFinalized && t.inCar))));
     public readonly finalizesItems$: SavedObservable<ITask[]> =
         new SavedObservable<ITask[]>(this.tasks$.pipe(map(x => x.filter(t => t.isFinalized && !t.inCar))));
+    public readonly sortedItems$: Observable<ITask[]> = combineLatest([
+        this.newItems$, this.gpsService.position$.pipe(map(pos => this.gpsProjection.getProjection(pos)))
+    ]).pipe(
+        map(([tasks, pos]) => {
+            const getDist = (task) => {
+                const path = this.pathService.findShortest(pos.linkId, task.node.id, {x: pos.x, y: pos.y});
+                return this.geoProjection.getPathDistance(path);
+            };
+
+            const distSort = (arr: ITask[]) => arr
+                .map(x => ({...x, dist: getDist(x)}))
+                .sort((cur, next) => cur.order - next.order);
+
+            if (!pos) {
+                return tasks ?? [];
+            }
+
+            const extraTasks = distSort(tasks.filter(t => t.order <= 2));
+            const defaultTasks = distSort(tasks.filter(t => t.order > 2));
+
+            return [...extraTasks, ...defaultTasks];
+        }),
+    );
 
     public readonly currentTab$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
     public readonly pushInfo$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
@@ -50,12 +86,15 @@ export class TabsInfoService {
     private readonly deletedIdsCache: number[] = [];
 
     constructor(
+        @Inject(GPS) private gpsService: IGpsService,
+        private gpsProjection: GpsProjectionService,
+        private geoProjection: GeoProjectionService,
+        private pathService: ShortestPathService,
         private http: HttpClient,
         private apiService: ApiService,
         private tasksApi: TasksApiService,
         private userInfo: UserInfoService,
         private modalController: ModalController,
-        @Inject(GPS) private gpsService: IGpsService,
     ) {
         this.userInfo.workShift$
             .pipe(filter(id => id != null))

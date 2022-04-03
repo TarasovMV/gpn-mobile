@@ -41,7 +41,8 @@
           {
             "ignoreParameters": true
           }
-        ]
+        ],
+        "no-trailing-spaces": ["error", { "skipBlankLines": true }]
       }
     },
     {

@@ -9,6 +9,7 @@ import {distinctUntilChanged, filter, map, tap} from 'rxjs/operators';
 import {combineLatest} from 'rxjs';
 import {ShortestPathService} from './graphs/shortest-path.service';
 
+
 @Injectable({
     providedIn: 'root'
 })
@@ -55,8 +56,8 @@ export class CarTrackingService {
             const res = this.gpsProjection.getProjection(pos);
             const path = this.pathService.findShortest(res.linkId, destination.pointId, {x: res.x, y: res.y});
             const time = this.geoProjection.getPathTime(path);
-            this.taskAllTime = this.taskAllTime ?? time;
             this.taskRestTime = time;
+            this.taskAllTime = time > this.taskAllTime ? time : this.taskAllTime;
         });
 
         position$.subscribe(pos => {

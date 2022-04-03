@@ -14,6 +14,7 @@ export interface IWorkShiftStatus {
     userId: number;
     stateId: number;
     isMobile: true;
+    position: string;
 }
 
 export interface IWorkShiftVehicle {

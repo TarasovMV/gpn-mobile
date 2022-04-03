@@ -7,7 +7,7 @@
   <div class="content">
     <div class="tab">
       <app-tabs-tasks-card
-        *ngFor="let item of (tabsService.newItems$ | async); let i = index"
+        *ngFor="let item of (tabsService.sortedItems$ | async); let i = index"
         [data]="item"
         [isActive]="i===0"
         (click)="openMap()"
